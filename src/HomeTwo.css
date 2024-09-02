@@ -1,0 +1,38 @@
+@keyframes borderAnimation {
+    0% {
+      border-color: #4f46e5;
+    }
+    25% {
+      border-color: #f97316;
+    }
+    50% {
+      border-color: #10b981;
+    }
+    75% {
+      border-color: #f43f5e;
+    }
+    100% {
+      border-color: #4f46e5;
+    }
+  }
+  
+  /* @keyframes cardAnimation {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+  .animate-border {
+    animation: borderAnimation 5s linear infinite;
+  }
+  
+  .animate-card {
+    animation: cardAnimation 2s ease-in-out infinite;
+  } */
+  

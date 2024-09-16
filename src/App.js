@@ -65,7 +65,7 @@ function MainContent({ notices }) {
         <Route path="/manualadd" element={<ManualAdd />} />
         <Route path="/dashboard" element={<Homepage />} />
         <Route path="/registerpage" element={<RegisterPage />} />
-        <Route path="/allnotice" element={<AllnoticeTable notices={notices} />} />
+        <Route path="/all-notice" element={<AllnoticeTable notices={notices} />} />
         <Route path="/pdfreader" element={<PdfReader />} />
         <Route path="/card" element={<Card />} />
         <Route path='/secondhome' element={<HomeTwo/>} />

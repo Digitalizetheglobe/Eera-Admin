@@ -10,9 +10,6 @@ const AdminProfile = () => {
           alt="Work in Progress"
           style={{ height: '500px', width: '500px', margin: '0 auto' }}
         />
-        <h1 className="text-center text-xl font-semibold mt-4">
-          Welcome to the Admin Profile
-        </h1>
       </div>
     </div>
   );

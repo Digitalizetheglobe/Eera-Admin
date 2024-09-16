@@ -32,6 +32,7 @@ function App() {
 
   useEffect(() => {
     axios.get('http://api.epublicnotices.in/notices')
+    //new api 
       .then(response => {
         setNotices(response.data);
       })

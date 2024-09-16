@@ -18,6 +18,8 @@ import Header from './Header';
 import EnquiryDetails from './ContactReport/EnquiryDetails';
 import EmployeeDashboard from './Employee/EmployeeDashboard';
 import AdminRegistration from './Admin/AdminRegistration';
+import AdminProfile from './Admin/AdminProfile';
+
 
 
 
@@ -59,9 +61,9 @@ function MainContent({ notices }) {
       {!noNavbarRoutes.includes(location.pathname) && <Header />}
       <Routes>
         <Route path="/" element={<LoginPage />} />
-        <Route path="/ocrpage" element={<Ocrpage />} />
+        <Route path="/scan-notices" element={<Ocrpage />} />
         <Route path="/manualadd" element={<ManualAdd />} />
-        <Route path="/homepage" element={<Homepage />} />
+        <Route path="/dashboard" element={<Homepage />} />
         <Route path="/registerpage" element={<RegisterPage />} />
         <Route path="/allnotice" element={<AllnoticeTable notices={notices} />} />
         <Route path="/pdfreader" element={<PdfReader />} />
@@ -71,6 +73,8 @@ function MainContent({ notices }) {
         <Route path='/allenquiry' element={<EnquiryDetails/>} />
         <Route path='/employeedashboard' element={<EmployeeDashboard/>} />
         <Route path='/adminregistration' element={<AdminRegistration/>} />
+        <Route path='/adminprofile' element={<AdminProfile/>} />
+        
         
       </Routes>
       {!noNavbarRoutes.includes(location.pathname) && <BottomNavbar />}

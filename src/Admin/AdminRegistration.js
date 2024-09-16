@@ -26,7 +26,7 @@ const AdminRegistration = () => {
             console.log("Registration successful:", response.data);
             setSuccessMessage("Registration successful!");
             // Redirect to homepage
-            navigate('/homepage');
+            navigate('/dashboard');
 
         } catch (error) {
             // Handle error

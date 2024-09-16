@@ -82,7 +82,7 @@ function EmployeeDashboard() {
                         </svg>
                         <h3 className="text-gray-800 text-xl font-semibold mt-6 mb-3">  Go to OCR</h3>
                         <p className="text-gray-600 text-sm leading-relaxed">Upload notices and let our OCR technology automatically scan and convert them into digital text, saving time and reducing errors.</p>
-                        <Link to="/ocrpage">
+                        <Link to="/scan-notices">
                             <button type="button" className="text-gray-800 border border-gray-300 px-4 py-2 rounded-lg font-bold flex items-center text-sm mt-6 hover:bg-white">
                                 Add Now <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" class="rotate-90 ml-1.5"><path fill="#333" d="M12.006 1a1 1 0 0 1 .838.463l7 11a1 1 0 0 1-.985 1.527l-3.364-.48a.434.434 0 0 0-.495.43V20c0 1.645-1.355 3-3 3s-3-1.355-3-3v-6.06a.434.434 0 0 0-.495-.43l-3.364.48a1 1 0 0 1-.985-1.527l7-11a1 1 0 0 1 .85-.463z" data-original="#000000" paint-order="fill markers stroke"></path></svg>
                             </button>

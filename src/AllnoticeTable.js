@@ -44,7 +44,7 @@ function AllnoticeTable() {
 
   return (
     <div className="container mx-auto mt-8" style={{backgroundColor:'#FDFFE2'}}>
-      <h2 className="text-2xl font-bold mb-4" style={{ fontSize: '30px' }}>ALL NOTICES</h2><br/>
+      <h2 className="text-2xl font-bold mb-4" style={{ fontSize: '30px' }}>ALL-NOTICES</h2><br/>
       <div className="flex justify-center mb-4">
         <input
           type="text"

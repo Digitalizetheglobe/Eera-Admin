@@ -31,7 +31,7 @@ function App() {
   const [notices, setNotices] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:8000/notices')
+    axios.get('http://api.epublicnotices.in/notices')
       .then(response => {
         setNotices(response.data);
       })

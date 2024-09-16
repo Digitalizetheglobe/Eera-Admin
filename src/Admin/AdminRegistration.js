@@ -16,7 +16,7 @@ const AdminRegistration = () => {
         event.preventDefault();
 
         try {
-            const response = await axios.post("http://localhost:8000/admin/register", {
+            const response = await axios.post("http://api.epublicnotices.in/admin/register", {
                 full_name: username,
                 email: email,
                 password: password,

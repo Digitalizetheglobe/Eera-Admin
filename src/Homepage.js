@@ -11,7 +11,8 @@ function Homepage() {
   const [noticesCount, setNoticesCount] = useState(0);
 
   useEffect(() => {
-    axios.get('http://localhost:8000/notices')
+    axios.get('http://api.epublicnotices.in/notices')
+      // http://localhost:8000/notices
       .then(response => {
         setNoticesCount(response.data.length);
       })

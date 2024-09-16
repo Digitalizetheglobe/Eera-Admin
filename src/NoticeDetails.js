@@ -36,7 +36,7 @@ const NoticeDetails = ({ notices }) => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:8000/notices/${id}`, formData);
+      await axios.put(`http://api.epublicnotices.in/notices/${id}`, formData); 
       setNotice(formData);
       setIsEditing(false);
       navigate('/notices'); // Redirect after update

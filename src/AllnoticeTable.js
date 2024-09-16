@@ -11,7 +11,9 @@ function AllnoticeTable() {
 
   useEffect(() => {
     setLoading(true);
-    axios.get(`http://localhost:8000/notices?page=${currentPage}&limit=${noticesPerPage}`)
+    // http://api.epublicnotices.in/notices
+    // http://localhost:8000/notices
+    axios.get(`http://api.epublicnotices.in/notices?page=${currentPage}&limit=${noticesPerPage}`)
       .then(response => {
         const sortedNotices = response.data.sort((a, b) => new Date(b.date) - new Date(a.date));
         setNotices(sortedNotices);

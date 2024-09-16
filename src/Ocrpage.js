@@ -108,8 +108,8 @@ function Ocrpage() {
       alert('All fields are required');
       return;
     }
-
-    const apiEndpoint = 'http://localhost:8000/notices';
+// http://localhost:8000/notices
+    const apiEndpoint = 'http://api.epublicnotices.in/notices';
 
     fetch(apiEndpoint, {
       method: 'POST',

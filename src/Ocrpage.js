@@ -109,7 +109,10 @@ function Ocrpage() {
       return;
     }
 // http://localhost:8000/notices
-    const apiEndpoint = 'http://api.epublicnotices.in/notices';
+    const apiEndpoint = 'http://localhost:8000/notices';
+    //for production
+    // http://api.epublicnotices.in/notices 
+    
 
     fetch(apiEndpoint, {
       method: 'POST',

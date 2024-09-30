@@ -39,7 +39,7 @@ const NoticeDetails = ({ notices }) => {
       await axios.put(`http://api.epublicnotices.in/notices/${id}`, formData); 
       setNotice(formData);
       setIsEditing(false);
-      navigate('/notices'); // Redirect after update
+      navigate('/notices'); 
     } catch (error) {
       console.error("Error updating notice", error);
     }

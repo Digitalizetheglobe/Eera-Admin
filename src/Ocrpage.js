@@ -26,7 +26,7 @@ function Ocrpage() {
   const [removingIndex, setRemovingIndex] = useState(null);
 
 
-  
+
 
   const handleFileChange = (e) => {
     setFiles([...e.target.files]);
@@ -108,11 +108,11 @@ function Ocrpage() {
       alert('All fields are required');
       return;
     }
-// http://localhost:8000/notices
+    // http://localhost:8000/notices
     const apiEndpoint = 'http://localhost:8000/notices';
     //for production
     // http://api.epublicnotices.in/notices 
-    
+
 
     fetch(apiEndpoint, {
       method: 'POST',
@@ -131,11 +131,11 @@ function Ocrpage() {
       .then(response => response.json())
       .then(data => {
         console.log('Successfully published:', data);
-        setRemovingIndex(index); 
+        setRemovingIndex(index);
         setTimeout(() => {
-          setTexts(texts.filter((_, i) => i !== index)); 
+          setTexts(texts.filter((_, i) => i !== index));
           setRemovingIndex(null);
-        }, 1000); 
+        }, 1000);
         alert('Notice published successfully');
       })
       .catch((error) => {
@@ -230,11 +230,11 @@ function Ocrpage() {
   };
 
   return (
-    
+
     <Container maxWidth="md" className="mt-12 p-4 bg-white rounded-lg shadow-lg border border-yellow-500 pb-20">
-      <Typography variant="h4" gutterBottom className="text-center mb-8" style={{fontWeight: 600 , textAlign:'left'}}>
-        Scan Notice Here
-      </Typography>
+      <Typography variant="h4" gutterBottom className="text-center mb-8" style={{ fontWeight: 600 }}>
+                Scan English Notices
+            </Typography>
       <Box component="form" noValidate autoComplete="off">
         <TextField
           type="file"
@@ -255,18 +255,29 @@ function Ocrpage() {
         >
           {loading ? <CircularProgress size={24} /> : 'Scan with OCR'}
         </Button>
-        <br/>
-        <Link to="/allnotice">
-          <Button variant="contained" color="primary" className="px-4 py-2"  style={{marginTop:'50px'}}>
-            View All Notice
-          </Button>
-        </Link>
+
+        <br />
+
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '50px' }}>
+          <Link to="/all-notice">
+            <Button variant="contained" color="primary" className="px-4 py-2" style={{ marginRight: '10px' }}>
+              View All Notice
+            </Button>
+          </Link>
+
+          <Link to="/mar-hin-ocr">
+            <Button variant="contained" color="primary" className="px-4 py-2">
+              Scan Marathi / Hindi Notice
+            </Button>
+          </Link>
+        </div>
+
       </Box>
       <Box className="mt-5 mb-5">
         {texts.map((item, index) => (
           <Card
             key={index}
-            className={`mb-4 ${removingIndex === index ? 'fade-out' : ''}`} 
+            className={`mb-4 ${removingIndex === index ? 'fade-out' : ''}`}
           >
             <CardContent>
               <Typography variant="h6">{item.fileName}</Typography>
@@ -305,7 +316,7 @@ function Ocrpage() {
                 <Button
                   variant="contained"
                   color="primary"
-                  onClick={() => handlePublish(item.text, index)} 
+                  onClick={() => handlePublish(item.text, index)}
                   startIcon={<PublishIcon />}
                   className="px-4 py-2"
                 >
@@ -360,7 +371,7 @@ function Ocrpage() {
         </Box>
       </Modal>
     </Container>
- 
+
   );
 }
 

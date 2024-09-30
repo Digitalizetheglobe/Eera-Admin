@@ -74,7 +74,7 @@ function MainContent({ notices }) {
         <Route path='/employeedashboard' element={<EmployeeDashboard/>} />
         <Route path='/adminregistration' element={<AdminRegistration/>} />
         <Route path='/adminprofile' element={<AdminProfile/>} />
-        <Route path='/mra-hin-ocr' element={<OcrMarathiHindi/>} />
+        <Route path='/mar-hin-ocr' element={<OcrMarathiHindi/>} />
         
         
       </Routes>

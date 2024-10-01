@@ -7,7 +7,7 @@ function OcrMarathiHindi() {
     const [files, setFiles] = useState([]);
     const [texts, setTexts] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [language, setLanguage] = useState('mar'); // Default to Marathi
+    const [language, setLanguage] = useState('mar'); 
     const [removingIndex, setRemovingIndex] = useState(null);
 
     const handleFileChange = (e) => {

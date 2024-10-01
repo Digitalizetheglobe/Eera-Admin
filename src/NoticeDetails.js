@@ -7,6 +7,8 @@ const NoticeDetails = ({ notices }) => {
   const navigate = useNavigate();
   const [notice, setNotice] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);  // Added loading state
+  const [error, setError] = useState(null);          // Error state
   const [formData, setFormData] = useState({
     notice_title: '',
     notice_description: '',
@@ -21,8 +23,9 @@ const NoticeDetails = ({ notices }) => {
       setNotice(fetchedNotice);
       setFormData(fetchedNotice);
     } else {
-      // Handle the case where the notice is not found
+      setError('Notice not found');  // Handle case where the notice is not found
     }
+    setIsLoading(false);  // Loading complete
   }, [id, notices]);
 
   const handleChange = (e) => {
@@ -39,14 +42,19 @@ const NoticeDetails = ({ notices }) => {
       await axios.put(`http://api.epublicnotices.in/notices/${id}`, formData); 
       setNotice(formData);
       setIsEditing(false);
-      navigate('/notices'); 
+      navigate('/notices');
     } catch (error) {
       console.error("Error updating notice", error);
+      setError('Failed to update notice');
     }
   };
 
-  if (!notice) {
-    return <div>Notice not found</div>;
+  if (isLoading) {
+    return <div>Loading...</div>;  // Show loading spinner or message
+  }
+
+  if (error) {
+    return <div>{error}</div>;  // Show error message
   }
 
   return (
@@ -141,3 +149,4 @@ const NoticeDetails = ({ notices }) => {
 };
 
 export default NoticeDetails;
+ 

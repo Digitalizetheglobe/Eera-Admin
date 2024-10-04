@@ -32,7 +32,7 @@ const NoticeCard = ({ id, title, description }) => {
             />
           </svg>
         </Link>
-        <Link
+        {/* <Link
           to={`/edit-notice/${id}`}
           className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-600 rounded-lg hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-500 dark:hover:bg-green-600 dark:focus:ring-green-800"
         >
@@ -52,7 +52,7 @@ const NoticeCard = ({ id, title, description }) => {
               d="M1 5h12m0 0L9 1m4 4L9 9"
             />
           </svg>
-        </Link>
+        </Link> */}
       </div>
     </div>
   );

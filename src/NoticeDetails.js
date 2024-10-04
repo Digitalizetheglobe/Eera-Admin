@@ -39,7 +39,7 @@ const NoticeDetails = ({ notices }) => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://api.epublicnotices.in/notices/${id}`, formData); 
+      await axios.put(`http://api.epublicnotices.in/notices/${id}`, formData);
       setNotice(formData);
       setIsEditing(false);
       navigate('/notices');
@@ -134,14 +134,21 @@ const NoticeDetails = ({ notices }) => {
           <h2 className="text-2xl font-bold mb-4">{notice.notice_title}</h2>
           <p className="text-gray-700 mb-4">{notice.notice_description}</p>
           <p className="text-gray-700 mb-4"><strong>Date:</strong> {new Date(notice.date).toLocaleDateString()}</p>
-          <p className="text-gray-700 mb-4"><strong>Lawyer Name:</strong> {notice.lawyer_name}</p>
-          <p className="text-gray-700 mb-4"><strong>Location:</strong> {notice.location}</p>
-          <button
+          <p className="text-gray-700 mb-4">
+            <strong>Enquire Now:</strong>
+            <a href="mailto:contact@epublicnotices.in" className="text-blue-500 underline">
+              contact@epublicnotices.in
+            </a>
+          </p>
+
+          {/* <p className="text-gray-700 mb-4"><strong>Lawyer Name:</strong> {notice.lawyer_name}</p> */}
+          {/* <p className="text-gray-700 mb-4"><strong>Location:</strong> {notice.location}</p> */}
+          {/* <button
             onClick={() => setIsEditing(true)}
             className="px-4 py-2 bg-yellow-500 text-white rounded-md shadow-sm"
           >
             Edit Notice
-          </button>
+          </button> */}
         </div>
       )}
     </div>
@@ -149,4 +156,3 @@ const NoticeDetails = ({ notices }) => {
 };
 
 export default NoticeDetails;
- 

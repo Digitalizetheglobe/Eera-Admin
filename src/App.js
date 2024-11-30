@@ -20,6 +20,9 @@ import EmployeeDashboard from './Employee/EmployeeDashboard';
 import AdminRegistration from './Admin/AdminRegistration';
 import AdminProfile from './Admin/AdminProfile';
 import OcrMarathiHindi from './OcrPages/OcrMarathiHindi';
+import Sidebar from './Sidebar/Sidebar';
+import Navbar from './Navbar1/Navbar1';
+import Scannotices1 from './Scannotices1/Scannotices1';
 
 
 
@@ -58,7 +61,10 @@ function MainContent({ notices }) {
 
   return (
     <>
-      {!noNavbarRoutes.includes(location.pathname) && <Header />}
+
+
+
+      {/* {!noNavbarRoutes.includes(location.pathname) && <Header />} */}
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/scan-notices" element={<Ocrpage />} />
@@ -75,10 +81,12 @@ function MainContent({ notices }) {
         <Route path='/adminregistration' element={<AdminRegistration/>} />
         <Route path='/adminprofile' element={<AdminProfile/>} />
         <Route path='/mar-hin-ocr' element={<OcrMarathiHindi/>} />
-        
+        <Route path='/scan-notices1' element={<Scannotices1/>}/>
         
       </Routes>
       {!noNavbarRoutes.includes(location.pathname) && <BottomNavbar />}
+
+
     </>
   );
 }

@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import NoticeCard from './NoticeCard';
+import Sidebar from './Sidebar/Sidebar';
+import Navbar from './Navbar1/Navbar1';
+import searchbar from './assests/icons/Icon.png'
 
 function AllnoticeTable() {
   const [notices, setNotices] = useState([]);
@@ -43,16 +46,22 @@ function AllnoticeTable() {
   );
 
   return (
-    <div className="container mx-auto mt-8" style={{backgroundColor:'#FDFFE2'}}>
+<>
+<div className="flex min-h-screen">
+        <Sidebar />
+
+        <div className="flex-1 flex flex-col">
+          <Navbar />
+    <div className="container mx-auto mt-8" >
       <h2 className="text-2xl font-bold mb-4" style={{ fontSize: '30px' }}>ALL-NOTICES</h2><br/>
-      <div className="flex justify-center mb-4">
+      <div className="flex justify-center mb-4 bg-gray-100 p-4">
         <input
           type="text"
           placeholder="Search notices..."
           value={searchQuery}
           onChange={handleSearch}
-          className="w-full max-w-md p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
+          className="w-full max-w-md p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"       
+       />
       </div>
       {loading ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
@@ -81,13 +90,13 @@ function AllnoticeTable() {
             <button 
               onClick={handlePrevPage} 
               disabled={currentPage === 1}
-              className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"
+              className="px-4 py-2 bg-[#001A3B] text-white rounded disabled:opacity-50"
             >
               Previous
             </button>
             <button 
               onClick={handleNextPage} 
-              className="px-4 py-2 bg-blue-500 text-white rounded"
+              className="px-4 py-2 bg-[#001A3B] text-white rounded"
             >
               Next 
               {/* next new */}
@@ -96,6 +105,9 @@ function AllnoticeTable() {
         </div>
       )}
     </div>
+    </div>
+    </div>
+    </>
   );
 }
 

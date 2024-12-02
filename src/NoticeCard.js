@@ -3,17 +3,17 @@ import { Link } from 'react-router-dom';
 
 const NoticeCard = ({ id, title, description }) => {
   return (
-    <div className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-      <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">
+    <div className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-white dark:border-[#EAECF0]">
+      <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-[#001A3B]">
         {title}
       </h5>
-      <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+      <p className="mb-3 font-normal text-gray-700 dark:text-[#001A3B99]">
         {description}
       </p>
       <div className="flex justify-between">
         <Link
           to={`/notices/${id}`}
-          className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-[#004B80] rounded-lg hover:bg-[#004B80] focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-[#004B80] dark:hover:bg-[#004B80] dark:focus:ring-blue-800"
         >
           Read more
           <svg

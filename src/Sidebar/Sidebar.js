@@ -2,13 +2,19 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaHome, FaInfoCircle, FaServicestack, FaPhoneAlt, FaSignOutAlt } from 'react-icons/fa'; // Importing icons from react-icons
 import logo from '../assests/WhatsApp Image 2024-10-09 at 4.07.14 PM (1) 2.svg';
+import dashboard from '../assests/icons/grid-01.png'
+import wallect from '../assests/icons/wallet-01.png'
+import user from '../assests/icons/users-left.png'
+import scan from '../assests/icons/scan.png'
+import folder from '../assests/icons/folder.png'
+import pen from '../assests/icons/pen-tool-plus.png'
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
 
-    <div className="flex min-h-screen fixed relative">
+    <div className="flex min-h-screen fixed relative ">
       {/* Hamburger Menu */}
       <button
         className="md:hidden p-2 focus:outline-none"
@@ -32,7 +38,7 @@ const Sidebar = () => {
 
       {/* Sidebar */}
       <div
-        className={`fixed md:static top-0 left-0 z-40 w-64 h-full bg-gray-800 text-white transform p-6 ${
+        className={`fixed md:static top-0 left-0 z-40 w-65 h-full bg-gray-800 text-white transform p-6 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } md:translate-x-0 transition-transform`}
       >
@@ -45,34 +51,64 @@ const Sidebar = () => {
         </a>
 
         <ul className="space-y-4 p-4 mt-8">
+        <li>
+            <Link to="/" className="flex items-center p-2 hover:bg-gray-700 rounded">
+              <img src={dashboard} className="mr-4" /> {/* Home Icon */}
+              Dashboard
+            </Link>
+          </li>
+          <li>
+            <Link  className="flex items-center p-2  rounded text-gray-400">
+            Upload New Notices
+            </Link>
+          </li>
+        
           <li>
             <Link to="/" className="flex items-center p-2 hover:bg-gray-700 rounded">
-              <FaHome className="mr-4" /> {/* Home Icon */}
-              Home
+            <img src={scan} className="mr-4" /> {/* Home Icon */}
+            Scan English Notices
             </Link>
           </li>
           <li>
-            <Link to="/upload-notices" className="flex items-center p-2 hover:bg-gray-700 rounded">
-              <FaInfoCircle className="mr-4" /> {/* About Icon */}
-            Upload Notice
+            <Link to="#" className="flex items-center p-2 hover:bg-gray-700 rounded">
+            <img src={scan} className="mr-4" /> {/* About Icon */}
+              Scan Hindi/Marathi Notices
             </Link>
           </li>
           <li>
-            <Link to="/about" className="flex items-center p-2 hover:bg-gray-700 rounded">
-              <FaInfoCircle className="mr-4" /> {/* About Icon */}
-              About
+            <Link to="#" className="flex items-center p-2 hover:bg-gray-700 rounded">
+            <img src={pen} className="mr-4" /> {/* About Icon */}
+              Manual notice entry
             </Link>
           </li>
           <li>
-            <Link to="/services" className="flex items-center p-2 hover:bg-gray-700 rounded">
-              <FaServicestack className="mr-4" /> {/* Services Icon */}
-              Services
+            <Link to="#" className="flex items-center p-2 hover:bg-gray-700 rounded">
+            <img src={user} className="mr-4" /> {/* Services Icon */}
+              Employee Management
             </Link>
           </li>
           <li>
-            <Link to="/contact" className="flex items-center p-2 hover:bg-gray-700 rounded">
-              <FaPhoneAlt className="mr-4" /> {/* Contact Icon */}
-              Contact
+            <Link to="#" className="flex items-center p-2 hover:bg-gray-700 rounded">
+            <img src={user} className="mr-4" /> {/* Contact Icon */}
+              User Management
+            </Link>
+          </li>
+          <li>
+            <Link to="#" className="flex items-center p-2 hover:bg-gray-700 rounded">
+            <img src={user} className="mr-4" /> {/* Contact Icon */}
+            Profile setting
+            </Link>
+          </li>
+          <li>
+            <Link to="#" className="flex items-center p-2 hover:bg-gray-700 rounded">
+            <img src={folder} className="mr-4" /> {/* Contact Icon */}
+            Notice Management
+            </Link>
+          </li>
+          <li>
+            <Link to="#" className="flex items-center p-2 hover:bg-gray-700 rounded">
+            <img src={wallect} className="mr-4" /> {/* Contact Icon */}
+            Subscription management
             </Link>
           </li>
         </ul>

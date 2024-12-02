@@ -11,7 +11,7 @@ const Navbar = () => {
     <div className="flex justify-between items-center bg-white p-4 shadow-md">
       {/* Left Side: Upload New Notices and Scan English Notices */}
       <div className="flex items-center space-x-4">
-        <Link
+        {/* <Link
           to="/upload"
           className="flex items-center space-x-2 text-black hover:text-gray-600"
         >
@@ -20,7 +20,7 @@ const Navbar = () => {
           <span className="text-gray-400">Upload New Notices</span>
         </Link>
         <span className="text-gray-500">/</span>
-        <span className="text-black">Scan English Notices</span>
+        <span className="text-black">Scan English Notices</span> */}
       </div>
 
       {/* Right Side: Search Bar and Icons */}

@@ -57,7 +57,7 @@ function App() {
 
 function MainContent({ notices }) {
   const location = useLocation();
-  const noNavbarRoutes = ['/', '/registerpage','/adminregistration'];
+  const noNavbarRoutes = ['/', '/registerpage','/adminregistration','/scan-notices1','/all-notice'];
 
   return (
     <>

@@ -9,12 +9,13 @@ import jsPDF from 'jspdf';
 import 'react-quill/dist/quill.snow.css';
 import ReactQuill from 'react-quill';
 import { PDFDocument } from 'pdf-lib';
-import '../App.css'; 
+import '../App.css';
 import { Link } from 'react-router-dom';
 import eera from '../assests/eera.png';
 import upload from '../assests/icons/Upload icon.png'
 import Sidebar from '../Sidebar/Sidebar';
 import Navbar from '../Navbar1/Navbar1';
+import { toast, Toaster } from 'react-hot-toast';
 
 function Scannotices1() {
   const [files, setFiles] = useState([]);
@@ -131,20 +132,26 @@ function Scannotices1() {
         mobile_number: mobileNumber,
       }),
     })
-      .then(response => response.json())
-      .then(data => {
-        console.log('Successfully published:', data);
-        setRemovingIndex(index);
-        setTimeout(() => {
-          setTexts(texts.filter((_, i) => i !== index));
-          setRemovingIndex(null);
-        }, 1000);
-        alert('Notice published successfully');
-      })
-      .catch((error) => {
-        console.error('Error publishing notice:', error);
-        alert('Failed to publish notice');
+    .then((response) => response.json())
+    .then((data) => {
+      console.log('Successfully published:', data);
+      setRemovingIndex(index);
+      setTimeout(() => {
+        setTexts((prevTexts) => prevTexts.filter((_, i) => i !== index));
+        setRemovingIndex(null);
+      }, 1000);
+      toast.success('Notice published successfully!', {
+        position: 'top-right',
+        autoClose: 3000,
       });
+    })
+    .catch((error) => {
+      console.error('Error publishing notice:', error);
+      toast.error('Failed to publish notice!', {
+        position: 'top-right',
+        autoClose: 3000,
+      });
+    });
   };
 
   const extractLocation = (text) => {
@@ -233,44 +240,46 @@ function Scannotices1() {
   };
 
   return (
-<>
-<div className="flex min-h-screen">
+    <>
+      <Toaster position="top-center" reverseOrder={false} /> {/* Add the Toaster */}
+
+      <div className="flex min-h-screen">
         <Sidebar />
 
         <div className="flex-1 flex flex-col">
           <Navbar />
-<div className="p-6">
+          <div className="p-6">
 
-<div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-semibold">Upload Your Notice</h1>
-        <div className="flex space-x-4">
-          <select
-            className="border border-[#004B80] text-[#004B80] rounded px-3 py-2"
-            defaultValue="English Notices"
-          >
-            <option value="English Notices">English Notices</option>
-            <option value="Other Language">Other Language</option>
-          </select>
-          <button className="bg-[#004B80] text-white px-4 py-2 rounded hover:bg-[#00365D]">
-            Add Notice Manually
-          </button>
-        </div>
-      </div>
+            <div className="flex justify-between items-center mb-6">
+              <h1 className="text-2xl font-semibold">Upload Your Notice</h1>
+              <div className="flex space-x-4">
+                <select
+                  className="border border-[#004B80] text-[#004B80] rounded px-3 py-2"
+                  defaultValue="English Notices"
+                >
+                  <option value="English Notices">English Notices</option>
+                  <option value="Other Language">Other Language</option>
+                </select>
+                <button className="bg-[#004B80] text-white px-4 py-2 rounded hover:bg-[#00365D]">
+                  Add Notice Manually
+                </button>
+              </div>
+            </div>
 
-    <Container maxWidth="md" className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">     
-    <div className="mb-4">
-      {/* Image triggers the file input click */}
-      <img
-        src={upload}
-        alt="Upload"
-        className="mx-auto w-16 mb-4 cursor-pointer"
-        // onClick={handleImageClick}
-      />
-      <p className="font-semibold text-[#001A3B99]">
-        Drag & drop files or click the button below to browse
-      </p>
-      {/* Hidden file input */}
-      {/* <input
+            <Container maxWidth="md" className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
+              <div className="mb-4">
+                {/* Image triggers the file input click */}
+                <img
+                  src={upload}
+                  alt="Upload"
+                  className="mx-auto w-16 mb-4 cursor-pointer"
+                // onClick={handleImageClick}
+                />
+                <p className="font-semibold text-[#001A3B99]">
+                  Drag & drop files or click the button below to browse
+                </p>
+                {/* Hidden file input */}
+                {/* <input
         ref={fileInputRef} 
         type="file"
          onChange={handleFileChange}
@@ -278,86 +287,25 @@ function Scannotices1() {
         multiple
         style={{ display: "none" }} // Hide the file input
       /> */}
-    </div>
-      <Box component="form" noValidate autoComplete="off">
-      <TextField
-          type="file"
-          onChange={handleFileChange}
-          inputProps={{ accept: 'image/*,application/pdf', multiple: true }}
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          className="mb-4"
-        />
-        
-        <Button
-  variant="contained"
-  onClick={handleScan}
-  disabled={files.length === 0 || loading}
-  fullWidth 
-  sx={{
-    backgroundColor: '#004B80',
-    color: '#fff !important',
-    px: 4,
-    py: 1,
-    borderRadius: '8px',
-    '&:hover': {
-      backgroundColor: '#00365D',
-    },
-    mt: 2,
-  }}
->
+              </div>
+              <Box component="form" noValidate autoComplete="off">
+                <TextField
+                  type="file"
+                  onChange={handleFileChange}
+                  inputProps={{ accept: 'image/*,application/pdf', multiple: true }}
+                  variant="outlined"
+                  fullWidth
+                  margin="normal"
+                  className="mb-4"
+                />
 
-  {loading ? <CircularProgress size={24} /> : 'Scan with OCR'}
-</Button>
-
-        <br />
-
-        <div style={{ display: 'flex', justifyContent: 'center'}}>
-          <Link to="/all-notice">
-            <button  className="mt-4 px-4 py-2 bg-[#A99067] text-white border py-2 rounded " style={{ marginRight: '10px' }}>
-              View All Notice
-              </button>
-            {/* <button  className="px-2 py-2 bg-[#001A3B] hover:bg-[#fff] text-white hover:text-[#001A3B] border hover:border-[#001A3B] py-2 rounded right-0">
-                Filters
-              </button>  */}
-          </Link>
-
-          <Link to="/mar-hin-ocr">
-            <button className="px-4 py-2 mt-4 hover:bg-[#A99067] text-[#A99067] hover:text-white border py-2 rounded border border-[#A99067]">
-              Scan Marathi / Hindi Notice
-            </button>
-          </Link>
-        </div>
-
-      </Box>
-      <Box className="mt-5 mb-5">
-        {texts.map((item, index) => (
-          <Card
-            key={index}
-            className={`mb-4 ${removingIndex === index ? 'fade-out' : ''}`}
-          >
-            <CardContent>
-              <Typography variant="h6">{item.fileName}</Typography>
-              <TextField
-                value={item.text}
-                onChange={(e) => {
-                  let newTexts = [...texts];
-                  newTexts[index].text = e.target.value;
-                  setTexts(newTexts);
-                }}
-                variant="outlined"
-                multiline
-                rows={10}
-                fullWidth
-                margin="normal"
-              />
-              <Box display="flex" justifyContent="space-between" className="mt-5 space-x-2">
-                <Button               
-                  onClick={() => handleCopy(item.text)}
-                  startIcon={<ContentCopyIcon />}
-                  className="px-4 py-2"
-                  sx={{ backgroundColor: '#004B80',
+                <Button
+                  variant="contained"
+                  onClick={handleScan}
+                  disabled={files.length === 0 || loading}
+                  fullWidth
+                  sx={{
+                    backgroundColor: '#004B80',
                     color: '#fff !important',
                     px: 4,
                     py: 1,
@@ -365,116 +313,181 @@ function Scannotices1() {
                     '&:hover': {
                       backgroundColor: '#00365D',
                     },
-                    mt: 2,}}
-                >
-                  Copy Text
-                </Button>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() => handleOpen(index)}
-                  startIcon={<PreviewIcon />}
-                  className="px-4 py-2"
-                  sx={{ backgroundColor: '#A99067',
-                    color: '#fff !important',
-                    px: 4,
-                    py: 1,
-                    borderRadius: '8px',
-                    '&:hover': {
-                      // backgroundColor: '#00365D',
-                    },
-                    mt: 2,}}
-                >
-                  Preview
-                </Button>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() => handlePublish(item.text, index)}
-                  startIcon={<PublishIcon />}
-                  className="px-4 py-2"
-                  sx={{
-                    backgroundColor: 'transparent', // Ensure background is transparent
-                    color: '#004B80 !important',
-                    px: 4,
-                    py: 1,
-                    borderRadius: '8px',
-                    borderColor: '#004B80', // Specify the border color
-                    borderWidth: '2px', // Explicitly set border width if needed
-                    '&:hover': {
-                      backgroundColor: '#f0f8ff', // Optional: Add hover effect
-                    },
                     mt: 2,
                   }}
                 >
-                  Publish Notice
-                </Button>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() => handleDownloadPDF(item.text)}
-                  startIcon={<GetAppIcon />}
-                  className="px-4 py-2"
-                  sx={{
-                    backgroundColor: 'transparent', // Ensure background is transparent
-                    color: '#004B80 !important',
-                    px: 4,
-                    py: 1,
-                    borderRadius: '8px',
-                    borderColor: '#004B80', // Specify the border color
-                    borderWidth: '2px', // Explicitly set border width if needed
-                    '&:hover': {
-                      backgroundColor: '#f0f8ff', // Optional: Add hover effect
-                    },
-                    mt: 2,
-                  }}
-                >
-                  Download PDF
-                </Button>
-              </Box>
-            </CardContent>
-          </Card>
-        ))}
-      </Box>
 
-      <Modal open={open} onClose={handleClose}>
-        <Box className="bg-white p-6 rounded shadow-lg max-w-lg mx-auto my-20 overflow-y-auto max-h-screen">
-          <Typography variant="h6" gutterBottom>
-            Edit Text
-          </Typography>
-          <ReactQuill
-            value={editableText}
-            onChange={setEditableText}
-            theme="snow"
-            className="mt-2 mb-4"
-          />
-          <Typography variant="h6" gutterBottom className="mt-5">
-            Add Signature/Image:
-          </Typography>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleSignatureChange}
-            className="mt-2 mb-4"
-          />
-          {signaturePreview && (
-            <img src={signaturePreview} id="signature-preview" alt="Signature Preview" className="mt-4" style={{ maxHeight: '100px', maxWidth: '100px' }} />
-          )}
-          <Box display="flex" justifyContent="flex-end" className="mt-5">
-            <Button onClick={handleSave} variant="contained" color="primary" className="mr-2">
-              Save
-            </Button>
-            <Button onClick={handleClose} variant="outlined" color="secondary">
-              Cancel
-            </Button>
-          </Box>
-        </Box>
-      </Modal>
-    </Container>
-</div>
-</div>
-</div>
-</>
+                  {loading ? <CircularProgress size={24} /> : 'Scan with OCR'}
+                </Button>
+
+                <br />
+
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                  <Link to="/all-notice">
+                    <button className="mt-4 px-4 py-2 bg-[#A99067] text-white border py-2 rounded " style={{ marginRight: '10px' }}>
+                      View All Notice
+                    </button>
+                    {/* <button  className="px-2 py-2 bg-[#001A3B] hover:bg-[#fff] text-white hover:text-[#001A3B] border hover:border-[#001A3B] py-2 rounded right-0">
+                Filters
+              </button>  */}
+                  </Link>
+
+                  <Link to="/mar-hin-ocr">
+                    <button className="px-4 py-2 mt-4 hover:bg-[#A99067] text-[#A99067] hover:text-white border py-2 rounded border border-[#A99067]">
+                      Scan Marathi / Hindi Notice
+                    </button>
+                  </Link>
+                </div>
+
+              </Box>
+              <Box className="mt-5 mb-5">
+                {texts.map((item, index) => (
+                  <Card
+                    key={index}
+                    className={`mb-4 ${removingIndex === index ? 'fade-out' : ''}`}
+                  >
+                    <CardContent>
+                      <Typography variant="h6">{item.fileName}</Typography>
+                      <TextField
+                        value={item.text}
+                        onChange={(e) => {
+                          let newTexts = [...texts];
+                          newTexts[index].text = e.target.value;
+                          setTexts(newTexts);
+                        }}
+                        variant="outlined"
+                        multiline
+                        rows={10}
+                        fullWidth
+                        margin="normal"
+                      />
+                      <Box display="flex" justifyContent="space-between" className="mt-5 space-x-2">
+                        <Button
+                          onClick={() => handleCopy(item.text)}
+                          startIcon={<ContentCopyIcon />}
+                          className="px-4 py-2"
+                          sx={{
+                            backgroundColor: '#004B80',
+                            color: '#fff !important',
+                            px: 4,
+                            py: 1,
+                            borderRadius: '8px',
+                            '&:hover': {
+                              backgroundColor: '#00365D',
+                            },
+                            mt: 2,
+                          }}
+                        >
+                          Copy Text
+                        </Button>
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          onClick={() => handleOpen(index)}
+                          startIcon={<PreviewIcon />}
+                          className="px-4 py-2"
+                          sx={{
+                            backgroundColor: '#A99067',
+                            color: '#fff !important',
+                            px: 4,
+                            py: 1,
+                            borderRadius: '8px',
+                            '&:hover': {
+                              // backgroundColor: '#00365D',
+                            },
+                            mt: 2,
+                          }}
+                        >
+                          Preview
+                        </Button>
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          onClick={() => handlePublish(item.text, index)}
+                          startIcon={<PublishIcon />}
+                          className="px-4 py-2"
+                          sx={{
+                            backgroundColor: 'transparent', // Ensure background is transparent
+                            color: '#004B80 !important',
+                            px: 4,
+                            py: 1,
+                            borderRadius: '8px',
+                            borderColor: '#004B80', // Specify the border color
+                            borderWidth: '2px', // Explicitly set border width if needed
+                            '&:hover': {
+                              backgroundColor: '#f0f8ff', // Optional: Add hover effect
+                            },
+                            mt: 2,
+                          }}
+                        >
+                          Publish Notice
+                        </Button>
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          onClick={() => handleDownloadPDF(item.text)}
+                          startIcon={<GetAppIcon />}
+                          className="px-4 py-2"
+                          sx={{
+                            backgroundColor: 'transparent', // Ensure background is transparent
+                            color: '#004B80 !important',
+                            px: 4,
+                            py: 1,
+                            borderRadius: '8px',
+                            borderColor: '#004B80', // Specify the border color
+                            borderWidth: '2px', // Explicitly set border width if needed
+                            '&:hover': {
+                              backgroundColor: '#f0f8ff', // Optional: Add hover effect
+                            },
+                            mt: 2,
+                          }}
+                        >
+                          Download PDF
+                        </Button>
+                      </Box>
+                    </CardContent>
+                  </Card>
+                ))}
+              </Box>
+
+              <Modal open={open} onClose={handleClose}>
+                <Box className="bg-white p-6 rounded shadow-lg max-w-lg mx-auto my-20 overflow-y-auto max-h-screen">
+                  <Typography variant="h6" gutterBottom>
+                    Edit Text
+                  </Typography>
+                  <ReactQuill
+                    value={editableText}
+                    onChange={setEditableText}
+                    theme="snow"
+                    className="mt-2 mb-4"
+                  />
+                  <Typography variant="h6" gutterBottom className="mt-5">
+                    Add Signature/Image:
+                  </Typography>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleSignatureChange}
+                    className="mt-2 mb-4"
+                  />
+                  {signaturePreview && (
+                    <img src={signaturePreview} id="signature-preview" alt="Signature Preview" className="mt-4" style={{ maxHeight: '100px', maxWidth: '100px' }} />
+                  )}
+                  <Box display="flex" justifyContent="flex-end" className="mt-5">
+                    <Button onClick={handleSave} variant="contained" color="primary" className="mr-2">
+                      Save
+                    </Button>
+                    <Button onClick={handleClose} variant="outlined" color="secondary">
+                      Cancel
+                    </Button>
+                  </Box>
+                </Box>
+              </Modal>
+            </Container>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
 

@@ -13,18 +13,20 @@ function AllnoticeTable() {
 
   useEffect(() => {
     setLoading(true);
-    axios.get(`http://api.epublicnotices.in/notices?page=${currentPage}&limit=${noticesPerPage}`)
-      .then(response => {
+    axios
+      .get(`http://api.epublicnotices.in/notices?page=${currentPage}&limit=${noticesPerPage}`)
+      .then((response) => {
+        // Sort notices in descending order of date (newest first)
         const sortedNotices = response.data.sort((a, b) => new Date(b.date) - new Date(a.date));
         setNotices(sortedNotices);
         setLoading(false);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error('Error fetching notices:', error);
         setLoading(false);
       });
   }, [currentPage, noticesPerPage]);
-
+  
   const handlePrevPage = () => {
     setCurrentPage(prevPage => Math.max(prevPage - 1, 1));
   };

@@ -64,7 +64,7 @@ const Sidebar = () => {
           </li>
         
           <li>
-            <Link to="/scan-notices1" className="flex items-center p-2 hover:bg-gray-700 rounded">
+            <Link to="/" className="flex items-center p-2 hover:bg-gray-700 rounded">
             <img src={scan} className="mr-4" /> {/* Home Icon */}
             Scan English Notices
             </Link>

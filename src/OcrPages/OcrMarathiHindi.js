@@ -1,205 +1,309 @@
-import React, { useState } from 'react';
-import Tesseract from 'tesseract.js';
-import { Button, TextField, Typography, CircularProgress, Container, Box, Card, CardContent } from '@mui/material';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import Tesseract from "tesseract.js";
+import {
+  Button,
+  TextField,
+  Typography,
+  CircularProgress,
+  Container,
+  Box,
+  Card,
+  CardContent,
+} from "@mui/material";
+import { Link } from "react-router-dom";
+import Sidebar from "../Sidebar/Sidebar";
+import Navbar from "../Navbar1/Navbar1";
+import upload from "../assests/icons/Upload icon.png";
 
 function OcrMarathiHindi() {
-    const [files, setFiles] = useState([]);
-    const [texts, setTexts] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [language, setLanguage] = useState('mar'); 
-    const [removingIndex, setRemovingIndex] = useState(null);
+  const [files, setFiles] = useState([]);
+  const [texts, setTexts] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [language, setLanguage] = useState("mar");
+  const [removingIndex, setRemovingIndex] = useState(null);
 
-    const handleFileChange = (e) => {
-        setFiles([...e.target.files]);
-    };
+  const handleFileChange = (e) => {
+    setFiles([...e.target.files]);
+  };
 
-    const handleLanguageChange = (e) => {
-        setLanguage(e.target.value);
-    };
+  const handleLanguageChange = (e) => {
+    setLanguage(e.target.value);
+  };
 
-    const handleScan = async () => {
-        if (files.length > 0) {
-            setLoading(true);
-            let extractedTexts = [];
-            try {
-                for (const file of files) {
-                    const { data } = await Tesseract.recognize(file, language, {
-                        logger: (m) => console.log(m),
-                    });
-                    extractedTexts.push({ text: data.text, fileName: file.name });
-                }
-                setTexts(extractedTexts);
-                setLoading(false);
-            } catch (error) {
-                console.error(error);
-                setLoading(false);
-            }
+  const handleScan = async () => {
+    if (files.length > 0) {
+      setLoading(true);
+      let extractedTexts = [];
+      try {
+        for (const file of files) {
+          const { data } = await Tesseract.recognize(file, language, {
+            logger: (m) => console.log(m),
+          });
+          extractedTexts.push({ text: data.text, fileName: file.name });
         }
-    };
+        setTexts(extractedTexts);
+        setLoading(false);
+      } catch (error) {
+        console.error(error);
+        setLoading(false);
+      }
+    }
+  };
 
-    const handlePublish = (text, index) => {
-        // Extract notice title
-        const noticeTitleMatch = text.match(/^(.*)\n/);
-        const noticeTitle = noticeTitleMatch ? noticeTitleMatch[1].trim() : 'Untitled Notice';
+  const handlePublish = (text, index) => {
+    // Extract notice title
+    const noticeTitleMatch = text.match(/^(.*)\n/);
+    const noticeTitle = noticeTitleMatch
+      ? noticeTitleMatch[1].trim()
+      : "Untitled Notice";
 
-        // Get the current date in the format 'YYYY-MM-DD'
-        const currentDate = new Date().toISOString().split('T')[0];
+    // Get the current date in the format 'YYYY-MM-DD'
+    const currentDate = new Date().toISOString().split("T")[0];
 
-        // Extract location, lawyer name, and mobile number
-        const location = extractLocation(text);
-        const lawyerName = extractLawyerName(text);
-        const mobileNumber = extractMobileNumber(text);
+    // Extract location, lawyer name, and mobile number
+    const location = extractLocation(text);
+    const lawyerName = extractLawyerName(text);
+    const mobileNumber = extractMobileNumber(text);
 
-        // Extract notice description
-        const noticeDescription = text.split('\n').slice(1).join(' ').trim();
+    // Extract notice description
+    const noticeDescription = text.split("\n").slice(1).join(" ").trim();
 
-        // Validation check
-        if (!noticeTitle || !currentDate || !location || !lawyerName || !mobileNumber || !noticeDescription) {
-            alert('All fields are required');
-            return;
-        }
+    // Validation check
+    if (
+      !noticeTitle ||
+      !currentDate ||
+      !location ||
+      !lawyerName ||
+      !mobileNumber ||
+      !noticeDescription
+    ) {
+      alert("All fields are required");
+      return;
+    }
 
-        // API Endpoint
-        const apiEndpoint = 'http://api.epublicnotices.in/notices';
+    // API Endpoint
+    const apiEndpoint = "http://api.epublicnotices.in/notices";
 
-        // Post data to API
-        fetch(apiEndpoint, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                notice_title: noticeTitle,
-                notice_description: noticeDescription,
-                date: currentDate,
-                location,
-                lawyer_name: lawyerName,
-                mobile_number: mobileNumber,
-            }),
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Successfully published:', data);
-                setRemovingIndex(index);
-                setTimeout(() => {
-                    setTexts(texts.filter((_, i) => i !== index));
-                    setRemovingIndex(null);
-                }, 1000);
-                alert('Notice published successfully');
-            })
-            .catch((error) => {
-                console.error('Error publishing notice:', error);
-                alert('Failed to publish notice');
-            });
-    };
+    // Post data to API
+    fetch(apiEndpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        notice_title: noticeTitle,
+        notice_description: noticeDescription,
+        date: currentDate,
+        location,
+        lawyer_name: lawyerName,
+        mobile_number: mobileNumber,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Successfully published:", data);
+        setRemovingIndex(index);
+        setTimeout(() => {
+          setTexts(texts.filter((_, i) => i !== index));
+          setRemovingIndex(null);
+        }, 1000);
+        alert("Notice published successfully");
+      })
+      .catch((error) => {
+        console.error("Error publishing notice:", error);
+        alert("Failed to publish notice");
+      });
+  };
 
+  const extractLocation = (text) => {
+    const locationPattern = /(?:Pune|Mumbai|Nagpur|Thane|Nashik|Maharashtra)/i;
+    const locationMatch = text.match(locationPattern);
+    return locationMatch ? locationMatch[0].trim() : "No Location Provided";
+  };
 
-    const extractLocation = (text) => {
-        const locationPattern = /(?:Pune|Mumbai|Nagpur|Thane|Nashik|Maharashtra)/i;
-        const locationMatch = text.match(locationPattern);
-        return locationMatch ? locationMatch[0].trim() : 'No Location Provided';
-    };
+  const extractLawyerName = (text) => {
+    const lawyerPattern = /(?:Adv\.|Advocate|Lawyer)\s*([\w\s.]+)/i;
+    const lawyerMatch = text.match(lawyerPattern);
+    return lawyerMatch ? lawyerMatch[1].trim() : "No Lawyer Name Provided";
+  };
 
-    const extractLawyerName = (text) => {
-        const lawyerPattern = /(?:Adv\.|Advocate|Lawyer)\s*([\w\s.]+)/i;
-        const lawyerMatch = text.match(lawyerPattern);
-        return lawyerMatch ? lawyerMatch[1].trim() : 'No Lawyer Name Provided';
-    };
+  const extractMobileNumber = (text) => {
+    const mobilePattern = /(?:Cell|Mobile|Number)\s*[:.]?\s*([\d\s]+)/i;
+    const mobileMatch = text.match(mobilePattern);
+    return mobileMatch ? mobileMatch[1].trim() : "No Mobile Number Provided";
+  };
 
-    const extractMobileNumber = (text) => {
-        const mobilePattern = /(?:Cell|Mobile|Number)\s*[:.]?\s*([\d\s]+)/i;
-        const mobileMatch = text.match(mobilePattern);
-        return mobileMatch ? mobileMatch[1].trim() : 'No Mobile Number Provided';
-    };
+  return (
+    <>
+      <div className="flex min-h-screen">
+        <Sidebar />
 
-    return (
-        <Container maxWidth="md" className="mt-12 p-4 bg-white rounded-lg shadow-lg">
-            <Typography variant="h4" gutterBottom className="text-center mb-8" style={{ fontWeight: 600 }}>
+        <div className="flex-1 flex flex-col">
+          <Navbar />
+          <div className="p-6">
+            <div className="flex justify-between items-center mb-6">
+              <h1 className="text-2xl font-semibold">
+                {" "}
                 Scan Marathi/Hindi Notices
-            </Typography>
+              </h1>
+              <div className="flex space-x-4">
+                <select
+                  className="border border-[#004B80] text-[#004B80] rounded px-3 py-2"
+                  defaultValue="English Notices"
+                >
+                  <option value="English Notices">English Notices</option>
+                  <option value="Other Language">Other Language</option>
+                </select>
+                <button className="bg-[#004B80] text-white px-4 py-2 rounded hover:bg-[#00365D]">
+                  Add Notice Manually
+                </button>
+              </div>
+            </div>
 
-            <Box component="form" noValidate autoComplete="off">
+            <Container
+              maxWidth="md"
+              className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center"
+            >
+              {/* <Typography
+                variant="h4"
+                gutterBottom
+                className="text-center mb-8"
+                style={{ fontWeight: 600, fontSize: "27px" }}
+              >
+                Scan Marathi/Hindi Notices
+              </Typography> */}
+
+              <div className="mb-4">
+                <img
+                  src={upload}
+                  alt="Upload"
+                  className="mx-auto w-16 mb-4 cursor-pointer"
+                />
+                <p className="font-semibold text-[#001A3B99]">
+                  Drag & drop files or click the button below to browse
+                </p>
+              </div>
+
+              <Box component="form" noValidate autoComplete="off">
                 <TextField
-                    type="file"
-                    onChange={handleFileChange}
-                    inputProps={{ accept: 'image/*,application/pdf', multiple: true }}
-                    variant="outlined"
-                    fullWidth
-                    margin="normal"
-                    className="mb-4"
+                  type="file"
+                  onChange={handleFileChange}
+                  inputProps={{
+                    accept: "image/*,application/pdf",
+                    multiple: true,
+                  }}
+                  variant="outlined"
+                  fullWidth
+                  margin="normal"
+                  className="mb-4"
                 />
                 <TextField
-                    select
-                    label="Select Language"
-                    value={language}
-                    onChange={handleLanguageChange}
-                    variant="outlined"
-                    fullWidth
-                    margin="normal"
-                    SelectProps={{
-                        native: true,
-                    }}
+                  select
+                  label="Select Language"
+                  value={language}
+                  onChange={handleLanguageChange}
+                  variant="outlined"
+                  fullWidth
+                  margin="normal"
+                  SelectProps={{
+                    native: true,
+                  }}
                 >
-                    <option value="mar">Marathi</option>
-                    <option value="hin">Hindi</option>
+                  <option value="mar">Marathi</option>
+                  <option value="hin">Hindi</option>
                 </TextField>
 
                 <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleScan}
-                    disabled={files.length === 0 || loading}
-                    fullWidth
-                    className="mt-4"
+                  variant="contained"
+                  color="primary"
+                  onClick={handleScan}
+                  disabled={files.length === 0 || loading}
+                  fullWidth
+                  sx={{
+                    backgroundColor: "#004B80",
+                    color: "#fff !important",
+                    px: 4,
+                    py: 1,
+                    borderRadius: "8px",
+                    "&:hover": {
+                      backgroundColor: "#00365D",
+                    },
+                    mt: 2,
+                  }}
                 >
-                    {loading ? <CircularProgress size={24} /> : 'Scan with OCR'}
+                  {loading ? <CircularProgress size={24} /> : "Scan with OCR"}
                 </Button>
                 <br />
                 <br />
-                <div style={{ display: 'flex', justifyContent: 'center', marginTop: '50px' }}>
-                    <Link to="/all-notice">
-                        <Button variant="contained" color="primary" className="px-4 py-2" style={{ marginRight: '10px' }}>
-                            View All Notice
-                        </Button>
-                    </Link>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    // marginTop: "50px",
+                  }}
+                >
+                  <Link to="/all-notice">
+                    <button
+                      className="mt-4 px-4 py-2 bg-[#A99067] text-white border py-2 rounded "
+                      style={{ marginRight: "10px" }}
+                    >
+                      View All Notice
+                    </button>
+                  </Link>
 
-                    <Link to="/scan-notices">
-                        <Button variant="contained" color="primary" className="px-4 py-2">
-                            Scan English Notice
-                        </Button>
-                    </Link>
+                  <Link to="/scan-notices">
+                    <button className="px-4 py-2 mt-4 hover:bg-[#A99067] text-[#A99067] hover:text-white border py-2 rounded border border-[#A99067]">
+                      Scan English Notice
+                    </button>
+                  </Link>
                 </div>
+              </Box>
 
-            </Box>
-
-            <Box className="mt-5">
+              <Box className="mt-5">
                 {texts.map((item, index) => (
-                    <Card key={index} className="mb-4">
-                        <CardContent>
-                            <Typography variant="h6">{item.fileName}</Typography>
-                            <TextField
-                                value={item.text}
-                                variant="outlined"
-                                multiline
-                                rows={10}
-                                fullWidth
-                                margin="normal"
-                            />
-                            <Button
-                                variant="contained"
-                                color="secondary"
-                                onClick={() => handlePublish(item.text, index)}
-                                disabled={removingIndex === index}
-                            >
-                                {removingIndex === index ? <CircularProgress size={24} /> : 'Publish Notice'}
-                            </Button>
-                        </CardContent>
-                    </Card>
+                  <Card key={index} className="mb-4">
+                    <CardContent>
+                      <Typography variant="h6">{item.fileName}</Typography>
+                      <TextField
+                        value={item.text}
+                        variant="outlined"
+                        multiline
+                        rows={10}
+                        fullWidth
+                        margin="normal"
+                      />
+                      <Button
+                        onClick={() => handlePublish(item.text, index)}
+                        disabled={removingIndex === index}
+                        className="px-4 py-2"
+                          sx={{
+                            backgroundColor: "#004B80",
+                            color: "#fff !important",
+                            px: 4,
+                            py: 1,
+                            borderRadius: "8px",
+                            "&:hover": {
+                              backgroundColor: "#00365D",
+                            },
+                            mt: 2,
+                          }}
+                      >
+                        {removingIndex === index ? (
+                          <CircularProgress size={24} />
+                        ) : (
+                          "Publish Notice"
+                        )}
+                      </Button>
+                    </CardContent>
+                  </Card>
                 ))}
-            </Box>
-        </Container>
-    );
+              </Box>
+            </Container>
+          </div>
+        </div>
+      </div>
+    </>
+  );
 }
 
 export default OcrMarathiHindi;

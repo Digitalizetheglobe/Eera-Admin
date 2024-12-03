@@ -66,7 +66,7 @@ function MainContent({ notices }) {
 
       {/* {!noNavbarRoutes.includes(location.pathname) && <Header />} */}
       <Routes>
-        <Route path="/" element={<LoginPage />} />
+      {/* <Route path="/" element={<LoginPage />} /> */}
         <Route path="/scan-notices" element={<Ocrpage />} />
         <Route path="/manualadd" element={<ManualAdd />} />
         <Route path="/dashboard" element={<Homepage />} />
@@ -81,7 +81,7 @@ function MainContent({ notices }) {
         <Route path='/adminregistration' element={<AdminRegistration/>} />
         <Route path='/adminprofile' element={<AdminProfile/>} />
         <Route path='/mar-hin-ocr' element={<OcrMarathiHindi/>} />
-        <Route path='/scan-notices1' element={<Scannotices1/>}/>
+        <Route path='/' element={<Scannotices1/>}/>
         
       </Routes>
       {!noNavbarRoutes.includes(location.pathname) && <BottomNavbar />}

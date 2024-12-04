@@ -81,7 +81,7 @@ function MainContent({ notices }) {
         <Route path='/adminregistration' element={<AdminRegistration/>} />
         <Route path='/adminprofile' element={<AdminProfile/>} />
         <Route path='/mar-hin-ocr' element={<OcrMarathiHindi/>} />
-        <Route path='/' element={<Scannotices1/>}/>
+        <Route path='/scan-notices1' element={<Scannotices1/>}/>
         
       </Routes>
       {!noNavbarRoutes.includes(location.pathname) && <BottomNavbar />}

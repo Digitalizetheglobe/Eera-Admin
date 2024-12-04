@@ -13,8 +13,7 @@ const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-
-    <div className="flex min-h-screen fixed relative ">
+    <div className="flex min-h-screen fixed relative">
       {/* Hamburger Menu */}
       <button
         className="md:hidden p-2 focus:outline-none"
@@ -42,7 +41,10 @@ const Sidebar = () => {
           isOpen ? "translate-x-0" : "-translate-x-full"
         } md:translate-x-0 transition-transform`}
       >
-        <a href="javascript:void(0)" className="text-center mb-8">
+        <a
+          href="javascript:void(0)"
+          className="flex justify-center items-center mb-8"
+        >
           <img
             src={logo}
             alt="logo"
@@ -51,85 +53,84 @@ const Sidebar = () => {
         </a>
 
         <ul className="space-y-4 p-4 mt-8">
-        <li>
-            <Link to="/" className="flex items-center p-2 hover:bg-gray-700 rounded">
+          <li>
+            <Link to="#" className="flex items-center p-2 hover:bg-gray-700 rounded">
               <img src={dashboard} className="mr-4" /> {/* Home Icon */}
               Dashboard
             </Link>
           </li>
           <li>
-            <Link  className="flex items-center p-2  rounded text-gray-400">
-            Upload New Notices
-            </Link>
-          </li>
-        
-          <li>
-            <Link to="/" className="flex items-center p-2 hover:bg-gray-700 rounded">
-            <img src={scan} className="mr-4" /> {/* Home Icon */}
-            Scan English Notices
+            <Link className="flex items-center p-2 rounded text-gray-400">
+              Upload New Notices
             </Link>
           </li>
           <li>
-            <Link to="#" className="flex items-center p-2 hover:bg-gray-700 rounded">
-            <img src={scan} className="mr-4" /> {/* About Icon */}
+            <Link to="/scan-notices1" className="flex items-center p-2 hover:bg-gray-700 rounded ml-5">
+              <img src={scan} className="mr-4" /> {/* Home Icon */}
+              Scan English Notices
+            </Link>
+          </li>
+          <li>
+            <Link to="/mar-hin-ocr" className="flex items-center p-2 hover:bg-gray-700 rounded ml-5">
+              <img src={scan} className="mr-4" /> {/* About Icon */}
               Scan Hindi/Marathi Notices
             </Link>
           </li>
           <li>
-            <Link to="#" className="flex items-center p-2 hover:bg-gray-700 rounded">
-            <img src={pen} className="mr-4" /> {/* About Icon */}
+            <Link to="/manualadd" className="flex items-center p-2 hover:bg-gray-700 rounded ml-5">
+              <img src={pen} className="mr-4" /> {/* About Icon */}
               Manual notice entry
             </Link>
           </li>
-          <li>
+          {/* <li>
             <Link to="#" className="flex items-center p-2 hover:bg-gray-700 rounded">
-            <img src={user} className="mr-4" /> {/* Services Icon */}
+              <img src={user} className="mr-4" /> 
               Employee Management
             </Link>
           </li>
           <li>
             <Link to="#" className="flex items-center p-2 hover:bg-gray-700 rounded">
-            <img src={user} className="mr-4" /> {/* Contact Icon */}
+              <img src={user} className="mr-4" /> 
               User Management
             </Link>
           </li>
           <li>
             <Link to="#" className="flex items-center p-2 hover:bg-gray-700 rounded">
-            <img src={user} className="mr-4" /> {/* Contact Icon */}
-            Profile setting
+              <img src={user} className="mr-4" /> 
+              Profile setting
             </Link>
-          </li>
+          </li> */}
           <li>
             <Link to="/all-notice" className="flex items-center p-2 hover:bg-gray-700 rounded">
-            <img src={folder} className="mr-4" /> {/* Contact Icon */}
-            Notice Management
+              <img src={folder} className="mr-4" /> 
+              Notice Management
             </Link>
           </li>
-          <li>
+          {/* <li>
             <Link to="#" className="flex items-center p-2 hover:bg-gray-700 rounded">
-            <img src={wallect} className="mr-4" /> {/* Contact Icon */}
-            Subscription management
+              <img src={wallect} className="mr-4" /> 
+              Subscription management
             </Link>
-          </li>
+          </li> */}
         </ul>
 
         {/* Divider */}
-        <hr className="my-4 border-gray-600 " />
+        <hr className="my-4 border-gray-600" />
 
-{/* Logout section placed at the bottom */}
- <div className="mt-auto">
-    <ul className="space-y-4 p-4">
-      <li>
-        <Link
-          to="/logout"
-          className="flex items-center p-2 hover:bg-gray-700 rounded text-red-500"
-        >
-          <FaSignOutAlt className="mr-4" /> {/* Logout Icon */}
-          Logout
-        </Link>
-      </li>
-    </ul>
-  </div>
+        {/* Logout section placed at the bottom */}
+        <div className="mt-auto">
+          <ul className="space-y-4 p-4">
+            <li>
+              <Link
+                to="/logout"
+                className="flex items-center p-2 hover:bg-gray-700 rounded text-red-500"
+              >
+                <FaSignOutAlt className="mr-4" /> {/* Logout Icon */}
+                Logout
+              </Link>
+            </li>
+          </ul>
+        </div>
       </div>
 
       {/* Overlay for mobile view */}
@@ -144,3 +145,4 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
+

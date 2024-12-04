@@ -48,7 +48,6 @@ function AllnoticeTable() {
     <div className="flex min-h-screen">
       <Sidebar />
       <div className="flex-1 flex flex-col">
-        <Navbar />
         <div className="container mx-auto mt-8">
           <h2 className="text-2xl font-bold mb-4" style={{ fontSize: '30px' }}>ALL-NOTICES</h2>
           <div className="flex justify-center mb-4 bg-gray-100 p-4">

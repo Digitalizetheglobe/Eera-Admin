@@ -26,14 +26,14 @@ const Navbar = () => {
       {/* Right Side: Search Bar and Icons */}
       <div className="flex items-center space-x-6">
         {/* Search */}
-        <div className="bg-gray-200 flex items-center border rounded-full p-2">
+        {/* <div className="bg-gray-200 flex items-center border rounded-full p-2">
           <input
             type="text"
             placeholder="Search"
             className="bg-transparent outline-none px-4"
           />
           <FaSearch />
-        </div>
+        </div> */}
 
         {/* Theme Toggle Icon */}
         <button className="p-2">

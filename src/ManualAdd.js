@@ -86,18 +86,18 @@ function ManualAdd() {
       <div className="flex-1 flex flex-col mt-10">
 
         <div className="p-6">
-          <div className="flex justify-between items-center mb-6">
-            <h1 className="text-2xl font-semibold items-center">Manual Add</h1>
-            
+          <div className="flex justify-between items-center mb-12">
+            <h1 className="text-2xl font-semibold items-center">Manual Add</h1>            
           </div>
 
           <div className="flex justify-center items-center">
-            <div className="bg-[#F7F8F9] p-6 rounded-lg shadow-md w-full max-w-5xl">
+            <div className="bg-[#F7F8F9] p-6 rounded-lg shadow-md w-full max-w-2xl">
               <h1 className="text-xl font-semibold text-gray-800 mb-6 text-center"></h1>
               <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid grid-cols-2 gap-6">
+                <div className="">
                   {/* Form Inputs Section */}
                   <div>
+                  <div className="grid md:grid-cols-2 md:gap-6">
                     <div className="mb-4">
                       <label className="block text-[#001A3B] font-semibold mb-1">
                         Place
@@ -122,6 +122,8 @@ function ManualAdd() {
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg"
                       />
                     </div>
+                    </div>
+                    <div className="grid md:grid-cols-2 md:gap-6">
                     <div className="mb-4">
                       <label className="block text-[#001A3B] font-semibold mb-1">
                         Advocate Name
@@ -146,6 +148,7 @@ function ManualAdd() {
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg"
                       />
                     </div>
+                    </div>
                     <div className="mb-4">
                       <label className="block text-[#001A3B] font-semibold mb-1">
                         Description
@@ -161,7 +164,7 @@ function ManualAdd() {
                   </div>
 
                   {/* Upload File Section */}
-                  <div className="flex flex-col items-center justify-center border border-dashed border-gray-300 rounded-lg p-4 bg-gray-50">
+                  {/* <div className="flex flex-col items-center justify-center border border-dashed border-gray-300 rounded-lg p-4 bg-gray-50">
                     <label className="block text-gray-700 font-semibold mb-4">
                       Attached Documents
                     </label>
@@ -184,7 +187,7 @@ function ManualAdd() {
                         />
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
 
                 {/* Submit Button */}

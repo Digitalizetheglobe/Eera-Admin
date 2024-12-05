@@ -10,10 +10,15 @@ import {
   Card,
   CardContent,
 } from "@mui/material";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import PublishIcon from "@mui/icons-material/Publish";
+import PreviewIcon from "@mui/icons-material/Preview";
+import GetAppIcon from "@mui/icons-material/GetApp";
 import { Link } from "react-router-dom";
 import Sidebar from "../Sidebar/Sidebar";
 import Navbar from "../Navbar1/Navbar1";
 import upload from "../assests/icons/Upload icon.png";
+import { toast, Toaster } from "react-hot-toast";
 
 function OcrMarathiHindi() {
   const [files, setFiles] = useState([]);
@@ -21,6 +26,9 @@ function OcrMarathiHindi() {
   const [loading, setLoading] = useState(false);
   const [language, setLanguage] = useState("mar");
   const [removingIndex, setRemovingIndex] = useState(null);
+  const [editableText, setEditableText] = useState("");
+  const [open, setOpen] = useState(false);
+  const [currentFileIndex, setCurrentFileIndex] = useState(null);
 
   const handleFileChange = (e) => {
     setFiles([...e.target.files]);
@@ -49,6 +57,13 @@ function OcrMarathiHindi() {
       }
     }
   };
+
+  const handleOpen = (index) => {
+    setEditableText(texts[index].text);
+    setCurrentFileIndex(index);
+    setOpen(true);
+  };
+
 
   const handlePublish = (text, index) => {
     // Extract notice title
@@ -107,15 +122,48 @@ function OcrMarathiHindi() {
           setTexts(texts.filter((_, i) => i !== index));
           setRemovingIndex(null);
         }, 1000);
-        alert("Notice published successfully");
+        toast.success("Notice published successfully");
       })
       .catch((error) => {
         console.error("Error publishing notice:", error);
-        alert("Failed to publish notice");
+        toast.error("Failed to publish notice");
       });
   };
 
-  
+  const handleCopy = (text) => {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard
+        .writeText(text)
+        .then(() => {
+          alert("Text copied to clipboard");
+        })
+        .catch((err) => {
+          console.error("Failed to copy text: ", err);
+        });
+    } else {
+      const textArea = document.createElement("textarea");
+      textArea.value = text;
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      try {
+        document.execCommand("copy");
+        alert("Text copied to clipboard");
+      } catch (err) {
+        console.error("Fallback: Oops, unable to copy", err);
+      }
+      document.body.removeChild(textArea);
+    }
+  };  
+
+  const handleCancel = (index) => {
+    setRemovingIndex(index);
+    setTimeout(() => {
+      setTexts((prevTexts) => prevTexts.filter((_, i) => i !== index));
+      setRemovingIndex(null);
+      toast.success("Notice canceled successfully!");
+    }, 500);
+  };
 
   const extractLocation = (text) => {
     const locationPattern = /(?:Pune|Mumbai|Nagpur|Thane|Nashik|Maharashtra)/i;
@@ -137,6 +185,8 @@ function OcrMarathiHindi() {
 
   return (
     <>
+     <Toaster position="top-center" reverseOrder={false} />{" "}
+
       <div className="flex min-h-screen">
         <Sidebar />
 
@@ -277,6 +327,7 @@ function OcrMarathiHindi() {
                               backgroundColor: "#00365D",
                             },
                             mt: 2,
+                            ml: 2,
                           }}
                       >
                         {removingIndex === index ? (
@@ -284,6 +335,71 @@ function OcrMarathiHindi() {
                         ) : (
                           "Publish Notice"
                         )}
+                      </Button>
+                     
+                      <Button
+                          onClick={() => handleCopy(item.text)}
+                          startIcon={<ContentCopyIcon />}
+                          className="px-4 py-2"
+                          sx={{
+                            backgroundColor: "#004B80",
+                            color: "#fff !important",
+                            px: 4,
+                            py: 1,
+                            borderRadius: "8px",
+                            "&:hover": {
+                              backgroundColor: "#00365D",
+                            },
+                            mt: 2,
+                            ml: 2,
+                          }}
+                        >
+                          Copy Text
+                        </Button>
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          onClick={() => handleOpen(index)}
+                          startIcon={<PreviewIcon />}
+                          className="px-4 py-2"
+                          sx={{
+                            backgroundColor: "#A99067",
+                            color: "#fff !important",
+                            px: 4,
+                            py: 1,
+                            borderRadius: "8px",
+                            "&:hover": {
+                              // backgroundColor: '#00365D',
+                            },
+                            mt: 2,
+                            ml: 2,
+                          }}
+                        >
+                          Preview
+                        </Button>
+                        <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={() => handleCancel(index)}
+                        startIcon={<GetAppIcon />}
+                        className="px-4 py-2"
+                        sx={{
+                          backgroundColor: "transparent",
+                          color: "red !important",
+                          px: 4,
+                          py: 1,
+                          borderRadius: "8px",
+                          borderColor: "red",
+                          borderWidth: "2px",
+                          "&:hover": {
+                            backgroundColor: "red",
+                            color: "#fff !important",
+                          },
+                          mt: 2,
+                          ml: 2,
+                        }}
+                      >
+                        Cancel
                       </Button>
                     </CardContent>
                   </Card>

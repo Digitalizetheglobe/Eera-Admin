@@ -65,7 +65,7 @@ const Sidebar = () => {
             </Link>
           </li>
           <li>
-            <Link to="/scan-notices1" className="flex items-center p-2 hover:bg-gray-700 rounded ml-5">
+            <Link to="/" className="flex items-center p-2 hover:bg-gray-700 rounded ml-5">
               <img src={scan} className="mr-4" /> {/* Home Icon */}
               Scan English Notices
             </Link>
@@ -104,6 +104,12 @@ const Sidebar = () => {
             <Link to="/all-notice" className="flex items-center p-2 hover:bg-gray-700 rounded">
               <img src={folder} className="mr-4" /> 
               Notice Management
+            </Link>
+          </li>
+          <li>
+            <Link to="/requestpost" className="flex items-center p-2 hover:bg-gray-700 rounded">
+              <img src={folder} className="mr-4" /> 
+              Request Post Notices Management
             </Link>
           </li>
           {/* <li>

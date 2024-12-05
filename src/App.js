@@ -23,7 +23,7 @@ import OcrMarathiHindi from './OcrPages/OcrMarathiHindi';
 import Sidebar from './Sidebar/Sidebar';
 import Navbar from './Navbar1/Navbar1';
 import Scannotices1 from './Scannotices1/Scannotices1';
-
+import RequestPost from './RequestPostManagement/RequestPost'
 
 
 const theme = createTheme({
@@ -57,7 +57,7 @@ function App() {
 
 function MainContent({ notices }) {
   const location = useLocation();
-  const noNavbarRoutes = ['/', '/registerpage','/adminregistration','/scan-notices1','/all-notice','/manualadd','/mar-hin-ocr','/scan-notices'];
+  const noNavbarRoutes = ['/','/requestpost', '/registerpage','/adminregistration','/scan-notices1','/all-notice','/manualadd','/mar-hin-ocr','/scan-notices'];
 
   return (
     <>
@@ -81,7 +81,8 @@ function MainContent({ notices }) {
         <Route path='/adminregistration' element={<AdminRegistration/>} />
         <Route path='/adminprofile' element={<AdminProfile/>} />
         <Route path='/mar-hin-ocr' element={<OcrMarathiHindi/>} />
-        <Route path='/scan-notices1' element={<Scannotices1/>}/>
+       <Route path='/' element={<Scannotices1/>}/>
+        <Route path ='/requestpost' element={<RequestPost/>} />
         
       </Routes>
       {!noNavbarRoutes.includes(location.pathname) && <BottomNavbar />}

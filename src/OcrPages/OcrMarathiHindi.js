@@ -19,6 +19,7 @@ import Sidebar from "../Sidebar/Sidebar";
 import Navbar from "../Navbar1/Navbar1";
 import upload from "../assests/icons/Upload icon.png";
 import { toast, Toaster } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 function OcrMarathiHindi() {
   const [files, setFiles] = useState([]);
@@ -29,15 +30,21 @@ function OcrMarathiHindi() {
   const [editableText, setEditableText] = useState("");
   const [open, setOpen] = useState(false);
   const [currentFileIndex, setCurrentFileIndex] = useState(null);
+  const navigate = useNavigate();
 
   const handleFileChange = (e) => {
     setFiles([...e.target.files]);
   };
 
   const handleLanguageChange = (e) => {
-    setLanguage(e.target.value);
+    const selectedLanguage = e.target.value;
+    setLanguage(selectedLanguage);
+      
+    if (selectedLanguage === "eng") {
+      navigate("/"); 
+    }
   };
-
+  
   const handleScan = async () => {
     if (files.length > 0) {
       setLoading(true);
@@ -195,12 +202,15 @@ function OcrMarathiHindi() {
           <div className="p-6">
             <div className="flex justify-between items-center mb-6">
               <h1 className="text-2xl font-semibold">
-                {" "}
-                Scan Marathi/Hindi Notices
+             
+                Upload Your Notice
+                
               </h1>
-          
+              <button className="bg-[#004B80] text-white px-4 py-2 rounded hover:bg-[#00365D]">
+              Add Notice Manually
+              </button>
             </div>
-
+           
             <Container
               maxWidth="md"
               className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center"
@@ -252,6 +262,7 @@ function OcrMarathiHindi() {
                 >
                   <option value="mar">Marathi</option>
                   <option value="hin">Hindi</option>
+                  <option value="eng">English</option>
                 </TextField>
 
                 <Button
@@ -285,18 +296,18 @@ function OcrMarathiHindi() {
                 >
                   <Link to="/all-notice">
                     <button
-                      className="mt-4 px-4 py-2 bg-[#A99067] text-white border py-2 rounded "
+                      className=" px-4 py-2 bg-[#A99067] text-white border py-2 rounded "
                       style={{ marginRight: "10px" }}
                     >
                       View All Notice
                     </button>
                   </Link>
 
-                  <Link to="/scan-notices">
+                  {/* <Link to="/scan-notices">
                     <button className="px-4 py-2 mt-4 hover:bg-[#A99067] text-[#A99067] hover:text-white border py-2 rounded border border-[#A99067]">
                       Scan English Notice
                     </button>
-                  </Link>
+                  </Link> */}
                 </div>
               </Box>
 

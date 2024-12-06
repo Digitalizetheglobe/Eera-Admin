@@ -25,6 +25,7 @@ import eera from "./assests/eera.png";
 import Sidebar from "./Sidebar/Sidebar";
 import Navbar from "./Navbar1/Navbar1";
 import upload from "./assests/icons/Upload icon.png";
+import { useNavigate } from "react-router-dom";
 
 function Ocrpage() {
   const [files, setFiles] = useState([]);
@@ -37,10 +38,23 @@ function Ocrpage() {
   const [signaturePreview, setSignaturePreview] = useState("");
   const [language, setLanguage] = useState("eng");
   const [removingIndex, setRemovingIndex] = useState(null);
+  const navigate = useNavigate();
 
   const handleFileChange = (e) => {
     setFiles([...e.target.files]);
   };
+
+  const handleLanguageChange = (e) => {
+    const selectedLanguage = e.target.value;
+    setLanguage(selectedLanguage);
+  
+    if (selectedLanguage === "mar" || selectedLanguage === "hin") {
+      navigate("/mar-hin-ocr");
+    } else if (selectedLanguage === "eng") {
+      navigate("/english-page"); // Replace with the correct route for English
+    }
+  };
+  
 
   const handleScan = async () => {
     if (files.length > 0) {
@@ -260,23 +274,13 @@ function Ocrpage() {
       <div className="flex min-h-screen">
         <Sidebar />
 
-        <div className="flex-1 flex flex-col">
-          <Navbar />
+        <div className="flex-1 flex flex-col mt-20">
           <div className="p-6">
             <div className="flex justify-between items-center mb-6">
-              <h1 className="text-2xl font-semibold"> Scan English Notices</h1>
-              <div className="flex space-x-4">
-                <select
-                  className="border border-[#004B80] text-[#004B80] rounded px-3 py-2"
-                  defaultValue="English Notices"
-                >
-                  <option value="English Notices">English Notices</option>
-                  <option value="Other Language">Other Language</option>
-                </select>
-                <button className="bg-[#004B80] text-white px-4 py-2 rounded hover:bg-[#00365D]">
-                  Add Notice Manually
-                </button>
-              </div>
+              <h1 className="text-2xl font-semibold"> Upload Your Notice</h1>
+              <button className="bg-[#004B80] text-white px-4 py-2 rounded hover:bg-[#00365D]">
+              Add Notice Manually
+              </button>
             </div>
 
             <Container
@@ -306,6 +310,24 @@ function Ocrpage() {
                   margin="normal"
                   className="mb-4"
                 />
+
+<TextField
+                  select
+                  label="Select Language"
+                  value={language}
+                  onChange={handleLanguageChange}
+                  variant="outlined"
+                  fullWidth
+                  margin="normal"
+                  SelectProps={{
+                    native: true,
+                  }}
+                >
+                  <option value="mar">Marathi</option>
+                  <option value="hin">Hindi</option>
+                  <option value="eng">English</option>
+                </TextField>
+
                 <Button
                   variant="contained"
                   color="primary"
@@ -336,12 +358,6 @@ function Ocrpage() {
                       style={{ marginRight: "10px" }}
                     >
                       View All Notice
-                    </button>
-                  </Link>
-
-                  <Link to="/mar-hin-ocr">
-                    <button className="px-4 py-2 mt-4 hover:bg-[#A99067] text-[#A99067] hover:text-white border py-2 rounded border border-[#A99067]">
-                      Scan Marathi / Hindi Notice
                     </button>
                   </Link>
                 </div>

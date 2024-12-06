@@ -36,7 +36,7 @@ function RequestPost() {
   return (
     <div className="flex min-h-screen">
       <Sidebar />
-      <div className="flex-1 p-6">
+      <div className="flex-1 p-6 mt-12">
         <h1 className="text-3xl font-bold mb-6">Submitted Notices</h1>
 
         {/* If loading, show a loader */}
@@ -65,7 +65,7 @@ function RequestPost() {
                       href={notice.documentPath}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-blue-600 hover:underline"
+                      className="text-[#004B80] hover:underline "
                     >
                       View Document
                     </a>

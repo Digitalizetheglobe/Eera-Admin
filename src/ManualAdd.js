@@ -81,13 +81,13 @@ function ManualAdd() {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="flex min-h-screen">
       <Sidebar />
-      <div className="flex-1 flex flex-col mt-10">
+      <div className="flex-1 flex flex-col mt-12">
 
         <div className="p-6">
           <div className="flex justify-between items-center mb-12">
-            <h1 className="text-2xl font-semibold items-center">Manual Add</h1>            
+            <h1 className="text-2xl font-semibold items-center">Manually Add Your Notice</h1>            
           </div>
 
           <div className="flex justify-center items-center">
@@ -107,6 +107,7 @@ function ManualAdd() {
                         name="place"
                         value={formData.place}
                         onChange={handleChange}
+                        required
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg"
                       />
                     </div>
@@ -119,6 +120,7 @@ function ManualAdd() {
                         name="address"
                         value={formData.address}
                         onChange={handleChange}
+                        required
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg"
                       />
                     </div>
@@ -126,13 +128,14 @@ function ManualAdd() {
                     <div className="grid md:grid-cols-2 md:gap-6">
                     <div className="mb-4">
                       <label className="block text-[#001A3B] font-semibold mb-1">
-                        Advocate Name
+                        Notice Owner
                       </label>
                       <input
                         type="text"
                         name="advocateName"
                         value={formData.advocateName}
                         onChange={handleChange}
+                        required
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg"
                       />
                     </div>
@@ -145,6 +148,7 @@ function ManualAdd() {
                         name="date"
                         value={formData.date}
                         onChange={handleChange}
+                        required
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg"
                       />
                     </div>
@@ -159,6 +163,7 @@ function ManualAdd() {
                         onChange={handleChange}
                         rows="3"
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                        required
                       ></textarea>
                     </div>
                   </div>

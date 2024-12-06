@@ -20,7 +20,7 @@ import AdminProfile from './Admin/AdminProfile';
 import OcrMarathiHindi from './OcrPages/OcrMarathiHindi';
 import Scannotices1 from './Scannotices1/Scannotices1';
 import RequestPost from './RequestPostManagement/RequestPost';
-import { PrivateRoute, PublicRoute } from './RouteGuards'; // Import route guards
+import { PrivateRoute, PublicRoute } from './RouteGuards'; 
 
 const theme = createTheme({
   palette: {

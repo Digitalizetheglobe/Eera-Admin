@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
 import './App.css';
@@ -12,19 +12,15 @@ import AllnoticeTable from './AllnoticeTable';
 import PdfReader from './PdfReader';
 import NoticeDetails from './NoticeDetails';
 import Card from './Card';
-import BottomNavbar from './Navbar/BottomNavbar';
 import HomeTwo from './HomeTwo';
-import Header from './Header';
 import EnquiryDetails from './ContactReport/EnquiryDetails';
 import EmployeeDashboard from './Employee/EmployeeDashboard';
 import AdminRegistration from './Admin/AdminRegistration';
 import AdminProfile from './Admin/AdminProfile';
 import OcrMarathiHindi from './OcrPages/OcrMarathiHindi';
-import Sidebar from './Sidebar/Sidebar';
-import Navbar from './Navbar1/Navbar1';
 import Scannotices1 from './Scannotices1/Scannotices1';
-import RequestPost from './RequestPostManagement/RequestPost'
-
+import RequestPost from './RequestPostManagement/RequestPost';
+import { PrivateRoute, PublicRoute } from './RouteGuards'; // Import route guards
 
 const theme = createTheme({
   palette: {
@@ -36,12 +32,12 @@ function App() {
   const [notices, setNotices] = useState([]);
 
   useEffect(() => {
-    axios.get('http://api.epublicnotices.in/notices')
-    //new api 
-      .then(response => {
+    axios
+      .get('http://api.epublicnotices.in/notices')
+      .then((response) => {
         setNotices(response.data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error('Error fetching notices:', error);
       });
   }, []);
@@ -49,46 +45,29 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Router>
-        <MainContent notices={notices} />
+        <Routes>
+          {/* Public Routes */}
+          <Route path="/" element={<PublicRoute><LoginPage /></PublicRoute>} />
+          <Route path="/registerpage" element={<PublicRoute><RegisterPage /></PublicRoute>} />
+
+          {/* Private Routes */}
+          <Route path="/dashboard" element={<PrivateRoute><Homepage /></PrivateRoute>} />
+          <Route path="/scan-notices" element={<PrivateRoute><Ocrpage /></PrivateRoute>} />
+          <Route path="/manualadd" element={<PrivateRoute><ManualAdd /></PrivateRoute>} />
+          <Route path="/all-notice" element={<PrivateRoute><AllnoticeTable notices={notices} /></PrivateRoute>} />
+          <Route path="/pdfreader" element={<PrivateRoute><PdfReader /></PrivateRoute>} />
+          <Route path="/card" element={<PrivateRoute><Card /></PrivateRoute>} />
+          <Route path="/notices/:id" element={<PrivateRoute><NoticeDetails notices={notices} /></PrivateRoute>} />
+          <Route path="/allenquiry" element={<PrivateRoute><EnquiryDetails /></PrivateRoute>} />
+          <Route path="/employeedashboard" element={<PrivateRoute><EmployeeDashboard /></PrivateRoute>} />
+          <Route path="/adminregistration" element={<PrivateRoute><AdminRegistration /></PrivateRoute>} />
+          <Route path="/adminprofile" element={<PrivateRoute><AdminProfile /></PrivateRoute>} />
+          <Route path="/mar-hin-ocr" element={<PrivateRoute><OcrMarathiHindi /></PrivateRoute>} />
+          <Route path="/scannotice" element={<PrivateRoute><Scannotices1 /></PrivateRoute>} />
+          <Route path="/requestpost" element={<PrivateRoute><RequestPost /></PrivateRoute>} />
+        </Routes>
       </Router>
     </ThemeProvider>
-  );
-}
-
-function MainContent({ notices }) {
-  const location = useLocation();
-  const noNavbarRoutes = ['/','/requestpost', '/registerpage','/adminregistration','/scan-notices1','/all-notice','/manualadd','/mar-hin-ocr','/scan-notices'];
-
-  return (
-    <>
-
-
-
-      {/* {!noNavbarRoutes.includes(location.pathname) && <Header />} */}
-      <Routes>
-      {/* <Route path="/" element={<LoginPage />} /> */}
-        <Route path="/scan-notices" element={<Ocrpage />} />
-        <Route path="/manualadd" element={<ManualAdd />} />
-        <Route path="/dashboard" element={<Homepage />} />
-        <Route path="/registerpage" element={<RegisterPage />} />
-        <Route path="/all-notice" element={<AllnoticeTable notices={notices} />} />
-        <Route path="/pdfreader" element={<PdfReader />} />
-        <Route path="/card" element={<Card />} />
-        <Route path='/secondhome' element={<HomeTwo/>} />
-        <Route path="/notices/:id" element={<NoticeDetails notices={notices} />} />
-        <Route path='/allenquiry' element={<EnquiryDetails/>} />
-        <Route path='/employeedashboard' element={<EmployeeDashboard/>} />
-        <Route path='/adminregistration' element={<AdminRegistration/>} />
-        <Route path='/adminprofile' element={<AdminProfile/>} />
-        <Route path='/mar-hin-ocr' element={<OcrMarathiHindi/>} />
-       <Route path='/' element={<Scannotices1/>}/>
-        <Route path ='/requestpost' element={<RequestPost/>} />
-        
-      </Routes>
-      {!noNavbarRoutes.includes(location.pathname) && <BottomNavbar />}
-
-
-    </>
   );
 }
 

@@ -41,7 +41,7 @@ function OcrMarathiHindi() {
     setLanguage(selectedLanguage);
       
     if (selectedLanguage === "eng") {
-      navigate("/"); 
+      navigate("/scannotice"); 
     }
   };
   

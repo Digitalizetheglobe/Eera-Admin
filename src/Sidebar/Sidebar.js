@@ -11,7 +11,11 @@ import pen from '../assests/icons/pen-tool-plus.png'
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
-
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    window.location.href = "/"; // Redirect to login
+  };
+  
   return (
     <div className="flex min-h-screen fixed relative">
       {/* Hamburger Menu */}
@@ -65,7 +69,7 @@ const Sidebar = () => {
             </Link>
           </li>
           <li>
-            <Link to="/" className="flex items-center p-2 hover:bg-gray-700 rounded ml-5">
+            <Link to="/scannotice" className="flex items-center p-2 hover:bg-gray-700 rounded ml-5">
               <img src={scan} className="mr-4" /> {/* Home Icon */}
               Scan English Notices
             </Link>
@@ -127,13 +131,13 @@ const Sidebar = () => {
         <div className="mt-auto">
           <ul className="space-y-4 p-4">
             <li>
-              <Link
-                to="/logout"
+              <button
+                onClick={handleLogout}
                 className="flex items-center p-2 hover:bg-gray-700 rounded text-red-500"
               >
-                <FaSignOutAlt className="mr-4" /> {/* Logout Icon */}
+                <FaSignOutAlt className="mr-4" /> 
                 Logout
-              </Link>
+              </button>
             </li>
           </ul>
         </div>

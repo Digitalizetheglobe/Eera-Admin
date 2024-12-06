@@ -1,22 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import Sidebar from "./Sidebar/Sidebar";
-import Navbar from "./Navbar1/Navbar1";
-import upload from "./assests/icons/Upload icon.png";
 import { toast } from "react-toastify";
 
 function ManualAdd() {
   const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    address: "",
-    place: "",
-    advocateName: "",
+    notice_title: "",
+    notice_description: "",
     date: "",
-    advocate: null,
+    lawyer_name: "",
+    location: "",
   });
 
-
+  // Check if all fields are filled
+  const isFormValid = Object.values(formData).every((value) => value.trim() !== "");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,139 +26,109 @@ function ManualAdd() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const data = new FormData();
-    data.append("notice_title", formData.title);
-    data.append("notice_description", formData.description);
-    data.append("address", formData.address);
-    data.append("location", formData.place);
-    data.append("lawyer_name", formData.advocateName);
-    data.append("date", formData.date);
-    data.append("attached_file", formData.advocate);
-
-    console.log("Form data being sent:", Object.fromEntries(data.entries())); // Log request data
-
     try {
-      const response = await axios.post("http://api.epublicnotices.in/notices", data, {
+      const response = await axios.post("http://api.epublicnotices.in/notices", formData, {
         headers: {
-          "Content-Type": "multipart/form-data",
+          "Content-Type": "application/json",
         },
       });
 
       if (response.data) {
-        console.log("API Response:", response.data);
-        toast.success("Notice added successfully!"); // Success toast
-        // Reset the form if needed
+        toast.success("Notice added successfully!");
         setFormData({
-          title: "",
-          description: "",
-          address: "",
-          place: "",
-          advocateName: "",
+          notice_title: "",
+          notice_description: "",
           date: "",
-          advocate: null,
+          lawyer_name: "",
+          location: "",
         });
       }
     } catch (error) {
-      console.error("Error submitting form:", error);
-      toast.error("Failed to add notice. Please try again."); // Error toast
+      console.error("Error submitting notice:", error);
+      toast.error("Failed to add notice. Please try again.");
     }
   };
-
 
   return (
     <div className="flex min-h-screen">
       <Sidebar />
       <div className="flex-1 flex flex-col mt-12">
-
         <div className="p-6">
           <div className="flex justify-between items-center mb-12">
-            <h1 className="text-2xl font-semibold items-center">Manually Add Your Notice</h1>
+            <h1 className="text-2xl font-semibold">Manually Add Your Notice</h1>
           </div>
-
           <div className="flex justify-center items-center">
             <div className="bg-[#F7F8F9] p-6 rounded-lg shadow-md w-full max-w-2xl">
-              <h1 className="text-xl font-semibold text-gray-800 mb-6 text-center"></h1>
               <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="">
-                  {/* Form Inputs Section */}
-                  <div>
-                    <div className="grid md:grid-cols-2 md:gap-6">
-                      <div className="mb-4">
-                        <label className="block text-[#001A3B] font-semibold mb-1">
-                          Notice Title
-                        </label>
-                        <input
-                          type="text"
-                          name="title"
-                          value={formData.title}
-                          onChange={handleChange}
+                {/* Notice Title */}
+                <div className="mb-4">
+                  <label className="block text-[#001A3B] font-semibold mb-1">Notice Title</label>
+                  <input
+                    type="text"
+                    name="notice_title"
+                    value={formData.notice_title}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                  />
+                </div>
 
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg"
-                        />
-                      </div>
-                      <div className="mb-4">
-                        <label className="block text-[#001A3B] font-semibold mb-1">
-                          Notice Owner
-                        </label>
-                        <input
-                          type="text"
-                          name="advocateName"
-                          value={formData.advocateName}
-                          onChange={handleChange}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg"
-                        />
-                      </div>
-                    </div>
-                    <div className="grid md:grid-cols-2 md:gap-6">
-                      <div className="mb-4">
-                        <label className="block text-[#001A3B] font-semibold mb-1">
-                          Location
-                        </label>
-                        <input
-                          type="text"
-                          name="address"
-                          value={formData.address}
-                          onChange={handleChange}
+                {/* Notice Description */}
+                <div className="mb-4">
+                  <label className="block text-[#001A3B] font-semibold mb-1">Notice Description</label>
+                  <textarea
+                    name="notice_description"
+                    value={formData.notice_description}
+                    onChange={handleChange}
+                    rows="4"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                  ></textarea>
+                </div>
 
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg"
-                        />
-                      </div>
-                      <div className="mb-4">
-                        <label className="block text-[#001A3B] font-semibold mb-1">
-                          Date
-                        </label>
-                        <input
-                          type="date"
-                          name="date"
-                          value={formData.date}
-                          onChange={handleChange}
+                {/* Date */}
+                <div className="mb-4">
+                  <label className="block text-[#001A3B] font-semibold mb-1">Date</label>
+                  <input
+                    type="date"
+                    name="date"
+                    value={formData.date}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                  />
+                </div>
 
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg"
-                        />
-                      </div>
-                    </div>
-                    <div className="mb-4">
-                      <label className="block text-[#001A3B] font-semibold mb-1">
-                        Description
-                      </label>
-                      <textarea
-                        name="description"
-                        value={formData.description}
-                        onChange={handleChange}
-                        rows="3"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                {/* Lawyer Name */}
+                <div className="mb-4">
+                  <label className="block text-[#001A3B] font-semibold mb-1">Lawyer Name</label>
+                  <input
+                    type="text"
+                    name="lawyer_name"
+                    value={formData.lawyer_name}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                  />
+                </div>
 
-                      ></textarea>
-                    </div>
-                  </div>
+                {/* Location */}
+                <div className="mb-4">
+                  <label className="block text-[#001A3B] font-semibold mb-1">Location</label>
+                  <input
+                    type="text"
+                    name="location"
+                    value={formData.location}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                  />
                 </div>
 
                 {/* Submit Button */}
                 <button
                   type="submit"
-                  onClick={handleSubmit}
-                  className="w-full mt-6 py-2 bg-[#004B80] text-white rounded-lg hover:bg-[#00365D]
-              transition font-semibold text-lg"
+                  disabled={!isFormValid}
+                  className={`w-full mt-6 py-2 rounded-lg font-semibold text-lg transition ${
+                    isFormValid
+                      ? "bg-[#004B80] text-white hover:bg-[#00365D]"
+                      : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                  }`}
                 >
                   Submit
                 </button>

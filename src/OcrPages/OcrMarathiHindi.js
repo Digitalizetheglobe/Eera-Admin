@@ -103,7 +103,7 @@ function OcrMarathiHindi() {
       return;
     }
 
-    // API Endpoint
+    // API Endpoint   http://localhost:8082    http://api.epublicnotices.in
     const apiEndpoint = "http://api.epublicnotices.in/notices";
 
     // Post data to API

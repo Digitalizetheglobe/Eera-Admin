@@ -6,6 +6,7 @@ import upload from "./assests/icons/Upload icon.png";
 
 function ManualAdd() {
   const [formData, setFormData] = useState({
+    title: "",
     description: "",
     address: "",
     place: "",
@@ -24,6 +25,7 @@ function ManualAdd() {
         // Map fetched data to form fields
         setFormData({
           description: notice.notice_description || "",
+          title: notice.notice_title || "",
           address: notice.address || "",
           place: notice.location || "",
           advocateName: notice.lawyer_name || "",
@@ -57,13 +59,14 @@ function ManualAdd() {
     e.preventDefault();
 
     const data = new FormData();
+    data.append("notice_title", formData.title);
     data.append("notice_description", formData.description);
     data.append("address", formData.address);
     data.append("location", formData.place);
     data.append("lawyer_name", formData.advocateName);
     data.append("date", formData.date);
-    data.append("attached_file", formData.advocate);
-
+    data.append("attached_file", formData.advocate);    
+   
     try {
       const response = await axios.post(
         "http://api.epublicnotices.in/notices",
@@ -100,42 +103,41 @@ function ManualAdd() {
                   <div className="grid md:grid-cols-2 md:gap-6">
                     <div className="mb-4">
                       <label className="block text-[#001A3B] font-semibold mb-1">
-                        Place
+                      Notice Title
                       </label>
                       <input
                         type="text"
-                        name="place"
-                        value={formData.place}
+                        name="title"
+                        value={formData.title}
                         onChange={handleChange}
-                        required
+                       
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg"
                       />
                     </div>
                     <div className="mb-4">
                       <label className="block text-[#001A3B] font-semibold mb-1">
-                        Address
-                      </label>
-                      <input
+                      Notice Owner
+                      </label>                      
+                       <input
                         type="text"
-                        name="address"
-                        value={formData.address}
+                        name="advocateName"
+                        value={formData.advocateName}
                         onChange={handleChange}
-                        required
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                           className="w-full px-3 py-2 border border-gray-300 rounded-lg"
                       />
                     </div>
                     </div>
                     <div className="grid md:grid-cols-2 md:gap-6">
                     <div className="mb-4">
                       <label className="block text-[#001A3B] font-semibold mb-1">
-                        Notice Owner
+                    Location
                       </label>
                       <input
                         type="text"
-                        name="advocateName"
-                        value={formData.advocateName}
+                        name="address"
+                        value={formData.address}
                         onChange={handleChange}
-                        required
+                  
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg"
                       />
                     </div>
@@ -148,7 +150,7 @@ function ManualAdd() {
                         name="date"
                         value={formData.date}
                         onChange={handleChange}
-                        required
+                      
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg"
                       />
                     </div>
@@ -163,7 +165,7 @@ function ManualAdd() {
                         onChange={handleChange}
                         rows="3"
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg"
-                        required
+               
                       ></textarea>
                     </div>
                   </div>
@@ -198,6 +200,7 @@ function ManualAdd() {
                 {/* Submit Button */}
                 <button
                   type="submit"
+                  onClick={handleSubmit}
                   className="w-full mt-6 py-2 bg-[#004B80] text-white rounded-lg hover:bg-[#00365D]
               transition font-semibold text-lg"
                 >

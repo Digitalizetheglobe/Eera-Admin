@@ -71,15 +71,15 @@ const Sidebar = () => {
           <li>
             <Link to="/scannotice" className="flex items-center p-2 hover:bg-gray-700 rounded ml-5">
               <img src={scan} className="mr-4" /> {/* Home Icon */}
-              Scan English Notices
+              Scan Your Notices
             </Link>
           </li>
-          <li>
+          {/* <li>
             <Link to="/mar-hin-ocr" className="flex items-center p-2 hover:bg-gray-700 rounded ml-5">
-              <img src={scan} className="mr-4" /> {/* About Icon */}
+              <img src={scan} className="mr-4" />
               Scan Hindi/Marathi Notices
             </Link>
-          </li>
+          </li> */}
           <li>
             <Link to="/manualadd" className="flex items-center p-2 hover:bg-gray-700 rounded ml-5">
               <img src={pen} className="mr-4" /> {/* About Icon */}

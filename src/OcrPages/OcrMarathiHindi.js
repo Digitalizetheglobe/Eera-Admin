@@ -206,9 +206,11 @@ function OcrMarathiHindi() {
                 Upload Your Notice
                 
               </h1>
+              <Link to='/manualadd'>
               <button className="bg-[#004B80] text-white px-4 py-2 rounded hover:bg-[#00365D]">
               Add Notice Manually
               </button>
+              </Link>
             </div>
            
             <Container

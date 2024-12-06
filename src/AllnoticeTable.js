@@ -56,13 +56,13 @@ function AllnoticeTable() {
               placeholder="Search notices..."
               value={searchQuery}
               onChange={handleSearch}
-              className="w-full max-w-md p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full max-w-md p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
           {loading ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               {Array.from({ length: noticesPerPage }).map((_, index) => (
-                <div key={index} className="p-4 border rounded-lg shadow animate-pulse">
+                <div key={index} className="p-4 border rounded-lg  animate-pulse">
                   <div className="h-6 bg-gray-300 rounded mb-4"></div>
                   <div className="h-4 bg-gray-300 rounded mb-2"></div>
                   <div className="h-4 bg-gray-300 rounded mb-2"></div>

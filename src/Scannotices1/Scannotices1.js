@@ -40,7 +40,7 @@ function Scannotices1() {
   const [language, setLanguage] = useState("eng");
   const [removingIndex, setRemovingIndex] = useState(null);
   const navigate = useNavigate();
-  
+
   const handleFileChange = (e) => {
     setFiles([...e.target.files]);
   };
@@ -48,14 +48,14 @@ function Scannotices1() {
   const handleLanguageChange = (e) => {
     const selectedLanguage = e.target.value;
     setLanguage(selectedLanguage);
-  
+
     if (selectedLanguage === "mar" || selectedLanguage === "hin") {
       navigate("/mar-hin-ocr");
     } else if (selectedLanguage === "eng") {
       navigate("/english-page"); // Replace with the correct route for English
     }
   };
-  
+
 
   const handleScan = async () => {
     if (files.length > 0) {
@@ -297,9 +297,9 @@ function Scannotices1() {
             <div className="flex justify-between items-center mb-6">
               <h1 className="text-2xl font-semibold">Upload Your Notice</h1>
               <Link to='/manualadd'>
-              <button className="bg-[#004B80] text-white px-4 py-2 rounded hover:bg-[#00365D]">
-              Add Notice Manually
-              </button>
+                <button className="bg-[#004B80] text-white px-4 py-2 rounded hover:bg-[#00365D]">
+                  Add Notice Manually
+                </button>
               </Link>
             </div>
 
@@ -313,7 +313,7 @@ function Scannotices1() {
                   src={upload}
                   alt="Upload"
                   className="mx-auto w-16 mb-4 cursor-pointer"
-                  // onClick={handleImageClick}
+                // onClick={handleImageClick}
                 />
                 <p className="font-semibold text-[#001A3B99]">
                   Drag & drop files or click the button below to browse
@@ -342,7 +342,7 @@ function Scannotices1() {
                   className="mb-4"
                 />
 
-<TextField
+                <TextField
                   select
                   label="Select Language"
                   value={language}
@@ -406,9 +406,8 @@ function Scannotices1() {
                 {texts.map((item, index) => (
                   <Card
                     key={index}
-                    className={`mb-4 ${
-                      removingIndex === index ? "fade-out" : ""
-                    }`}
+                    className={`mb-4 ${removingIndex === index ? "fade-out" : ""
+                      }`}
                   >
                     <CardContent>
                       <Typography variant="h6">{item.fileName}</Typography>
@@ -554,9 +553,6 @@ function Scannotices1() {
                     theme="snow"
                     className="mt-2 mb-4"
                   />
-                  <Typography variant="h6" gutterBottom className="mt-5">
-                    Add Signature/Image:
-                  </Typography>
                   <input
                     type="file"
                     accept="image/*"

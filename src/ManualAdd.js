@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import Sidebar from "./Sidebar/Sidebar";
 import { toast } from "react-toastify";
+import "react-quill/dist/quill.snow.css";
+import ReactQuill from "react-quill";
 
 function ManualAdd() {
   const [formData, setFormData] = useState({
@@ -20,6 +22,13 @@ function ManualAdd() {
     setFormData({
       ...formData,
       [name]: value,
+    });
+  };
+
+  const handleDescriptionChange = (value) => {
+    setFormData({
+      ...formData,
+      notice_description: value, // Update the description field
     });
   };
 
@@ -75,13 +84,11 @@ function ManualAdd() {
                 {/* Notice Description */}
                 <div className="mb-4">
                   <label className="block text-[#001A3B] font-semibold mb-1">Notice Description</label>
-                  <textarea
-                    name="notice_description"
+                  <ReactQuill
                     value={formData.notice_description}
-                    onChange={handleChange}
-                    rows="4"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg"
-                  ></textarea>
+                    onChange={handleDescriptionChange}
+                    className="bg-white rounded-lg"
+                  />
                 </div>
 
                 {/* Date */}

@@ -21,6 +21,8 @@ import OcrMarathiHindi from './OcrPages/OcrMarathiHindi';
 import Scannotices1 from './Scannotices1/Scannotices1';
 import RequestPost from './RequestPostManagement/RequestPost';
 import { PrivateRoute, PublicRoute } from './RouteGuards'; 
+import Dashboard from './Dashboard/Dashboard'
+
 
 const theme = createTheme({
   palette: {
@@ -51,7 +53,7 @@ function App() {
           <Route path="/registerpage" element={<PublicRoute><RegisterPage /></PublicRoute>} />
 
           {/* Private Routes */}
-          <Route path="/dashboard" element={<PrivateRoute><Homepage /></PrivateRoute>} />
+          <Route path="/dashboardold" element={<PrivateRoute><Homepage /></PrivateRoute>} />
           <Route path="/scan-notices" element={<PrivateRoute><Ocrpage /></PrivateRoute>} />
           <Route path="/manualadd" element={<PrivateRoute><ManualAdd /></PrivateRoute>} />
           <Route path="/all-notice" element={<PrivateRoute><AllnoticeTable notices={notices} /></PrivateRoute>} />
@@ -65,6 +67,7 @@ function App() {
           <Route path="/mar-hin-ocr" element={<PrivateRoute><OcrMarathiHindi /></PrivateRoute>} />
           <Route path="/scannotice" element={<PrivateRoute><Scannotices1 /></PrivateRoute>} />
           <Route path="/requestpost" element={<PrivateRoute><RequestPost /></PrivateRoute>} />
+          <Route path="/dashboard" element={<PrivateRoute> <Dashboard /></PrivateRoute>} />
         </Routes>
       </Router>
     </ThemeProvider>

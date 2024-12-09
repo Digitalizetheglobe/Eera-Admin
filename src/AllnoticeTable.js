@@ -3,20 +3,19 @@ import axios from 'axios';
 import NoticeCard from './NoticeCard';
 import Sidebar from './Sidebar/Sidebar';
 import Navbar from './Navbar1/Navbar1';
+import { useNavigate } from 'react-router-dom';
 
 function AllnoticeTable() {
   const [notices, setNotices] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [noticesPerPage] = useState(10); 
   const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     setLoading(true);
     axios
-      .get(`http://api.epublicnotices.in/notices?page=${currentPage}&limit=${noticesPerPage}`)
+      .get(`http://api.epublicnotices.in/notices`) 
       .then((response) => {
-        // Sort notices in descending order of date (newest first)
         const sortedNotices = response.data.sort((a, b) => new Date(b.date) - new Date(a.date));
         setNotices(sortedNotices);
         setLoading(false);
@@ -25,24 +24,20 @@ function AllnoticeTable() {
         console.error('Error fetching notices:', error);
         setLoading(false);
       });
-  }, [currentPage, noticesPerPage]);
-  
-  const handlePrevPage = () => {
-    setCurrentPage(prevPage => Math.max(prevPage - 1, 1));
-  };
-
-  const handleNextPage = () => {
-    setCurrentPage(prevPage => prevPage + 1);
-  };
+  }, []);
 
   const handleSearch = (event) => {
     setSearchQuery(event.target.value);
   };
 
-  const filteredNotices = notices.filter(notice =>
+  const filteredNotices = notices.filter((notice) =>
     (notice.notice_title?.toLowerCase() ?? '').includes(searchQuery.toLowerCase()) ||
     (notice.notice_description?.toLowerCase() ?? '').includes(searchQuery.toLowerCase())
   );
+
+  const handleCardClick = (id) => {
+    navigate(`/notices/${id}`); // Redirect to a new page with the notice ID
+  };
 
   return (
     <div className="flex min-h-screen">
@@ -61,7 +56,7 @@ function AllnoticeTable() {
           </div>
           {loading ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-              {Array.from({ length: noticesPerPage }).map((_, index) => (
+              {Array.from({ length: 10 }).map((_, index) => (
                 <div key={index} className="p-4 border rounded-lg  animate-pulse">
                   <div className="h-6 bg-gray-300 rounded mb-4"></div>
                   <div className="h-4 bg-gray-300 rounded mb-2"></div>
@@ -71,32 +66,20 @@ function AllnoticeTable() {
               ))}
             </div>
           ) : (
-            <div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                {filteredNotices.map((notice) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+              {filteredNotices.map((notice) => (
+                <div
+                  key={notice.id}
+                  onClick={() => handleCardClick(notice.id)}
+                  className="cursor-pointer"
+                >
                   <NoticeCard
-                    key={notice.id}
                     id={notice.id}
                     title={notice.notice_title}
                     description={(notice.notice_description ?? '').slice(0, 100) + '...'}
                   />
-                ))}
-              </div>
-              <div className="flex justify-between mt-8">
-                <button
-                  onClick={handlePrevPage}
-                  disabled={currentPage === 1}
-                  className="px-4 py-2 bg-[#001A3B] text-white rounded disabled:opacity-50"
-                >
-                  Previous
-                </button>
-                <button
-                  onClick={handleNextPage}
-                  className="px-4 py-2 bg-[#001A3B] text-white rounded"
-                >
-                  Next
-                </button>
-              </div>
+                </div>
+              ))}
             </div>
           )}
         </div>
@@ -106,4 +89,3 @@ function AllnoticeTable() {
 }
 
 export default AllnoticeTable;
-//latest changes

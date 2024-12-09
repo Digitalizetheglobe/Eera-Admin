@@ -41,7 +41,7 @@ const Sidebar = () => {
 
       {/* Sidebar */}
       <div
-        className={`fixed md:static top-0 left-0 z-40 w-65 h-full bg-gray-800 text-white transform p-6 ${
+        className={`fixed md:static top-0 left-0 z-40 w-50 h-full bg-gray-800 text-white transform p-6 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } md:translate-x-0 transition-transform`}
       >
@@ -58,7 +58,7 @@ const Sidebar = () => {
 
         <ul className="space-y-4 p-4 mt-8">
           <li>
-            <Link to="#" className="flex items-center p-2 hover:bg-gray-700 rounded">
+            <Link to="/dashboard" className="flex items-center p-2 hover:bg-gray-700 rounded">
               <img src={dashboard} className="mr-4" /> {/* Home Icon */}
               Dashboard
             </Link>

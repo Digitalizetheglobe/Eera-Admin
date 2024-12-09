@@ -3,7 +3,7 @@ import "tailwindcss/tailwind.css";
 import eera from "./assests/eera.png";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -92,6 +92,15 @@ const LoginPage = () => {
                 </button>
               </div>
             </form>
+            <p className="text-sm mt-8 text-center text-gray-800">
+              I don't have an account{" "}
+              <Link
+                to="/registerpage"
+                className="text-blue-600 font-semibold hover:underline ml-1 whitespace-nowrap"
+              >
+                Register here
+              </Link>
+            </p>
           </div>
 
           <div className="lg:h-[400px] md:h-[300px] max-md:mt-8">

@@ -88,6 +88,7 @@ function ManualAdd() {
                     value={formData.notice_description}
                     onChange={handleDescriptionChange}
                     className="bg-white rounded-lg"
+                    style={{ height: "200px" }}
                   />
                 </div>
 
@@ -131,11 +132,10 @@ function ManualAdd() {
                 <button
                   type="submit"
                   disabled={!isFormValid}
-                  className={`w-full mt-6 py-2 rounded-lg font-semibold text-lg transition ${
-                    isFormValid
+                  className={`w-full mt-6 py-2 rounded-lg font-semibold text-lg transition ${isFormValid
                       ? "bg-[#004B80] text-white hover:bg-[#00365D]"
                       : "bg-gray-300 text-gray-500 cursor-not-allowed"
-                  }`}
+                    }`}
                 >
                   Submit
                 </button>

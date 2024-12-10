@@ -17,7 +17,7 @@ const Sidebar = () => {
   };
   
   return (
-    <div className="flex min-h-screen fixed relative">
+     <div className="flex min-h-screen fixed relative">
       {/* Hamburger Menu */}
       <button
         className="md:hidden p-2 focus:outline-none"
@@ -41,7 +41,7 @@ const Sidebar = () => {
 
       {/* Sidebar */}
       <div
-        className={`fixed md:static top-0 left-0 z-40 w-50 h-full bg-gray-800 text-white transform p-6 ${
+        className={`fixed md:static top-0 left-0 z-40 w-30 h-full bg-gray-800 text-white transform p-6 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } md:translate-x-0 transition-transform`}
       >
@@ -63,13 +63,9 @@ const Sidebar = () => {
               Dashboard
             </Link>
           </li>
+        
           <li>
-            <Link className="flex items-center p-2 rounded text-gray-400">
-              Upload New Notices
-            </Link>
-          </li>
-          <li>
-            <Link to="/scannotice" className="flex items-center p-2 hover:bg-gray-700 rounded ml-5">
+            <Link to="/scannotice" className="flex items-center p-2 hover:bg-gray-700 rounded ">
               <img src={scan} className="mr-4" /> {/* Home Icon */}
               Scan Your Notices
             </Link>
@@ -81,7 +77,7 @@ const Sidebar = () => {
             </Link>
           </li> */}
           <li>
-            <Link to="/manualadd" className="flex items-center p-2 hover:bg-gray-700 rounded ml-5">
+            <Link to="/manualadd" className="flex items-center p-2 hover:bg-gray-700 rounded ">
               <img src={pen} className="mr-4" /> {/* About Icon */}
               Manual notice entry
             </Link>

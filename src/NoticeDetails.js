@@ -159,15 +159,9 @@ const NoticeDetails = ({ notices }) => {
               <p className="text-gray-700 mb-4">
                 <strong>Location: </strong> {notice.location}
               </p>
-              <p className="text-gray-700 mb-4">
-                <strong>Contact: </strong>
-                <a href="mailto:contact@epublicnotices.in" className="text-blue-500 underline">
-                  contact@epublicnotices.in
-                </a>
-              </p>
               <button
                 onClick={() => setIsEditing(true)}
-                className="px-6 py-2 bg-yellow-500 text-white font-semibold rounded-lg shadow-md hover:bg-yellow-600"
+                className="bg-[#004B80] text-white px-4 py-2 rounded hover:bg-[#00365D]"
               >
                 Edit Notice
               </button>

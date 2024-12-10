@@ -49,7 +49,7 @@ const Dashboard = () => {
   }, []);
 
   const chartData = {
-    labels: ["English", "Hindi", "Marathi", "Other"],
+    labels: ["English", "Marathi", "Hindi", "Other"],
     datasets: [
       {
         label: "Notices by Language",
@@ -59,7 +59,7 @@ const Dashboard = () => {
           languageCounts.Marathi,
           languageCounts.Other,
         ],
-        backgroundColor: ["#A5B4FC", "#FDBA74", "#A7F3D0", "#BFDBFE"],
+        backgroundColor: ["#A5B4FC", "#A7F3D0", "#FDBA74", "#BFDBFE"],
         borderWidth: 1,
       },
     ],
@@ -89,7 +89,7 @@ const Dashboard = () => {
           <div className="p-6 rounded-lg shadow-md bg-[#C9F6F9]">
             <div className="font-semibold text-xl">Total Notices</div>
             <div className="text-3xl font-bold mt-4">{notices.length}</div>
-            <div className="text-green-500 flex items-center mt-4">Updating...</div>
+      
           </div>
         </div>
 

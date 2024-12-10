@@ -1,37 +1,56 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import Sidebar from '../Sidebar/Sidebar';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import Sidebar from "../Sidebar/Sidebar";
 
 function RequestPost() {
-  const [notices, setNotices] = useState([]);  // Make sure it's initialized as an array
-  const [loading, setLoading] = useState(true); // State to track loading status
+  const [notices, setNotices] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedDocument, setSelectedDocument] = useState(null);
 
-  // Fetch notices data from API
   useEffect(() => {
     const fetchNotices = async () => {
       try {
         const response = await axios.get("http://api.epublicnotices.in/api/request-upload-notice");
-
-        // Log the response to see its structure
-        console.log(response.data);
-
-        // Check if response data is an array under the 'data' key
         if (Array.isArray(response.data.data)) {
-          setNotices(response.data.data);  // Store the response data in state if it's an array
+          setNotices(response.data.data);
         } else {
-          console.error("API response is not an array", response.data);
-          setNotices([]);  // Set notices to empty array if not an array
+          setNotices([]);
         }
       } catch (error) {
         console.error("Error fetching notices:", error);
-        setNotices([]);  // Set notices to empty array in case of an error
+        setNotices([]);
       } finally {
-        setLoading(false);  // Set loading to false once the data is fetched
+        setLoading(false);
       }
     };
-    
+
     fetchNotices();
   }, []);
+
+  const getDocumentUrl = (path) => {
+    const baseUrl = "http://api.epublicnotices.in/uploads/";
+    const fileName = path.split("/").pop(); // Extract the file name
+    return `${baseUrl}${fileName}`;
+  };
+
+  const downloadImage = async (imageUrl) => {
+    try {
+      const response = await fetch(imageUrl, {
+        mode: "cors", // Ensure CORS is enabled on the server
+      });
+      const blob = await response.blob();
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = imageUrl.split('/').pop() || "document-image.jpg"; // Use the file name from the URL or fallback
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Failed to download image:", error);
+      alert("Error downloading image. Please try again.");
+    }
+  };
+
 
   return (
     <div className="flex min-h-screen">
@@ -39,14 +58,12 @@ function RequestPost() {
       <div className="flex-1 p-6 mt-12">
         <h1 className="text-3xl font-bold mb-6">Submitted Notices</h1>
 
-        {/* If loading, show a loader */}
         {loading ? (
           <div className="flex justify-center items-center h-full">
             <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full border-t-transparent border-blue-600" />
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Map over the notices array and display each in a card */}
             {notices.length === 0 ? (
               <div className="col-span-3 text-center text-gray-500">No notices to display.</div>
             ) : (
@@ -61,14 +78,12 @@ function RequestPost() {
                   <p className="mt-4 text-gray-500">{notice.message || "No message provided"}</p>
 
                   <div className="mt-4">
-                    <a
-                      href={notice.documentPath}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-[#004B80] hover:underline "
+                    <button
+                      onClick={() => setSelectedDocument(getDocumentUrl(notice.documentPath))}
+                      className="text-[#004B80] hover:underline"
                     >
                       View Document
-                    </a>
+                    </button>
                   </div>
 
                   <div className="mt-4 text-xs text-gray-400">
@@ -80,6 +95,41 @@ function RequestPost() {
           </div>
         )}
       </div>
+
+      {selectedDocument && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
+          onClick={() => setSelectedDocument(null)}
+        >
+          <div
+            className="bg-white p-6 rounded-lg shadow-lg w-3/4 h-3/4 overflow-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex justify-between items-center mb-4">
+              <button
+                onClick={() => setSelectedDocument(null)}
+                className="text-gray-500 hover:text-gray-800"
+              >
+                Close
+              </button>
+              <button
+                onClick={() => downloadImage(selectedDocument)}
+                className="bg-[#004B80] text-white px-4 py-2 rounded hover:bg-[#00365D] transition"
+              >
+                Download Image
+              </button>
+
+            </div>
+            <img
+              src={selectedDocument}
+              alt="Document Preview"
+              className="w-full h-full object-contain"
+            />
+          </div>
+        </div>
+      )}
+
+
     </div>
   );
 }

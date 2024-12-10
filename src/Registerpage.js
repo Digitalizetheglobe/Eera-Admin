@@ -5,37 +5,37 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "tailwindcss/tailwind.css";
 import eera from "./assests/eera.png";
+import Modal from "react-modal";
 
 const RegisterPage = () => {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
     const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
         try {
-            const response = await axios.post(
-                "http://api.epublicnotices.in/admin/register",
-                {
-                    full_name: username,
-                    email: email,
-                    password: password,
-                }
-            );
+            await axios.post("http://api.epublicnotices.in/admin/register", {
+                full_name: username,
+                email: email,
+                password: password,
+            });
 
-            // Handle success
-            console.log("Registration successful:", response.data);
-            toast.success("Registration successful!");
-            navigate("/"); // Redirect to homepage
+            // Show modal on successful registration
+            setIsModalOpen(true);
         } catch (error) {
-            // Handle error
-            console.error("Registration failed:", error.response?.data || error);
             toast.error(
                 error.response?.data?.message || "Registration failed. Please try again."
             );
         }
+    };
+
+    const closeModalAndRedirect = () => {
+        setIsModalOpen(false);
+        navigate("/"); // Redirect to login
     };
 
     return (
@@ -99,31 +99,6 @@ const RegisterPage = () => {
                                 />
                             </div>
 
-                            <div className="flex items-center justify-between">
-                                <div className="flex items-center">
-                                    <input
-                                        id="remember-me"
-                                        name="remember-me"
-                                        type="checkbox"
-                                        className="h-4 w-4 text-blue-600 border-gray-300 rounded"
-                                    />
-                                    <label
-                                        htmlFor="remember-me"
-                                        className="ml-2 text-sm text-gray-800"
-                                    >
-                                        Remember me
-                                    </label>
-                                </div>
-                                {/* <div className="text-sm">
-                                    <a
-                                        href="#"
-                                        className="text-blue-600 hover:underline font-semibold"
-                                    >
-                                        Forgot your password?
-                                    </a>
-                                </div> */}
-                            </div>
-
                             <div className="mt-8">
                                 <button
                                     type="submit"
@@ -153,6 +128,29 @@ const RegisterPage = () => {
                     </div>
                 </div>
             </div>
+
+            {/* Modal */}
+            <Modal
+                isOpen={isModalOpen}
+                onRequestClose={closeModalAndRedirect}
+                className="fixed inset-0 flex items-center justify-center p-4"
+                overlayClassName="fixed inset-0 bg-black bg-opacity-50"
+            >
+                <div className="bg-white rounded-lg p-6 shadow-lg text-center max-w-md w-full">
+                    <h2 className="text-2xl font-bold text-gray-800 mb-4">
+                        Registration Successful
+                    </h2>
+                    <p className="text-gray-600 mb-6">
+                        Your registration is complete. Please log in to continue.
+                    </p>
+                    <button
+                        onClick={closeModalAndRedirect}
+                        className="w-full py-3 px-4 text-sm tracking-wide rounded-lg text-white bg-blue-600 hover:bg-blue-700"
+                    >
+                        Login
+                    </button>
+                </div>
+            </Modal>
         </div>
     );
 };

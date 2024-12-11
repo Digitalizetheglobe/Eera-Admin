@@ -47,14 +47,14 @@ function Ocrpage() {
   const handleLanguageChange = (e) => {
     const selectedLanguage = e.target.value;
     setLanguage(selectedLanguage);
-  
+
     if (selectedLanguage === "mar" || selectedLanguage === "hin") {
       navigate("/mar-hin-ocr");
     } else if (selectedLanguage === "eng") {
       navigate("/english-page"); // Replace with the correct route for English
     }
   };
-  
+
 
   const handleScan = async () => {
     if (files.length > 0) {
@@ -279,9 +279,9 @@ function Ocrpage() {
             <div className="flex justify-between items-center mb-6">
               <h1 className="text-2xl font-semibold"> Upload Your Notice</h1>
               <Link to='/manualadd'>
-              <button className="bg-[#004B80] text-white px-4 py-2 rounded hover:bg-[#00365D]">
-              Add Notice Manually
-              </button>
+                <button className="bg-[#004B80] text-white px-4 py-2 rounded hover:bg-[#00365D]">
+                  Add Notice Manually
+                </button>
               </Link>
             </div>
 
@@ -313,7 +313,7 @@ function Ocrpage() {
                   className="mb-4"
                 />
 
-<TextField
+                <TextField
                   select
                   label="Select Language"
                   value={language}
@@ -368,9 +368,8 @@ function Ocrpage() {
                 {texts.map((item, index) => (
                   <Card
                     key={index}
-                    className={`mb-4 ${
-                      removingIndex === index ? "fade-out" : ""
-                    }`}
+                    className={`mb-4 ${removingIndex === index ? "fade-out" : ""
+                      }`}
                   >
                     <CardContent>
                       <Typography variant="h6">{item.fileName}</Typography>

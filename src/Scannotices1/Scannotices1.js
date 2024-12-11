@@ -27,6 +27,8 @@ import Sidebar from "../Sidebar/Sidebar";
 import Navbar from "../Navbar1/Navbar1";
 import { toast, Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import Autocomplete from "@mui/material/Autocomplete";
+
 
 function Scannotices1() {
   const [files, setFiles] = useState([]);
@@ -40,11 +42,35 @@ function Scannotices1() {
   const [language, setLanguage] = useState("eng");
   const [removingIndex, setRemovingIndex] = useState(null);
   const navigate = useNavigate();
+  const [newspaper, setNewspaper] = useState('');
+  const [selectedNewspaper, setSelectedNewspaper] = useState("");
+  const [file, setFile] = useState(null); // For single file
 
   const handleFileChange = (e) => {
-    setFiles([...e.target.files]);
+    const selectedFiles = Array.from(e.target.files);
+    setFiles(selectedFiles);
   };
 
+
+
+  const newspaperList = [
+    "SAKAL", "LOKMAT", "LOKSATTA", "MAHARASHTRA TIMES", "KESARI", "PRABHAT",
+    "PUNYA NAGARI", "TIMES OF INDIA", "PUDHARI", "SANDHYAANAD", "AJ KA ANANAD",
+    "SAMANA", "SAKALTIMES", "NAVAKAL", "TARUN BHARAT", "DINKAR", "BHASKAR",
+    "DESHDUT", "PRAHAR", "THE HINDU", "DAINIK JAGRAN", "NAVBHARAT TIMES",
+    "PUNE MIRROR", "MID DAY", "MAHANAGARI", "TELEGRAPH", "DECCAN HERALD",
+    "DIVYA BHASKAR", "MUMBAI MIRROR", "ECONOMIC TIMES", "INDIAN EXPRESS",
+    "NATIONAL HERALD", "HINDUSTAN", "VIR ARJUN", "BANDE MATARAM", "QUAMI AWAJ",
+    "INDIAN POST", "NORTHERN INDIA PATRIKA", "DAILY TELEGRAM", "PUNJAB KESARI",
+    "NAVODAY", "DNA", "ARUNACHAL FRONT", "MIRROR", "THE FREE SPACE JOURNAL",
+    "STAR OF MYSORE", "GUJRAT SAMACHAR", "GUJARAT MITRA", "KASHMIR TIMES", "ORISSA POST"
+  ];
+
+
+
+  const handleNewspaperChange = (event) => {
+    setNewspaper(event.target.value);
+  };
   const handleLanguageChange = (e) => {
     const selectedLanguage = e.target.value;
     setLanguage(selectedLanguage);
@@ -81,13 +107,16 @@ function Scannotices1() {
             extractedText = data.text;
           }
 
+          // Include the selected newspaper name
+          // const prefixedText = `${selectedNewspaper ? `[${selectedNewspaper}] ` : ""}${extractedText}`;
+
           extractedTexts.push({ text: extractedText, fileName: file.name });
         }
 
         setTexts(extractedTexts);
-        setLoading(false);
       } catch (error) {
         console.error(error);
+      } finally {
         setLoading(false);
       }
     }
@@ -121,47 +150,37 @@ function Scannotices1() {
 
   const handlePublish = (text, index) => {
     const noticeTitleMatch = text.match(/^(.*)\n/);
-    const noticeTitle = noticeTitleMatch
-      ? noticeTitleMatch[1].trim()
-      : "Untitled Notice";
-
+    const noticeTitle = noticeTitleMatch ? noticeTitleMatch[1].trim() : "Untitled Notice";
     const date = "2024-08-02";
-
     const location = extractLocation(text);
     const lawyerName = extractLawyerName(text);
     const mobileNumber = extractMobileNumber(text);
-
     const noticeDescription = text.split("\n").slice(1).join(" ").trim();
 
-    if (
-      !noticeTitle ||
-      !date ||
-      !location ||
-      !lawyerName ||
-      !mobileNumber ||
-      !noticeDescription
-    ) {
+
+    if (!noticeTitle || !date || !location || !lawyerName || !mobileNumber || !noticeDescription) {
       alert("All fields are required");
       return;
     }
-    // http://localhost:8000/notices
-    const apiEndpoint = "http://api.epublicnotices.in/notices";
-    //for production
-    // http://api.epublicnotices.in/notices
 
-    fetch(apiEndpoint, {
+
+
+    const formData = new FormData();
+    formData.append("notice_title", noticeTitle);
+    formData.append("notice_description", noticeDescription);
+    formData.append("date", date);
+    formData.append("location", location);
+    formData.append("lawyer_name", lawyerName);
+    formData.append("mobile_number", mobileNumber);
+    formData.append("newspaper_name", selectedNewspaper)
+    // Append files
+    files.forEach((file) => {
+      formData.append("notices_images", file);
+    });
+
+    fetch("http://api.epublicnotices.in/notices", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        notice_title: noticeTitle,
-        notice_description: noticeDescription,
-        date,
-        location,
-        lawyer_name: lawyerName,
-        mobile_number: mobileNumber,
-      }),
+      body: formData,
     })
       .then((response) => response.json())
       .then((data) => {
@@ -184,6 +203,8 @@ function Scannotices1() {
         });
       });
   };
+
+
 
   const extractLocation = (text) => {
     const locationPattern = /(?:Pune|Mumbai|Nagpur|Thane|Nashik|Maharashtra)/i;
@@ -285,6 +306,7 @@ function Scannotices1() {
     }
   };
 
+
   return (
     <>
       <Toaster position="top-center" reverseOrder={false} />{" "}
@@ -342,7 +364,8 @@ function Scannotices1() {
                   className="mb-4"
                 />
 
-                <TextField
+
+                {/* <TextField
                   select
                   label="Select Language"
                   value={language}
@@ -357,11 +380,69 @@ function Scannotices1() {
                   <option value="mar">Marathi</option>
                   <option value="hin">Hindi</option>
                   <option value="eng">English</option>
-                </TextField>
+                </TextField> */}
 
+                {/* <TextField
+                  select
+                  label="Select News Paper"
+                  value={newspaper}
+                  onChange={handleNewspaperChange}
+                  variant="outlined"
+                  fullWidth
+                  margin="normal"
+                  SelectProps={{
+                    native: true,
+                  }}
+                >
+                  <option value="selectnew">Times of India</option>
+                  <option value="timesOfIndia">Times of India</option>
+                  <option value="hindustanTimes">Hindustan Times</option>
+                  <option value="dna">DNA</option>
+                </TextField> */}
+
+                <div className="grid gap-4">
+                  <div className="col-span-2" >
+                    <TextField
+                      select
+                      label="Select Language"
+                      value={language}
+                      onChange={handleLanguageChange}
+                      variant="outlined"
+                      fullWidth
+                      margin="normal"
+                      SelectProps={{
+                        native: true,
+                      }}
+                    >
+                      <option value="mar">Marathi</option>
+                      <option value="hin">Hindi</option>
+                      <option value="eng">English</option>
+                    </TextField></div>
+                  <div className="col-span-2 col-start-3">
+                    <Autocomplete
+                      options={newspaperList}
+                      getOptionLabel={(option) => option}
+                      onChange={(event, value) => setSelectedNewspaper(value)}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="Select Newspaper"
+                          variant="outlined"
+                          fullWidth
+                          margin="normal"
+                        />
+                      )}
+                      filterSelectedOptions
+                      clearOnEscape
+                    />
+
+                  </div>
+
+                </div>
 
                 <Button
                   variant="contained"
+                  color="primary"
                   onClick={handleScan}
                   disabled={files.length === 0 || loading}
                   fullWidth
@@ -385,32 +466,34 @@ function Scannotices1() {
                 <div style={{ display: "flex", justifyContent: "center" }}>
                   <Link to="/all-notice">
                     <button
-                      className="mt-4 px-4 py-2 bg-[#A99067] text-white border py-2 rounded "
+                      className="mt-4 px-4 py-2 bg-[#A99067] text-white border py-2 rounded"
                       style={{ marginRight: "10px" }}
                     >
                       View All Notice
                     </button>
-                    {/* <button  className="px-2 py-2 bg-[#001A3B] hover:bg-[#fff] text-white hover:text-[#001A3B] border hover:border-[#001A3B] py-2 rounded right-0">
-                Filters
-              </button>  */}
                   </Link>
-
-                  {/* <Link to="/mar-hin-ocr">
-                    <button className="px-4 py-2 mt-4 hover:bg-[#A99067] text-[#A99067] hover:text-white border py-2 rounded border border-[#A99067]">
-                      Scan Marathi / Hindi Notice
-                    </button>
-                  </Link> */}
                 </div>
               </Box>
+
               <Box className="mt-5 mb-5">
                 {texts.map((item, index) => (
                   <Card
                     key={index}
-                    className={`mb-4 ${removingIndex === index ? "fade-out" : ""
-                      }`}
+                    className={`mb-4 ${removingIndex === index ? "fade-out" : ""}`}
                   >
                     <CardContent>
                       <Typography variant="h6">{item.fileName}</Typography>
+                      <img
+                        src={URL.createObjectURL(files[index])}
+                        alt="Uploaded Preview"
+                        style={{
+                          maxWidth: "150px",
+                          maxHeight: "150px",
+                          objectFit: "cover",
+                          borderRadius: "8px",
+                          marginBottom: "16px"
+                        }}
+                      />
                       <TextField
                         value={item.text}
                         onChange={(e) => {
@@ -424,11 +507,10 @@ function Scannotices1() {
                         fullWidth
                         margin="normal"
                       />
-                      <Box
-                        display="flex"
-                        justifyContent="space-between"
-                        className="mt-5 space-x-2"
-                      >
+                      <Typography variant="body1">
+                        Newspaper: {selectedNewspaper || "None"}
+                      </Typography>
+                      <Box display="flex" justifyContent="space-between" className="mt-5 space-x-2">
                         <Button
                           onClick={() => handleCopy(item.text)}
                           startIcon={<ContentCopyIcon />}
@@ -460,7 +542,7 @@ function Scannotices1() {
                             py: 1,
                             borderRadius: "8px",
                             "&:hover": {
-                              // backgroundColor: '#00365D',
+                              backgroundColor: '#00365D',
                             },
                             mt: 2,
                           }}
@@ -474,15 +556,15 @@ function Scannotices1() {
                           startIcon={<PublishIcon />}
                           className="px-4 py-2"
                           sx={{
-                            backgroundColor: "transparent", // Ensure background is transparent
+                            backgroundColor: "transparent",
                             color: "#004B80 !important",
                             px: 4,
                             py: 1,
                             borderRadius: "8px",
-                            borderColor: "#004B80", // Specify the border color
-                            borderWidth: "2px", // Explicitly set border width if needed
+                            borderColor: "#004B80",
+                            borderWidth: "2px",
                             "&:hover": {
-                              backgroundColor: "#f0f8ff", // Optional: Add hover effect
+                              backgroundColor: "#f0f8ff",
                             },
                             mt: 2,
                           }}
@@ -512,35 +594,12 @@ function Scannotices1() {
                         >
                           Cancel
                         </Button>
-
-                        {/* <Button
-                          variant="contained"
-                          color="primary"
-                          onClick={() => handleDownloadPDF(item.text)}
-                          startIcon={<GetAppIcon />}
-                          className="px-4 py-2"
-                          sx={{
-                            backgroundColor: 'transparent', 
-                            color: 'red !important',
-                            px: 4,
-                            py: 1,
-                            borderRadius: '8px',
-                            borderColor: 'red',
-                            borderWidth: '2px', 
-                            '&:hover': {
-                              backgroundColor: 'red', 
-                              color: '#fff !important',
-                            },
-                            mt: 2,
-                          }}
-                        >
-                          Cancel
-                        </Button> */}
                       </Box>
                     </CardContent>
                   </Card>
                 ))}
               </Box>
+
 
               <Modal open={open} onClose={handleClose}>
                 <Box className="bg-white p-6 rounded shadow-lg max-w-lg mx-auto my-20 overflow-y-auto max-h-screen">

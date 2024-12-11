@@ -35,13 +35,11 @@ function RequestPost() {
 
   const downloadImage = async (imageUrl) => {
     try {
-      const response = await fetch(imageUrl, {
-        mode: "cors", // Ensure CORS is enabled on the server
-      });
+      const response = await fetch(imageUrl, { mode: "no-cors" });
       const blob = await response.blob();
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
-      link.download = imageUrl.split('/').pop() || "document-image.jpg"; // Use the file name from the URL or fallback
+      link.download = "document-image.jpg";
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -50,6 +48,22 @@ function RequestPost() {
       alert("Error downloading image. Please try again.");
     }
   };
+  const openImageInNewTab = (imageUrl) => {
+    try {
+      // Open the image in a new tab
+      const newTab = window.open(imageUrl, "_blank");
+  
+      // If newTab is null, it means the browser blocked the popup. Show an error
+      if (!newTab) {
+        alert("Failed to open image in a new tab. Please check your browser settings.");
+      }
+    } catch (error) {
+      console.error("Failed to open image in a new tab:", error);
+      alert("Error opening image. Please try again.");
+    }
+  };
+  
+  
 
 
   return (
@@ -98,7 +112,7 @@ function RequestPost() {
 
       {selectedDocument && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
+          className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center" style={{marginLeft:'311px'}}
           onClick={() => setSelectedDocument(null)}
         >
           <div
@@ -111,12 +125,6 @@ function RequestPost() {
                 className="text-gray-500 hover:text-gray-800"
               >
                 Close
-              </button>
-              <button
-                onClick={() => downloadImage(selectedDocument)}
-                className="bg-[#004B80] text-white px-4 py-2 rounded hover:bg-[#00365D] transition"
-              >
-                Download Image
               </button>
 
             </div>

@@ -26,6 +26,7 @@ import Sidebar from "./Sidebar/Sidebar";
 import Navbar from "./Navbar1/Navbar1";
 import upload from "./assests/icons/Upload icon.png";
 import { useNavigate } from "react-router-dom";
+import { toast, Toaster } from "react-hot-toast";
 
 function Ocrpage() {
   const [files, setFiles] = useState([]);
@@ -170,11 +171,17 @@ function Ocrpage() {
           setTexts(texts.filter((_, i) => i !== index));
           setRemovingIndex(null);
         }, 1000);
-        alert("Notice published successfully");
+        toast.success("Notice published successfully!", {
+          position: "top-right",
+          autoClose: 3000,
+        });
       })
       .catch((error) => {
         console.error("Error publishing notice:", error);
-        alert("Failed to publish notice");
+        toast.error("Failed to publish notice!", {
+          position: "top-right",
+          autoClose: 3000,
+        });
       });
   };
 
@@ -271,6 +278,7 @@ function Ocrpage() {
 
   return (
     <>
+     <Toaster position="top-center" reverseOrder={false} />
       <div className="flex min-h-screen">
         <Sidebar />
 

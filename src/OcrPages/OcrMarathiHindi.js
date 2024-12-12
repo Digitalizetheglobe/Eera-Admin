@@ -39,9 +39,9 @@ function OcrMarathiHindi() {
   const handleLanguageChange = (e) => {
     const selectedLanguage = e.target.value;
     setLanguage(selectedLanguage);
-      
+      //   /scannotice
     if (selectedLanguage === "eng") {
-      navigate("/scannotice"); 
+      navigate("/scan-notices"); 
     }
   };
   

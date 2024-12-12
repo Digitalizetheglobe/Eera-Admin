@@ -162,9 +162,6 @@ function Scannotices1() {
       alert("All fields are required");
       return;
     }
-
-
-
     const formData = new FormData();
     formData.append("notice_title", noticeTitle);
     formData.append("notice_description", noticeDescription);
@@ -177,7 +174,7 @@ function Scannotices1() {
     files.forEach((file) => {
       formData.append("notices_images", file);
     });
-
+// http://api.epublicnotices.in `http://localhost:8000
     fetch("http://api.epublicnotices.in/notices", {
       method: "POST",
       body: formData,
@@ -209,19 +206,22 @@ function Scannotices1() {
   const extractLocation = (text) => {
     const locationPattern = /(?:Pune|Mumbai|Nagpur|Thane|Nashik|Maharashtra)/i;
     const locationMatch = text.match(locationPattern);
-    return locationMatch ? locationMatch[0].trim() : "No Location Provided";
+    // return locationMatch ? locationMatch[0].trim() : "No Location Provided";
+    return "Pune";
   };
 
   const extractLawyerName = (text) => {
     const lawyerPattern = /(?:Adv\.|Advocate|Lawyer)\s*([\w\s.]+)/i;
     const lawyerMatch = text.match(lawyerPattern);
-    return lawyerMatch ? lawyerMatch[1].trim() : "No Lawyer Name Provided";
+    // return lawyerMatch ? lawyerMatch[1].trim() : "No Lawyer Name Provided";
+    return "Adv. Random Lawyer";
   };
 
   const extractMobileNumber = (text) => {
     const mobilePattern = /(?:Cell|Mobile|Number)\s*[:.]?\s*([\d\s]+)/i;
     const mobileMatch = text.match(mobilePattern);
-    return mobileMatch ? mobileMatch[1].trim() : "No Mobile Number Provided";
+    // return mobileMatch ? mobileMatch[1].trim() : "No Mobile Number Provided";
+    return "9876543210";
   };
 
   const handleOpen = (index) => {

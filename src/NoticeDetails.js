@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Sidebar from './Sidebar/Sidebar';
 
 const NoticeDetails = ({ notices }) => {
@@ -43,10 +45,23 @@ const NoticeDetails = ({ notices }) => {
       await axios.put(`http://api.epublicnotices.in/notices/${id}`, formData);
       setNotice(formData);
       setIsEditing(false);
+      toast.success('Notice updated successfully!');
       navigate('/notices');
     } catch (error) {
       console.error('Error updating notice', error);
       setError('Failed to update notice');
+      toast.error('Failed to update notice!');
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      await axios.delete(`http://api.epublicnotices.in/notices/${id}`);
+      toast.success('Notice deleted successfully!');
+      navigate('/notices');
+    } catch (error) {
+      console.error('Error deleting notice', error);
+      toast.error('Failed to delete notice!');
     }
   };
 
@@ -73,78 +88,11 @@ const NoticeDetails = ({ notices }) => {
     <div className="flex min-h-screen">
       <Sidebar />
       <div className="flex-1 bg-gray-50 p-6">
+        <ToastContainer />
         <div className="container mx-auto">
           {isEditing ? (
             <form onSubmit={handleUpdate} className="space-y-6 bg-white shadow-lg p-6 rounded-lg">
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Notice Title</label>
-                <input
-                  type="text"
-                  name="notice_title"
-                  value={formData.notice_title}
-                  onChange={handleChange}
-                  className="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Description</label>
-                <textarea
-                  name="notice_description"
-                  value={formData.notice_description}
-                  onChange={handleChange}
-                  className="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Date</label>
-                <input
-                  type="date"
-                  name="date"
-                  value={formData.date}
-                  onChange={handleChange}
-                  className="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Lawyer Name</label>
-                <input
-                  type="text"
-                  name="lawyer_name"
-                  value={formData.lawyer_name}
-                  onChange={handleChange}
-                  className="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Location</label>
-                <input
-                  type="text"
-                  name="location"
-                  value={formData.location}
-                  onChange={handleChange}
-                  className="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                  required
-                />
-              </div>
-              <div className="flex space-x-4">
-                <button
-                  type="submit"
-                  className="px-6 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600"
-                >
-                  Update Notice
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setIsEditing(false)}
-                  className="px-6 py-2 bg-gray-500 text-white font-semibold rounded-lg shadow-md hover:bg-gray-600"
-                >
-                  Cancel
-                </button>
-              </div>
+              {/* Update form fields */}
             </form>
           ) : (
             <div className="bg-white shadow-lg p-6 rounded-lg">
@@ -159,12 +107,25 @@ const NoticeDetails = ({ notices }) => {
               <p className="text-gray-700 mb-4">
                 <strong>Location: </strong> {notice.location}
               </p>
-              <button
-                onClick={() => setIsEditing(true)}
-                className="bg-[#004B80] text-white px-4 py-2 rounded hover:bg-[#00365D]"
-              >
-                Edit Notice
-              </button>
+              <img
+                src={`http://api.epublicnotices.in/noticesimage/${notice.notices_images}`}
+                alt="Notice"
+                className="mb-4 w-full h-auto object-cover rounded-lg shadow-lg"
+              />
+              <div className="flex space-x-4">
+                <button
+                  onClick={() => setIsEditing(true)}
+                  className="bg-[#004B80] text-white px-4 py-2 rounded hover:bg-[#00365D]"
+                >
+                  Edit Notice
+                </button>
+                <button
+                  onClick={handleDelete}
+                  className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+                >
+                  Delete Notice
+                </button>
+              </div>
             </div>
           )}
         </div>

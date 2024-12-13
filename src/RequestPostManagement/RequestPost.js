@@ -32,7 +32,7 @@ function RequestPost() {
     const fileName = path.split("/").pop(); // Extract the file name
     return `${baseUrl}${fileName}`;
   };
-
+  
   const downloadImage = async (imageUrl) => {
     try {
       const response = await fetch(imageUrl, { mode: "no-cors" });

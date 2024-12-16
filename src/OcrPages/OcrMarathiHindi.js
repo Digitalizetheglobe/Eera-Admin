@@ -36,6 +36,8 @@ function OcrMarathiHindi() {
     setFiles([...e.target.files]);
   };
 
+
+  
   const handleLanguageChange = (e) => {
     const selectedLanguage = e.target.value;
     setLanguage(selectedLanguage);

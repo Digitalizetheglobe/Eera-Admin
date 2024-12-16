@@ -18,6 +18,7 @@ const NoticeDetails = ({ notices }) => {
     date: '',
     lawyer_name: '',
     location: '',
+    newspaper_name: '',
   });
 
   useEffect(() => {
@@ -46,7 +47,6 @@ const NoticeDetails = ({ notices }) => {
       setNotice(formData);
       setIsEditing(false);
       toast.success('Notice updated successfully!');
-      navigate('/notices');
     } catch (error) {
       console.error('Error updating notice', error);
       setError('Failed to update notice');
@@ -57,13 +57,15 @@ const NoticeDetails = ({ notices }) => {
   const handleDelete = async () => {
     try {
       await axios.delete(`http://api.epublicnotices.in/notices/${id}`);
+      console.log('Notice deleted successfully');
       toast.success('Notice deleted successfully!');
-      navigate('/notices');
+      navigate('/all-notice')
     } catch (error) {
-      console.error('Error deleting notice', error);
+      console.error('Error deleting notice:', error);
       toast.error('Failed to delete notice!');
     }
   };
+  
 
   if (isLoading) {
     return (
@@ -92,7 +94,84 @@ const NoticeDetails = ({ notices }) => {
         <div className="container mx-auto">
           {isEditing ? (
             <form onSubmit={handleUpdate} className="space-y-6 bg-white shadow-lg p-6 rounded-lg">
-              {/* Update form fields */}
+              <h2 className="text-2xl font-bold mb-4">Edit Notice</h2>
+              <div>
+                <label className="block mb-2 font-bold">Title</label>
+                <input
+                  type="text"
+                  name="notice_title"
+                  value={formData.notice_title}
+                  onChange={handleChange}
+                  className="w-full border rounded px-4 py-2"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block mb-2 font-bold">Description</label>
+                <textarea
+                  name="notice_description"
+                  value={formData.notice_description}
+                  onChange={handleChange}
+                  className="w-full border rounded px-4 py-2"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block mb-2 font-bold">Date</label>
+                <input
+                  type="date"
+                  name="date"
+                  value={formData.date}
+                  onChange={handleChange}
+                  className="w-full border rounded px-4 py-2"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block mb-2 font-bold">Lawyer Name</label>
+                <input
+                  type="text"
+                  name="lawyer_name"
+                  value={formData.lawyer_name}
+                  onChange={handleChange}
+                  className="w-full border rounded px-4 py-2"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block mb-2 font-bold">Location</label>
+                <input
+                  type="text"
+                  name="location"
+                  value={formData.location}
+                  onChange={handleChange}
+                  className="w-full border rounded px-4 py-2"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block mb-2 font-bold">Newspaper Name</label>
+                <input
+                  type="text"
+                  name="newspaper_name"
+                  value={formData.newspaper_name}
+                  onChange={handleChange}
+                  className="w-full border rounded px-4 py-2"
+                />
+              </div>
+              <button
+                type="submit"
+                className="bg-[#004B80] text-white px-4 py-2 rounded hover:bg-[#00365D]"
+              >
+                Save Changes
+              </button>
+              <button
+                type="button"
+                onClick={() => setIsEditing(false)}
+                className="ml-4 bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700"
+              >
+                Cancel
+              </button>
             </form>
           ) : (
             <div className="bg-white shadow-lg p-6 rounded-lg">

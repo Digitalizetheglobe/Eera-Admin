@@ -44,7 +44,10 @@ function Scannotices1() {
   const navigate = useNavigate();
   const [newspaper, setNewspaper] = useState('');
   const [selectedNewspaper, setSelectedNewspaper] = useState("");
-  const [file, setFile] = useState(null); // For single file
+  const [file, setFile] = useState(null);
+  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedCity, setSelectedCity] = useState("");
+  const [newcategory, setNewcategory] = useState("");
 
   const handleFileChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
@@ -151,8 +154,8 @@ function Scannotices1() {
   const handlePublish = (text, index) => {
     const noticeTitleMatch = text.match(/^(.*)\n/);
     const noticeTitle = noticeTitleMatch ? noticeTitleMatch[1].trim() : "Untitled Notice";
-    const date = "2024-08-02";
-    const location = extractLocation(text);
+    const date = selectedDate;
+    const location = selectedCity;
     const lawyerName = extractLawyerName(text);
     const mobileNumber = extractMobileNumber(text);
     const noticeDescription = text.split("\n").slice(1).join(" ").trim();
@@ -170,12 +173,13 @@ function Scannotices1() {
     formData.append("lawyer_name", lawyerName);
     formData.append("mobile_number", mobileNumber);
     formData.append("newspaper_name", selectedNewspaper)
+    formData.append("newcategory", newcategory);
     // Append files
     files.forEach((file) => {
       formData.append("notices_images", file);
     });
     // http://api.epublicnotices.in `http://localhost:8000
-    fetch("http://api.epublicnotices.in/notices", {
+    fetch("http://localhost:8000/notices", {
       method: "POST",
       body: formData,
     })
@@ -400,8 +404,8 @@ function Scannotices1() {
                   <option value="dna">DNA</option>
                 </TextField> */}
 
-                <div className="grid gap-4">
-                  <div className="col-span-2" >
+                <div className="grid grid-cols-3 gap-4">
+                  <div className="col-span-1">
                     <TextField
                       select
                       label="Select Language"
@@ -417,8 +421,10 @@ function Scannotices1() {
                       <option value="mar">Marathi</option>
                       <option value="hin">Hindi</option>
                       <option value="eng">English</option>
-                    </TextField></div>
-                  <div className="col-span-2 col-start-3">
+                    </TextField>
+                  </div>
+
+                  <div className="col-span-1">
                     <Autocomplete
                       options={newspaperList}
                       getOptionLabel={(option) => option}
@@ -435,10 +441,68 @@ function Scannotices1() {
                       filterSelectedOptions
                       clearOnEscape
                     />
-
                   </div>
 
+                  <div className="col-span-1">
+                    <TextField
+                      select
+                      label="Select Category"
+                      value={newcategory}
+
+                      onChange={(e) => setNewcategory(e.target.value)} // Update category state
+                      variant="outlined"
+                      fullWidth
+                      margin="normal"
+                      SelectProps={{
+                        native: true,
+                      }}
+                    // onChange={(e) => setNewcategory(e.target.value)}
+                    // variant="outlined"
+                    >
+                      <option value="">Select Category</option> {/* Default empty option */}
+                      <option value="legal_notice">Legal Notice</option>
+                      <option value="planning_applications">Planning Applications</option>
+                      <option value="government_notice">Government Notice</option>
+                      <option value="financial_notice">Financial Notice</option>
+                      <option value="environmental_notice">Environmental Notice</option>
+                    </TextField>
+
+                  </div>
                 </div>
+
+                <div className="grid grid-cols-5 gap-4">
+                  <div className="col-span-2">
+                    <TextField
+                      select
+                      label="Select City"
+                      value={selectedCity} // Bind the state
+                      onChange={(e) => setSelectedCity(e.target.value)} // Update state on change
+                      variant="outlined"
+                      fullWidth
+                      margin="normal"
+                      SelectProps={{
+                        native: true,
+                      }}
+                    >
+                      <option value="">Select City</option>
+                      <option value="Pune">Pune</option>
+                      <option value="Mumbai">Mumbai</option>
+                      <option value="Nashik">Nashik</option>
+                      <option value="Nagpur">Nagpur</option>
+                    </TextField>
+                  </div>
+                  <div className="col-span-2 col-start-3">
+                    <label className="block text-[#001A3B] mb-1">Edition Date</label>
+                    <input
+                      type="date"
+                      name="date"
+                      value={selectedDate}
+                      onChange={(e) => setSelectedDate(e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                    />
+                  </div>
+                </div>
+
 
                 <Button
                   variant="contained"
@@ -510,6 +574,18 @@ function Scannotices1() {
                       <Typography variant="body1">
                         Newspaper: {selectedNewspaper || "None"}
                       </Typography>
+                      <Typography variant="body1">
+                        Edition Date : {selectedDate || "None"}
+                      </Typography>
+                      <Typography variant="body1">
+                        Selected City : {selectedCity || "None"}
+                      </Typography>
+
+                      <Typography variant="body1">
+                        Selected category : {newcategory || "None"}
+                      </Typography>
+
+
                       <Box display="flex" justifyContent="space-between" className="mt-5 space-x-2">
                         <Button
                           onClick={() => handleCopy(item.text)}
@@ -528,26 +604,6 @@ function Scannotices1() {
                           }}
                         >
                           Copy Text
-                        </Button>
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          onClick={() => handleOpen(index)}
-                          startIcon={<PreviewIcon />}
-                          className="px-4 py-2"
-                          sx={{
-                            backgroundColor: "#A99067",
-                            color: "#fff !important",
-                            px: 4,
-                            py: 1,
-                            borderRadius: "8px",
-                            "&:hover": {
-                              backgroundColor: '#00365D',
-                            },
-                            mt: 2,
-                          }}
-                        >
-                          Preview
                         </Button>
                         <Button
                           variant="contained"

@@ -28,9 +28,8 @@ const Sidebar = () => {
     <div className="flex min-h-screen fixed relative">
       {/* Sidebar */}
       <div
-        className={`fixed md:static top-0 left-0 z-40 w-30 h-full bg-gray-800 text-white transform p-6 ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
-        } md:translate-x-0 transition-transform`}
+        className={`fixed md:static top-0 left-0 z-40 w-30 h-full bg-gray-800 text-white transform p-6 ${isOpen ? "translate-x-0" : "-translate-x-full"
+          } md:translate-x-0 transition-transform`}
       >
         <a
           href="javascript:void(0)"
@@ -50,21 +49,21 @@ const Sidebar = () => {
               Dashboard
             </Link>
           </li>
-        
+
           <li>
             <Link to="/scannotice" className="flex items-center p-2 hover:bg-gray-700 rounded">
               <img src={scan} className="mr-4" />
               Scan Your Notices
             </Link>
           </li>
-          
+
           <li>
             <Link to="/manualadd" className="flex items-center p-2 hover:bg-gray-700 rounded">
               <img src={pen} className="mr-4" />
               Manual Notice Entry
             </Link>
           </li>
-      
+
           <li>
             <Link to="/all-notice" className="flex items-center p-2 hover:bg-gray-700 rounded">
               <img src={folder} className="mr-4" />
@@ -77,6 +76,12 @@ const Sidebar = () => {
               Post Notice Management
             </Link>
           </li>
+          <li>
+            <Link to="/active-user" className="flex items-center p-2 hover:bg-gray-700 rounded">
+              <img src={folder} className="mr-4" />
+              Active User Management
+            </Link>
+          </li>
         </ul>
 
         <hr className="my-4 border-gray-600" />
@@ -87,7 +92,7 @@ const Sidebar = () => {
                 onClick={handleLogout}
                 className="flex items-center p-2 hover:bg-gray-700 rounded text-red-500"
               >
-                <FaSignOutAlt className="mr-4" /> 
+                <FaSignOutAlt className="mr-4" />
                 Logout
               </button>
             </li>

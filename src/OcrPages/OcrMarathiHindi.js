@@ -20,6 +20,7 @@ import Navbar from "../Navbar1/Navbar1";
 import upload from "../assests/icons/Upload icon.png";
 import { toast, Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import Autocomplete from "@mui/material/Autocomplete";
 
 function OcrMarathiHindi() {
   const [files, setFiles] = useState([]);
@@ -31,22 +32,38 @@ function OcrMarathiHindi() {
   const [open, setOpen] = useState(false);
   const [currentFileIndex, setCurrentFileIndex] = useState(null);
   const navigate = useNavigate();
-
+  const [selectedNewspaper, setSelectedNewspaper] = useState("");
+  const [newcategory, setNewcategory] = useState("");
+  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedCity, setSelectedCity] = useState("");
   const handleFileChange = (e) => {
     setFiles([...e.target.files]);
   };
 
 
-  
+  const newspaperList = [
+    "SAKAL", "LOKMAT", "LOKSATTA", "MAHARASHTRA TIMES", "KESARI", "PRABHAT",
+    "PUNYA NAGARI", "TIMES OF INDIA", "PUDHARI", "SANDHYAANAD", "AJ KA ANANAD",
+    "SAMANA", "SAKALTIMES", "NAVAKAL", "TARUN BHARAT", "DINKAR", "BHASKAR",
+    "DESHDUT", "PRAHAR", "THE HINDU", "DAINIK JAGRAN", "NAVBHARAT TIMES",
+    "PUNE MIRROR", "MID DAY", "MAHANAGARI", "TELEGRAPH", "DECCAN HERALD",
+    "DIVYA BHASKAR", "MUMBAI MIRROR", "ECONOMIC TIMES", "INDIAN EXPRESS",
+    "NATIONAL HERALD", "HINDUSTAN", "VIR ARJUN", "BANDE MATARAM", "QUAMI AWAJ",
+    "INDIAN POST", "NORTHERN INDIA PATRIKA", "DAILY TELEGRAM", "PUNJAB KESARI",
+    "NAVODAY", "DNA", "ARUNACHAL FRONT", "MIRROR", "THE FREE SPACE JOURNAL",
+    "STAR OF MYSORE", "GUJRAT SAMACHAR", "GUJARAT MITRA", "KASHMIR TIMES", "ORISSA POST"
+  ];
+
+
   const handleLanguageChange = (e) => {
     const selectedLanguage = e.target.value;
     setLanguage(selectedLanguage);
-      //   /scannotice
+    //   /scannotice
     if (selectedLanguage === "eng") {
-      navigate("/scannotice"); 
+      navigate("/scannotice");
     }
   };
-  
+
   const handleScan = async () => {
     if (files.length > 0) {
       setLoading(true);
@@ -75,53 +92,46 @@ function OcrMarathiHindi() {
 
 
   const handlePublish = (text, index) => {
-    // Extract notice title
     const noticeTitleMatch = text.match(/^(.*)\n/);
     const noticeTitle = noticeTitleMatch
       ? noticeTitleMatch[1].trim()
       : "Untitled Notice";
-
-    // Get the current date in the format 'YYYY-MM-DD'
     const currentDate = new Date().toISOString().split("T")[0];
-
-    // Extract location, lawyer name, and mobile number
     const location = extractLocation(text);
     const lawyerName = extractLawyerName(text);
     const mobileNumber = extractMobileNumber(text);
-
-    // Extract notice description
     const noticeDescription = text.split("\n").slice(1).join(" ").trim();
-
-    // Validation check
+    const selectedImage = files[index]; // Assuming `files` array contains the uploaded images
+  
     if (
       !noticeTitle ||
       !currentDate ||
       !location ||
       !lawyerName ||
       !mobileNumber ||
-      !noticeDescription
+      !noticeDescription ||
+      !selectedNewspaper ||
+      !selectedImage
     ) {
       alert("All fields are required");
       return;
     }
-
-    // API Endpoint   http://localhost:8082    http://api.epublicnotices.in
+  
     const apiEndpoint = "http://api.epublicnotices.in/notices";
-
-    // Post data to API
+    const formData = new FormData();
+  
+    formData.append("notice_title", noticeTitle);
+    formData.append("notice_description", noticeDescription);
+    formData.append("date", currentDate);
+    formData.append("location", location);
+    formData.append("lawyer_name", lawyerName);
+    formData.append("mobile_number", mobileNumber);
+    formData.append("newspaper_name", selectedNewspaper);
+    formData.append("notices_images", selectedImage);
+  
     fetch(apiEndpoint, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        notice_title: noticeTitle,
-        notice_description: noticeDescription,
-        date: currentDate,
-        location,
-        lawyer_name: lawyerName,
-        mobile_number: mobileNumber,
-      }),
+      body: formData,
     })
       .then((response) => response.json())
       .then((data) => {
@@ -138,6 +148,7 @@ function OcrMarathiHindi() {
         toast.error("Failed to publish notice");
       });
   };
+  
 
   const handleCopy = (text) => {
     if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -163,7 +174,7 @@ function OcrMarathiHindi() {
       }
       document.body.removeChild(textArea);
     }
-  };  
+  };
 
   const handleCancel = (index) => {
     setRemovingIndex(index);
@@ -194,7 +205,7 @@ function OcrMarathiHindi() {
 
   return (
     <>
-     <Toaster position="top-center" reverseOrder={false} />{" "}
+      <Toaster position="top-center" reverseOrder={false} />{" "}
 
       <div className="flex min-h-screen">
         <Sidebar />
@@ -204,17 +215,17 @@ function OcrMarathiHindi() {
           <div className="p-6">
             <div className="flex justify-between items-center mb-6">
               <h1 className="text-2xl font-semibold">
-             
+
                 Upload Your Notice
-                
+
               </h1>
               <Link to='/manualadd'>
-              <button className="bg-[#004B80] text-white px-4 py-2 rounded hover:bg-[#00365D]">
-              Add Notice Manually
-              </button>
+                <button className="bg-[#004B80] text-white px-4 py-2 rounded hover:bg-[#00365D]">
+                  Add Notice Manually
+                </button>
               </Link>
             </div>
-           
+
             <Container
               maxWidth="md"
               className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center"
@@ -252,23 +263,102 @@ function OcrMarathiHindi() {
                   margin="normal"
                   className="mb-4"
                 />
-                <TextField
-                  select
-                  label="Select Language"
-                  value={language}
-                  onChange={handleLanguageChange}
-                  variant="outlined"
-                  fullWidth
-                  margin="normal"
-                  SelectProps={{
-                    native: true,
-                  }}
-                >
-                  <option value="mar">Marathi</option>
-                  <option value="hin">Hindi</option>
-                  <option value="eng">English</option>
-                </TextField>
 
+                <div className="grid grid-cols-3 gap-4">
+                  <div className="col-span-1">
+                    <TextField
+                      select
+                      label="Select Language"
+                      value={language}
+                      onChange={handleLanguageChange}
+                      variant="outlined"
+                      fullWidth
+                      margin="normal"
+                      SelectProps={{
+                        native: true,
+                      }}
+                    >
+                      <option value="mar">Marathi</option>
+                      <option value="hin">Hindi</option>
+                      <option value="eng">English</option>
+                    </TextField>
+                  </div>
+                  <div className="col-span-1">
+                    <Autocomplete
+                      options={newspaperList}
+                      getOptionLabel={(option) => option}
+                      onChange={(event, value) => setSelectedNewspaper(value)}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="Select Newspaper"
+                          variant="outlined"
+                          fullWidth
+                          margin="normal"
+                        />
+                      )}
+                      filterSelectedOptions
+                      clearOnEscape
+                    />
+                  </div>
+                  <div className="col-span-1">
+                    <TextField
+                      select
+                      label="Select Category"
+                      value={newcategory}
+
+                      onChange={(e) => setNewcategory(e.target.value)} // Update category state
+                      variant="outlined"
+                      fullWidth
+                      margin="normal"
+                      SelectProps={{
+                        native: true,
+                      }}
+                    // onChange={(e) => setNewcategory(e.target.value)}
+                    // variant="outlined"
+                    >
+                      <option value="">Select Category</option> {/* Default empty option */}
+                      <option value="legal_notice">Legal Notice</option>
+                      <option value="planning_applications">Planning Applications</option>
+                      <option value="government_notice">Government Notice</option>
+                      <option value="financial_notice">Financial Notice</option>
+                      <option value="environmental_notice">Environmental Notice</option>
+                    </TextField>
+
+                  </div>
+                </div>
+                <div className="grid grid-cols-5 gap-4">
+                  <div className="col-span-2">
+                    <TextField
+                      select
+                      label="Select City"
+                      value={selectedCity} // Bind the state
+                      onChange={(e) => setSelectedCity(e.target.value)} // Update state on change
+                      variant="outlined"
+                      fullWidth
+                      margin="normal"
+                      SelectProps={{
+                        native: true,
+                      }}
+                    >
+                      <option value="">Select City</option>
+                      <option value="Pune">Pune</option>
+                      <option value="Mumbai">Mumbai</option>
+                      <option value="Nashik">Nashik</option>
+                      <option value="Nagpur">Nagpur</option>
+                    </TextField>
+                  </div>
+                  <div className="col-span-2 col-start-3">
+                    <label className="block text-[#001A3B] mb-1">Edition Date</label>
+                    <input
+                      type="date"
+                      name="date"
+                      value={selectedDate}
+                      onChange={(e) => setSelectedDate(e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                    />
+                  </div>
+                </div>
                 <Button
                   variant="contained"
                   color="primary"
@@ -306,12 +396,6 @@ function OcrMarathiHindi() {
                       View All Notice
                     </button>
                   </Link>
-
-                  {/* <Link to="/scan-notices">
-                    <button className="px-4 py-2 mt-4 hover:bg-[#A99067] text-[#A99067] hover:text-white border py-2 rounded border border-[#A99067]">
-                      Scan English Notice
-                    </button>
-                  </Link> */}
                 </div>
               </Box>
 
@@ -319,7 +403,18 @@ function OcrMarathiHindi() {
                 {texts.map((item, index) => (
                   <Card key={index} className="mb-4">
                     <CardContent>
-                      <Typography variant="h6">{item.fileName}</Typography>
+                    <Typography variant="h6">{item.fileName}</Typography>
+                      <img
+                        src={URL.createObjectURL(files[index])}
+                        alt="Uploaded Preview"
+                        style={{
+                          maxWidth: "150px",
+                          maxHeight: "150px",
+                          objectFit: "cover",
+                          borderRadius: "8px",
+                          marginBottom: "16px"
+                        }}
+                      />
                       <TextField
                         value={item.text}
                         variant="outlined"
@@ -328,22 +423,36 @@ function OcrMarathiHindi() {
                         fullWidth
                         margin="normal"
                       />
+                       <Typography variant="body1">
+                        Newspaper: {selectedNewspaper || "None"}
+                      </Typography>
+                      <Typography variant="body1">
+                        Edition Date : {selectedDate || "None"}
+                      </Typography>
+                      <Typography variant="body1">
+                        Selected City : {selectedCity || "None"}
+                      </Typography>
+
+                      <Typography variant="body1">
+                        Selected category : {newcategory || "None"}
+                      </Typography>
+                      ``
                       <Button
                         onClick={() => handlePublish(item.text, index)}
                         disabled={removingIndex === index}
                         className="px-4 py-2"
-                          sx={{
-                            backgroundColor: "#004B80",
-                            color: "#fff !important",
-                            px: 4,
-                            py: 1,
-                            borderRadius: "8px",
-                            "&:hover": {
-                              backgroundColor: "#00365D",
-                            },
-                            mt: 2,
-                            ml: 2,
-                          }}
+                        sx={{
+                          backgroundColor: "#004B80",
+                          color: "#fff !important",
+                          px: 4,
+                          py: 1,
+                          borderRadius: "8px",
+                          "&:hover": {
+                            backgroundColor: "#00365D",
+                          },
+                          mt: 2,
+                          ml: 2,
+                        }}
                       >
                         {removingIndex === index ? (
                           <CircularProgress size={24} />
@@ -351,48 +460,48 @@ function OcrMarathiHindi() {
                           "Publish Notice"
                         )}
                       </Button>
-                     
+
                       <Button
-                          onClick={() => handleCopy(item.text)}
-                          startIcon={<ContentCopyIcon />}
-                          className="px-4 py-2"
-                          sx={{
-                            backgroundColor: "#004B80",
-                            color: "#fff !important",
-                            px: 4,
-                            py: 1,
-                            borderRadius: "8px",
-                            "&:hover": {
-                              backgroundColor: "#00365D",
-                            },
-                            mt: 2,
-                            ml: 2,
-                          }}
-                        >
-                          Copy Text
-                        </Button>
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          onClick={() => handleOpen(index)}
-                          startIcon={<PreviewIcon />}
-                          className="px-4 py-2"
-                          sx={{
-                            backgroundColor: "#A99067",
-                            color: "#fff !important",
-                            px: 4,
-                            py: 1,
-                            borderRadius: "8px",
-                            "&:hover": {
-                              // backgroundColor: '#00365D',
-                            },
-                            mt: 2,
-                            ml: 2,
-                          }}
-                        >
-                          Preview
-                        </Button>
-                        <Button
+                        onClick={() => handleCopy(item.text)}
+                        startIcon={<ContentCopyIcon />}
+                        className="px-4 py-2"
+                        sx={{
+                          backgroundColor: "#004B80",
+                          color: "#fff !important",
+                          px: 4,
+                          py: 1,
+                          borderRadius: "8px",
+                          "&:hover": {
+                            backgroundColor: "#00365D",
+                          },
+                          mt: 2,
+                          ml: 2,
+                        }}
+                      >
+                        Copy Text
+                      </Button>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={() => handleOpen(index)}
+                        startIcon={<PreviewIcon />}
+                        className="px-4 py-2"
+                        sx={{
+                          backgroundColor: "#A99067",
+                          color: "#fff !important",
+                          px: 4,
+                          py: 1,
+                          borderRadius: "8px",
+                          "&:hover": {
+                            // backgroundColor: '#00365D',
+                          },
+                          mt: 2,
+                          ml: 2,
+                        }}
+                      >
+                        Preview
+                      </Button>
+                      <Button
                         variant="contained"
                         color="primary"
                         onClick={() => handleCancel(index)}

@@ -22,6 +22,7 @@ import Scannotices1 from './Scannotices1/Scannotices1';
 import RequestPost from './RequestPostManagement/RequestPost';
 import { PrivateRoute, PublicRoute } from './RouteGuards'; 
 import Dashboard from './Dashboard/Dashboard'
+import ActiveUserM from './ActiveUserManagement/ActiveUserM';
 
 
 const theme = createTheme({
@@ -68,7 +69,8 @@ function App() {
           <Route path="/scannotice" element={<PrivateRoute><Scannotices1 /></PrivateRoute>} />
           <Route path="/requestpost" element={<PrivateRoute><RequestPost /></PrivateRoute>} />
           <Route path="/dashboard" element={<PrivateRoute> <Dashboard /></PrivateRoute>} />
-        </Routes>
+          <Route path="/active-user" element={<PrivateRoute><ActiveUserM/></PrivateRoute>} />
+         </Routes>
       </Router>
     </ThemeProvider>
   );

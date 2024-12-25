@@ -97,12 +97,12 @@ function OcrMarathiHindi() {
       ? noticeTitleMatch[1].trim()
       : "Untitled Notice";
     const currentDate = new Date().toISOString().split("T")[0];
-    const location = extractLocation(text);
+    const location = selectedCity;
     const lawyerName = extractLawyerName(text);
     const mobileNumber = extractMobileNumber(text);
     const noticeDescription = text.split("\n").slice(1).join(" ").trim();
     const selectedImage = files[index]; // Assuming `files` array contains the uploaded images
-  
+
     if (
       !noticeTitle ||
       !currentDate ||
@@ -116,10 +116,10 @@ function OcrMarathiHindi() {
       alert("All fields are required");
       return;
     }
-  
+
     const apiEndpoint = "http://api.epublicnotices.in/notices";
     const formData = new FormData();
-  
+
     formData.append("notice_title", noticeTitle);
     formData.append("notice_description", noticeDescription);
     formData.append("date", currentDate);
@@ -128,7 +128,7 @@ function OcrMarathiHindi() {
     formData.append("mobile_number", mobileNumber);
     formData.append("newspaper_name", selectedNewspaper);
     formData.append("notices_images", selectedImage);
-  
+
     fetch(apiEndpoint, {
       method: "POST",
       body: formData,
@@ -148,7 +148,7 @@ function OcrMarathiHindi() {
         toast.error("Failed to publish notice");
       });
   };
-  
+
 
   const handleCopy = (text) => {
     if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -403,7 +403,7 @@ function OcrMarathiHindi() {
                 {texts.map((item, index) => (
                   <Card key={index} className="mb-4">
                     <CardContent>
-                    <Typography variant="h6">{item.fileName}</Typography>
+                      <Typography variant="h6">{item.fileName}</Typography>
                       <img
                         src={URL.createObjectURL(files[index])}
                         alt="Uploaded Preview"
@@ -423,7 +423,7 @@ function OcrMarathiHindi() {
                         fullWidth
                         margin="normal"
                       />
-                       <Typography variant="body1">
+                      <Typography variant="body1">
                         Newspaper: {selectedNewspaper || "None"}
                       </Typography>
                       <Typography variant="body1">

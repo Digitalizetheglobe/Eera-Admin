@@ -19,7 +19,7 @@ const Dashboard = () => {
     // Fetch notices from the API
     const fetchNotices = async () => {
       try {
-        const response = await axios.get("http://api.epublicnotices.in/notices");
+        const response = await axios.get("https://api.epublicnotices.in/notices");
         const data = response.data;
 
         // Set notices

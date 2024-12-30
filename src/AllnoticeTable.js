@@ -15,7 +15,7 @@ function AllnoticeTable() {
     setLoading(true);
     axios
     //api.epublicnotices.in
-      .get(`http://api.epublicnotices.in/notices`) 
+      .get(`https://api.epublicnotices.in/notices`) 
       .then((response) => {
         const sortedNotices = response.data.sort((a, b) => new Date(b.date) - new Date(a.date));
         setNotices(sortedNotices);

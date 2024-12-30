@@ -10,7 +10,7 @@ function RequestPost() {
   useEffect(() => {
     const fetchNotices = async () => {
       try {
-        const response = await axios.get("http://api.epublicnotices.in/api/request-upload-notice");
+        const response = await axios.get("https://api.epublicnotices.in/api/request-upload-notice");
         if (Array.isArray(response.data.data)) {
           setNotices(response.data.data);
         } else {
@@ -28,7 +28,7 @@ function RequestPost() {
   }, []);
 
   const getDocumentUrl = (path) => {
-    const baseUrl = "http://api.epublicnotices.in/uploads/";
+    const baseUrl = "https://api.epublicnotices.in/uploads/";
     const fileName = path.split("/").pop(); // Extract the file name
     return `${baseUrl}${fileName}`;
   };

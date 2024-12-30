@@ -9,7 +9,7 @@ const DailyNotices = () => {
     useEffect(() => {
         const fetchNotices = async () => {
             try {
-                const response = await axios.get('http://api.epublicnotices.in/notices');
+                const response = await axios.get('https://api.epublicnotices.in/notices');
                 const today = moment().format('YYYY-MM-DD');
                 const todaysNotices = response.data.filter(notice => 
                     moment(notice.date).format('YYYY-MM-DD') === today

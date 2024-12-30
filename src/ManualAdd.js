@@ -36,7 +36,7 @@ function ManualAdd() {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://api.epublicnotices.in/notices", formData, {
+      const response = await axios.post("https://api.epublicnotices.in/notices", formData, {
         headers: {
           "Content-Type": "application/json",
         },

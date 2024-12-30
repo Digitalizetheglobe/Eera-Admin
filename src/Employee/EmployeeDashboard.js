@@ -12,7 +12,7 @@ function EmployeeDashboard() {
     const [noticesCount, setNoticesCount] = useState(0);
 
     useEffect(() => {
-        axios.get('http://api.epublicnotices.in/notices')
+        axios.get('https://api.epublicnotices.in/notices')
             .then(response => {
                 setNoticesCount(response.data.length);
             })

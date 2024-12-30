@@ -43,7 +43,7 @@ const NoticeDetails = ({ notices }) => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://api.epublicnotices.in/notices/${id}`, formData);
+      await axios.put(`https://api.epublicnotices.in/notices/${id}`, formData);
       setNotice(formData);
       setIsEditing(false);
       toast.success('Notice updated successfully!');
@@ -56,7 +56,7 @@ const NoticeDetails = ({ notices }) => {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://api.epublicnotices.in/notices/${id}`);
+      await axios.delete(`https://api.epublicnotices.in/notices/${id}`);
       console.log('Notice deleted successfully');
       toast.success('Notice deleted successfully!');
       navigate('/all-notice')
@@ -187,7 +187,7 @@ const NoticeDetails = ({ notices }) => {
                 <strong>Location: </strong> {notice.location}
               </p>
               <img
-                src={`http://api.epublicnotices.in/noticesimage/${notice.notices_images}`}
+                src={`https://api.epublicnotices.in/noticesimage/${notice.notices_images}`}
                 alt="Notice"
                 className="mb-4 w-full h-auto object-cover rounded-lg shadow-lg"
               />

@@ -178,8 +178,8 @@ function Scannotices1() {
     files.forEach((file) => {
       formData.append("notices_images", file);
     });
-    // http://api.epublicnotices.in `http://localhost:8000
-    fetch("http://api.epublicnotices.in/notices", {
+    // https://api.epublicnotices.in `http://localhost:8000
+    fetch("https://api.epublicnotices.in/notices", {
       method: "POST",
       body: formData,
     })

@@ -9,7 +9,7 @@ const ActiveUserM = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/webapp/all-users');
+        const response = await fetch('http://api.epublicnotices.in/api/webapp/all-users');
         if (!response.ok) {
           throw new Error('Failed to fetch users');
         }

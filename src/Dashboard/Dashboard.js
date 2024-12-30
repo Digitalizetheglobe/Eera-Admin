@@ -91,6 +91,11 @@ const Dashboard = () => {
             <div className="text-3xl font-bold mt-4">{notices.length}</div>
       
           </div>
+          <div className="p-6 rounded-lg shadow-md bg-[#C9F6F9]">
+            <div className="font-semibold text-xl">Active User.</div>
+            <div className="text-3xl font-bold mt-4">8</div>
+      
+          </div>
         </div>
 
         {/* Language Distribution Chart */}

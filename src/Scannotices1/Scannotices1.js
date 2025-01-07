@@ -489,6 +489,9 @@ function Scannotices1() {
                       <option value="Mumbai">Mumbai</option>
                       <option value="Nashik">Nashik</option>
                       <option value="Nagpur">Nagpur</option>
+                      <option value="chhatrapatisambhajinagar">Ch. Sambhaji Nagar</option>
+                      <option value="solapur">Solapur</option>
+                      <option value="kolhapur">kolhapur</option>
                     </TextField>
                   </div>
                   <div className="col-span-2 col-start-3">

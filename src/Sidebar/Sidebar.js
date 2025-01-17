@@ -71,6 +71,12 @@ const Sidebar = () => {
             </Link>
           </li>
           <li>
+            <Link to="/NewsPaperMange" className="flex items-center p-2 hover:bg-gray-700 rounded">
+              <img src={folder} className="mr-4" />
+              News Paper Management
+            </Link>
+          </li>
+          <li>
             <Link to="/requestpost" className="flex items-center p-2 hover:bg-gray-700 rounded">
               <img src={folder} className="mr-4" />
               Post Notice Management

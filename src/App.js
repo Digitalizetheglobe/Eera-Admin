@@ -23,6 +23,7 @@ import RequestPost from './RequestPostManagement/RequestPost';
 import { PrivateRoute, PublicRoute } from './RouteGuards'; 
 import Dashboard from './Dashboard/Dashboard'
 import ActiveUserM from './ActiveUserManagement/ActiveUserM';
+import NewsPaperMange from './NewsPaperManagement/NewsPaperMange';
 
 
 const theme = createTheme({
@@ -70,6 +71,8 @@ function App() {
           <Route path="/requestpost" element={<PrivateRoute><RequestPost /></PrivateRoute>} />
           <Route path="/dashboard" element={<PrivateRoute> <Dashboard /></PrivateRoute>} />
           <Route path="/active-user" element={<PrivateRoute><ActiveUserM/></PrivateRoute>} />
+          {/* //NewsPaperMange */}
+          <Route path="/NewsPaperMange" element={<PrivateRoute><NewsPaperMange/></PrivateRoute>} />
          </Routes>
       </Router>
     </ThemeProvider>

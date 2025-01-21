@@ -11,7 +11,7 @@ function AllnoticeTable() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedDate, setSelectedDate] = useState(() => {
     const today = new Date();
-    return today.toISOString().split('T')[0]; // Default to current date in YYYY-MM-DD format
+    return today.toISOString().split('T')[0]; 
   });
   const navigate = useNavigate();
 
@@ -39,7 +39,7 @@ function AllnoticeTable() {
   };
 
   const filteredNotices = notices.filter((notice) => {
-    const noticeDate = new Date(notice.date).toISOString().split('T')[0]; // Format notice date to YYYY-MM-DD
+    const noticeDate = new Date(notice.date).toISOString().split('T')[0]; 
     const matchesDate = selectedDate ? noticeDate === selectedDate : true;
     const matchesSearch =
       (notice.notice_title?.toLowerCase() ?? '').includes(searchQuery.toLowerCase()) ||
@@ -48,7 +48,7 @@ function AllnoticeTable() {
   });
 
   const handleCardClick = (id) => {
-    navigate(`/notices/${id}`); // Redirect to a new page with the notice ID
+    navigate(`/notices/${id}`); 
   };
 
   return (

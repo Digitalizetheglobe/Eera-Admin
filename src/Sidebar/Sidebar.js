@@ -8,6 +8,9 @@ import user from '../assests/icons/users-left.png';
 import scan from '../assests/icons/scan.png';
 import folder from '../assests/icons/folder.png';
 import pen from '../assests/icons/pen-tool-plus.png';
+import group1 from '../assests/Group 1.png';
+import group2 from '../assests/Group 2.png';
+import group3 from '../assests/Group 3.png'
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 
@@ -86,6 +89,12 @@ const Sidebar = () => {
             <Link to="/active-user" className="flex items-center p-2 hover:bg-gray-700 rounded">
               <img src={folder} className="mr-4" />
               Active User Management
+            </Link>
+          </li>
+          <li>
+            <Link to="/NewspaperCount" className="flex items-center p-2 hover:bg-gray-700 rounded">
+              <img src={folder} className="mr-4" />
+              Daily Newspaper Count
             </Link>
           </li>
         </ul>

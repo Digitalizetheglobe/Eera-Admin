@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import Tesseract from "tesseract.js";
 import {
   Button,
@@ -36,10 +37,13 @@ function OcrMarathiHindi() {
   const [newcategory, setNewcategory] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
+  const [SelectedCategory, setSelectedCategory] = useState(""); // Initialize state
+
   const handleFileChange = (e) => {
     setFiles([...e.target.files]);
   };
 
+  const [adminName, setAdminName] = useState("");
 
   const newspaperList = [
     "SAKAL", "LOKMAT", "LOKSATTA", "MAHARASHTRA TIMES", "KESARI", "PRABHAT",
@@ -117,7 +121,7 @@ function OcrMarathiHindi() {
       return;
     }
 
-    const apiEndpoint = "https://api.epublicnotices.in/notices";
+    const apiEndpoint = "http://localhost:8000/notices";
     const formData = new FormData();
 
     formData.append("notice_title", noticeTitle);
@@ -128,7 +132,8 @@ function OcrMarathiHindi() {
     formData.append("mobile_number", mobileNumber);
     formData.append("newspaper_name", selectedNewspaper);
     formData.append("notices_images", selectedImage);
-
+    formData.append("DataentryOperator", adminName);
+    formData.append("SelectedCategory", SelectedCategory);
     fetch(apiEndpoint, {
       method: "POST",
       body: formData,
@@ -202,6 +207,23 @@ function OcrMarathiHindi() {
     const mobileMatch = text.match(mobilePattern);
     return mobileMatch ? mobileMatch[1].trim() : "No Mobile Number Provided";
   };
+
+  useEffect(() => {
+    const fetchAdminInfo = async () => {
+      try {
+        const token = localStorage.getItem("token"); // Assuming the token is stored in localStorage
+        const response = await axios.get("http://localhost:8000/admin/admin-info", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setAdminName(response.data.admin.full_name);
+      } catch (error) {
+        console.error("Error fetching admin info:", error);
+      }
+    };
+    fetchAdminInfo();
+  }, []);
 
   return (
     <>
@@ -305,9 +327,8 @@ function OcrMarathiHindi() {
                     <TextField
                       select
                       label="Select Category"
-                      value={newcategory}
-
-                      onChange={(e) => setNewcategory(e.target.value)} // Update category state
+                      value={SelectedCategory}
+                      onChange={(e) => setSelectedCategory(e.target.value)}
                       variant="outlined"
                       fullWidth
                       margin="normal"
@@ -327,8 +348,9 @@ function OcrMarathiHindi() {
 
                   </div>
                 </div>
-                <div className="grid grid-cols-5 gap-4">
-                  <div className="col-span-2">
+                <div className="grid grid-cols-3 gap-4 items-center">
+                  {/* Select City */}
+                  <div>
                     <TextField
                       select
                       label="Select City"
@@ -348,10 +370,12 @@ function OcrMarathiHindi() {
                       <option value="Nagpur">Nagpur</option>
                       <option value="chhatrapatisambhajinagar">Ch. Sambhaji Nagar</option>
                       <option value="solapur">Solapur</option>
-                      <option value="kolhapur">kolhapur</option>
+                      <option value="kolhapur">Kolhapur</option>
                     </TextField>
                   </div>
-                  <div className="col-span-2 col-start-3">
+
+                  {/* Edition Date */}
+                  <div>
                     <label className="block text-[#001A3B] mb-1">Edition Date</label>
                     <input
                       type="date"
@@ -361,7 +385,22 @@ function OcrMarathiHindi() {
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg"
                     />
                   </div>
+
+                  {/* Admin Name */}
+                  <div>
+                    <TextField
+                      label="Admin Name"
+                      value={adminName} // `adminName` from state
+                      InputProps={{
+                        readOnly: true,
+                      }}
+                      variant="outlined"
+                      fullWidth
+                      margin="normal"
+                    />
+                  </div>
                 </div>
+
                 <Button
                   variant="contained"
                   color="primary"
@@ -437,9 +476,11 @@ function OcrMarathiHindi() {
                       </Typography>
 
                       <Typography variant="body1">
-                        Selected category : {newcategory || "None"}
+                        Selected category : {SelectedCategory || "None"}
                       </Typography>
-                      ``
+                      <Typography variant="body1">
+                        Dataentry Operator Name  : {adminName || "None"}
+                      </Typography>
                       <Button
                         onClick={() => handlePublish(item.text, index)}
                         disabled={removingIndex === index}

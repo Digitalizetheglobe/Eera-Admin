@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Tesseract from "tesseract.js";
 import {
   Button,
@@ -28,6 +28,7 @@ import Navbar from "../Navbar1/Navbar1";
 import { toast, Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import Autocomplete from "@mui/material/Autocomplete";
+import axios from "axios";
 
 
 function Scannotices1() {
@@ -48,12 +49,14 @@ function Scannotices1() {
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
   const [newcategory, setNewcategory] = useState("");
+  const [SelectedCategory, setSelectedCategory] = useState(""); // Initialize state
 
   const handleFileChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
     setFiles(selectedFiles);
   };
 
+  const [adminName, setAdminName] = useState("");
 
 
   const newspaperList = [
@@ -160,11 +163,11 @@ function Scannotices1() {
     const mobileNumber = extractMobileNumber(text);
     const noticeDescription = text.split("\n").slice(1).join(" ").trim();
 
-
     if (!noticeTitle || !date || !location || !lawyerName || !mobileNumber || !noticeDescription) {
       alert("All fields are required");
       return;
     }
+
     const formData = new FormData();
     formData.append("notice_title", noticeTitle);
     formData.append("notice_description", noticeDescription);
@@ -172,14 +175,16 @@ function Scannotices1() {
     formData.append("location", location);
     formData.append("lawyer_name", lawyerName);
     formData.append("mobile_number", mobileNumber);
-    formData.append("newspaper_name", selectedNewspaper)
-    formData.append("newcategory", newcategory);
+    formData.append("newspaper_name", selectedNewspaper);
+    formData.append("SelectedCategory", SelectedCategory); // Make sure this value is correctly passed
+    formData.append("DataentryOperator", adminName); // Dataentry Operator
+
     // Append files
     files.forEach((file) => {
       formData.append("notices_images", file);
     });
-    // https://api.epublicnotices.in `http://localhost:8000
-    fetch("https://api.epublicnotices.in/notices", {
+
+    fetch("http://localhost:8000/notices", {
       method: "POST",
       body: formData,
     })
@@ -309,7 +314,22 @@ function Scannotices1() {
       doc.save("notice.pdf");
     }
   };
-
+  useEffect(() => {
+    const fetchAdminInfo = async () => {
+      try {
+        const token = localStorage.getItem("token"); // Assuming the token is stored in localStorage
+        const response = await axios.get("http://localhost:8000/admin/admin-info", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setAdminName(response.data.admin.full_name);
+      } catch (error) {
+        console.error("Error fetching admin info:", error);
+      }
+    };
+    fetchAdminInfo();
+  }, []);
 
   return (
     <>
@@ -447,17 +467,14 @@ function Scannotices1() {
                     <TextField
                       select
                       label="Select Category"
-                      value={newcategory}
-
-                      onChange={(e) => setNewcategory(e.target.value)} // Update category state
+                      value={SelectedCategory}
+                      onChange={(e) => setSelectedCategory(e.target.value)} // Update category state
                       variant="outlined"
                       fullWidth
                       margin="normal"
                       SelectProps={{
                         native: true,
                       }}
-                    // onChange={(e) => setNewcategory(e.target.value)}
-                    // variant="outlined"
                     >
                       <option value="">Select Category</option> {/* Default empty option */}
                       <option value="legal_notice">Legal Notice</option>
@@ -466,12 +483,12 @@ function Scannotices1() {
                       <option value="financial_notice">Financial Notice</option>
                       <option value="environmental_notice">Environmental Notice</option>
                     </TextField>
-
                   </div>
                 </div>
 
-                <div className="grid grid-cols-5 gap-4">
-                  <div className="col-span-2">
+                <div className="grid grid-cols-3 gap-4">
+                  {/* Select City Field */}
+                  <div>
                     <TextField
                       select
                       label="Select City"
@@ -491,10 +508,12 @@ function Scannotices1() {
                       <option value="Nagpur">Nagpur</option>
                       <option value="chhatrapatisambhajinagar">Ch. Sambhaji Nagar</option>
                       <option value="solapur">Solapur</option>
-                      <option value="kolhapur">kolhapur</option>
+                      <option value="kolhapur">Kolhapur</option>
                     </TextField>
                   </div>
-                  <div className="col-span-2 col-start-3">
+
+                  {/* Edition Date Field */}
+                  <div>
                     <label className="block text-[#001A3B] mb-1">Edition Date</label>
                     <input
                       type="date"
@@ -504,7 +523,22 @@ function Scannotices1() {
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg"
                     />
                   </div>
+
+                  {/* Admin Name Field */}
+                  <div>
+                    <TextField
+                      label="Admin Name"
+                      value={adminName} // `adminName` from state
+                      InputProps={{
+                        readOnly: true,
+                      }}
+                      variant="outlined"
+                      fullWidth
+                      margin="normal"
+                    />
+                  </div>
                 </div>
+
 
 
                 <Button
@@ -585,7 +619,10 @@ function Scannotices1() {
                       </Typography>
 
                       <Typography variant="body1">
-                        Selected category : {newcategory || "None"}
+                        Selected category : {SelectedCategory || "None"}
+                      </Typography>
+                      <Typography variant="body1">
+                        Dataentry Operator Name  : {adminName || "None"}
                       </Typography>
 
 

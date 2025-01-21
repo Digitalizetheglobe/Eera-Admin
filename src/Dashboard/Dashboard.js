@@ -14,9 +14,25 @@ const Dashboard = () => {
     Hindi: 0,
     Other: 0,
   });
+  const [adminName, setAdminName] = useState("");
 
   useEffect(() => {
-    // Fetch notices from the API
+    // Fetch admin info
+    const fetchAdminInfo = async () => {
+      try {
+        const token = localStorage.getItem("token"); // Assuming the token is stored in localStorage
+        const response = await axios.get("http://localhost:8000/admin/admin-info", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setAdminName(response.data.admin.full_name);
+      } catch (error) {
+        console.error("Error fetching admin info:", error);
+      }
+    };
+
+    // Fetch notices
     const fetchNotices = async () => {
       try {
         const response = await axios.get("https://api.epublicnotices.in/notices");
@@ -38,13 +54,14 @@ const Dashboard = () => {
             counts.Other += 1;
           }
         });
-        
+
         setLanguageCounts(counts);
       } catch (error) {
         console.error("Error fetching notices:", error);
       }
     };
 
+    fetchAdminInfo();
     fetchNotices();
   }, []);
 
@@ -82,19 +99,19 @@ const Dashboard = () => {
     <div className="flex min-h-screen bg-gray-100">
       <Sidebar />
       <div className="flex-1 flex flex-col mt-20 px-8">
-        <h1 className="text-2xl font-bold mb-8">Dashboard</h1>
+        <h1 className="text-2xl font-bold mb-8">
+          {adminName ? `Welcome, ${adminName}` : "Welcome to the Dashboard!"}
+        </h1>
 
         {/* Total Notices */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
           <div className="p-6 rounded-lg shadow-md bg-[#C9F6F9]">
             <div className="font-semibold text-xl">Total Notices</div>
             <div className="text-3xl font-bold mt-4">{notices.length}</div>
-      
           </div>
           <div className="p-6 rounded-lg shadow-md bg-[#C9F6F9]">
-            <div className="font-semibold text-xl">Active User.</div>
+            <div className="font-semibold text-xl">Active Users</div>
             <div className="text-3xl font-bold mt-4">8</div>
-      
           </div>
         </div>
 

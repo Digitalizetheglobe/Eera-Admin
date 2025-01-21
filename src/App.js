@@ -24,6 +24,7 @@ import { PrivateRoute, PublicRoute } from './RouteGuards';
 import Dashboard from './Dashboard/Dashboard'
 import ActiveUserM from './ActiveUserManagement/ActiveUserM';
 import NewsPaperMange from './NewsPaperManagement/NewsPaperMange';
+import NewspaperCount from './NewspaperDataentry/NewspaperCount';
 
 
 const theme = createTheme({
@@ -56,6 +57,7 @@ function App() {
 
           {/* Private Routes */}
           <Route path="/dashboardold" element={<PrivateRoute><Homepage /></PrivateRoute>} />
+          <Route path="/NewspaperCount" element={<PrivateRoute><NewspaperCount/></PrivateRoute>} />
           <Route path="/scan-notices" element={<PrivateRoute><Ocrpage /></PrivateRoute>} />
           <Route path="/manualadd" element={<PrivateRoute><ManualAdd /></PrivateRoute>} />
           <Route path="/all-notice" element={<PrivateRoute><AllnoticeTable notices={notices} /></PrivateRoute>} />

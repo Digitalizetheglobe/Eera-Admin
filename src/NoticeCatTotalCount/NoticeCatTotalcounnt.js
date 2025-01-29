@@ -30,7 +30,7 @@ const NoticeCatTotalcounnt = () => {
                         View all Categories <ArrowRight className="ml-2 w-4 h-4" />
                     </div>
                 </div>
-                
+
             </div>
 
         </>

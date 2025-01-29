@@ -28,7 +28,7 @@ function NewspaperCount() {
 
     const fetchEntries = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/api/newspaper/newspaper-data-entry');
+            const response = await axios.get('https://api.epublicnotices.in/api/newspaper/newspaper-data-entry');
             const sortedEntries = response.data.data.sort(
                 (a, b) => new Date(b.date) - new Date(a.date)
             ); // Sort by date (latest first)
@@ -82,7 +82,7 @@ function NewspaperCount() {
 
     const handleUpdate = async () => {
         try {
-            await axios.put(`http://localhost:8000/api/newspaper/newspaper-data-entry/${editData.id}`, editData);
+            await axios.put(`https://api.epublicnotices.in/api/newspaper/newspaper-data-entry/${editData.id}`, editData);
             toast.success('Entry updated successfully!');
             fetchEntries();
             setIsModalOpen(false);

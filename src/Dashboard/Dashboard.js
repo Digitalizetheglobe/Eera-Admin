@@ -1,129 +1,122 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Doughnut } from "react-chartjs-2";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import Sidebar from "../Sidebar/Sidebar";
-
-ChartJS.register(ArcElement, Tooltip, Legend);
+import icon from '../assests/Group 41.png';
+import icon2 from '../assests/Icon (6).png';
+import icon3 from '../assests/Icon (7).png';
+import icon4 from '../assests/grop41.png';
+import NoticeCatTotalcounnt from "../NoticeCatTotalCount/NoticeCatTotalcounnt";
+import WebappCount from "../WebappCount/WebappCount";
 
 const Dashboard = () => {
-  const [notices, setNotices] = useState([]);
-  const [languageCounts, setLanguageCounts] = useState({
-    English: 0,
-    Marathi: 0,
-    Hindi: 0,
-    Other: 0,
-  });
-  const [adminName, setAdminName] = useState("");
+  const [noticesToday, setNoticesToday] = useState(0);
+  const [newspaperTypes, setNewspaperTypes] = useState(0);
+  const [totalNotices, setTotalNotices] = useState(0);
+  const [adminName, setAdminName] = useState("User"); // Default to "User" if not found
 
   useEffect(() => {
-    // Fetch admin info
-    const fetchAdminInfo = async () => {
+    const fetchDashboardData = async () => {
       try {
-        const token = localStorage.getItem("token"); // Assuming the token is stored in localStorage
-        const response = await axios.get("http://localhost:8000/admin/admin-info", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setAdminName(response.data.admin.full_name);
-      } catch (error) {
-        console.error("Error fetching admin info:", error);
-      }
-    };
+        // Fetch Notices Data
+        const noticesResponse = await axios.get("https://api.epublicnotices.in/notices");
+        const notices = noticesResponse.data;
 
-    // Fetch notices
-    const fetchNotices = async () => {
-      try {
-        const response = await axios.get("https://api.epublicnotices.in/notices");
-        const data = response.data;
+        // 1️⃣ Notices Added Today
+        const today = new Date().toISOString().split("T")[0];
+        setNoticesToday(notices.filter(notice => notice.date.includes(today)).length);
 
-        // Set notices
-        setNotices(data);
+        // 2️⃣ Unique Newspapers Count
+        const uniqueNewspapers = [...new Set(notices.map(notice => notice.newspaper))];
+        setNewspaperTypes(uniqueNewspapers.length);
 
-        // Calculate language counts
-        const counts = { English: 0, Marathi: 0, Hindi: 0, Other: 0 };
-        data.forEach((notice) => {
-          if (/^[A-Za-z0-9\s,.'"!?;:-]+$/.test(notice.notice_title)) {
-            counts.English += 1;
-          } else if (/[ऀ-ॿ]/.test(notice.notice_title)) {
-            counts.Hindi += 1;
-          } else if (/[अ-ह]/.test(notice.notice_title)) {
-            counts.Marathi += 1;
-          } else {
-            counts.Other += 1;
-          }
-        });
-
-        setLanguageCounts(counts);
+        // 3️⃣ Total Notices Count
+        setTotalNotices(notices.length);
       } catch (error) {
         console.error("Error fetching notices:", error);
       }
     };
 
+    const fetchAdminInfo = async () => {
+      try {
+        const token = localStorage.getItem("token"); // Get token from localStorage
+        if (!token) {
+          console.error("No token found");
+          return;
+        }
+    
+        const adminResponse = await axios.get("https://api.epublicnotices.in/admin/admin-info", {
+          headers: { Authorization: `Bearer ${token}` }, // Pass token in Authorization header
+        });
+    
+        // Correctly extract full_name from response
+        setAdminName(adminResponse.data.admin.full_name || "User");
+      } catch (error) {
+        console.error("Error fetching admin info:", error);
+      }
+    };
+    
+    fetchDashboardData();
     fetchAdminInfo();
-    fetchNotices();
   }, []);
 
-  const chartData = {
-    labels: ["English", "Marathi", "Hindi", "Other"],
-    datasets: [
-      {
-        label: "Notices by Language",
-        data: [
-          languageCounts.English,
-          languageCounts.Hindi,
-          languageCounts.Marathi,
-          languageCounts.Other,
-        ],
-        backgroundColor: ["#A5B4FC", "#A7F3D0", "#FDBA74", "#BFDBFE"],
-        borderWidth: 1,
-      },
-    ],
-  };
-
-  const chartOptions = {
-    plugins: {
-      legend: {
-        position: "bottom",
-        labels: {
-          usePointStyle: true,
-        },
-      },
-    },
-    responsive: true,
-    maintainAspectRatio: false,
-  };
-
   return (
-    <div className="flex min-h-screen bg-gray-100">
-      <Sidebar />
-      <div className="flex-1 flex flex-col mt-20 px-8">
-        <h1 className="text-2xl font-bold mb-8">
-          {adminName ? `Welcome, ${adminName}` : "Welcome to the Dashboard!"}
-        </h1>
+    <>
+      <div className="flex min-h-screen bg-[#F7F8F9]">
+        <Sidebar />
+        <div className="flex-1 flex flex-col px-8">
+          {/* Cards Section */}
+          <div className="max-w-7xl px-5 my-8 bg-[#F7F8F9]">
+            <h2 className="text-[#707EAE] font-dm-sans text-[18.667px] font-bold leading-[32px] tracking-[-0.373px]">
+              Hi {adminName} ,
+            </h2>
+            <h1 className="text-[#2B3674] font-dm-sans text-[45.333px] font-bold leading-[56px] tracking-[-0.907px] mb-8">
+              Welcome to EERA!
+            </h1>
 
-        {/* Total Notices */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-          <div className="p-6 rounded-lg shadow-md bg-[#C9F6F9]">
-            <div className="font-semibold text-xl">Total Notices</div>
-            <div className="text-3xl font-bold mt-4">{notices.length}</div>
-          </div>
-          <div className="p-6 rounded-lg shadow-md bg-[#C9F6F9]">
-            <div className="font-semibold text-xl">Active Users</div>
-            <div className="text-3xl font-bold mt-4">8</div>
-          </div>
-        </div>
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {/* Notices Added Today */}
+              <div className="flex items-center p-4 border border-[#004B804D] bg-white rounded-md">
+                <img src={icon} className="w-12 h-12" />
+                <div className="ml-4">
+                  <div className="text-[#A3AED0] text-sm">Notices Added Today</div>
+                  <div className="text-2xl font-bold text-[#1B2559]">{noticesToday}</div>
+                </div>
+              </div>
 
-        {/* Language Distribution Chart */}
-        <div className="p-6 rounded-lg shadow-md bg-white">
-          <h2 className="text-lg font-bold mb-4">Notice by Language</h2>
-          <div className="relative h-[170px]">
-            <Doughnut data={chartData} options={chartOptions} />
+              {/* Newspaper Types */}
+              <div className="flex items-center p-4 border border-[#004B804D] bg-white rounded-md">
+                <img src={icon2} className="w-12 h-12" />
+                <div className="ml-4">
+                  <div className="text-[#A3AED0] text-sm">Newspaper Count</div>
+                  <div className="text-2xl font-bold text-[#1B2559]">{newspaperTypes}</div>
+                </div>
+              </div>
+
+              {/* Active Users (Static for now) */}
+              <div className="flex items-center p-4 border border-[#004B804D] bg-white rounded-md">
+                <img src={icon3} className="w-12 h-12" />
+                <div className="ml-4">
+                  <div className="text-[#A3AED0] text-sm">Active Users</div>
+                  <div className="text-2xl font-bold text-[#1B2559]">20</div>
+                </div>
+              </div>
+
+              {/* Total Notices */}
+              <div className="flex items-center justify-between p-4 bg-gradient-to-r from-[#0077CC] to-[#004B80] text-white rounded-lg shadow-md">
+                <div>
+                  <div className="text-lg font-bold">Total Notices</div>
+                  <div className="text-2xl font-bold">{totalNotices}</div>
+                </div>
+                <img src={icon4} className="w-12 h-12 text-white" />
+              </div>
+            </div>
+
+            <NoticeCatTotalcounnt />
+            <WebappCount />
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

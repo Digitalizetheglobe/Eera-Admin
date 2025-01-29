@@ -212,7 +212,7 @@ function OcrMarathiHindi() {
     const fetchAdminInfo = async () => {
       try {
         const token = localStorage.getItem("token"); // Assuming the token is stored in localStorage
-        const response = await axios.get("http://localhost:8000/admin/admin-info", {
+        const response = await axios.get("https://api.epublicnotices.in/admin/admin-info", {
           headers: {
             Authorization: `Bearer ${token}`,
           },

@@ -85,12 +85,12 @@ const Sidebar = () => {
               Post Notice Management
             </Link>
           </li>
-          <li>
+          {/* <li>
             <Link to="/active-user" className="flex items-center p-2 hover:bg-gray-700 rounded">
               <img src={folder} className="mr-4" />
               Active User Management
             </Link>
-          </li>
+          </li> */}
           <li>
             <Link to="/NewspaperCount" className="flex items-center p-2 hover:bg-gray-700 rounded">
               <img src={folder} className="mr-4" />

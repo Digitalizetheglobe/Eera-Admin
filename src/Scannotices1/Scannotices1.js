@@ -184,7 +184,7 @@ function Scannotices1() {
       formData.append("notices_images", file);
     });
 
-    fetch("http://localhost:8000/notices", {
+    fetch("https://api.epublicnotices.in/notices", {
       method: "POST",
       body: formData,
     })
@@ -318,7 +318,7 @@ function Scannotices1() {
     const fetchAdminInfo = async () => {
       try {
         const token = localStorage.getItem("token"); // Assuming the token is stored in localStorage
-        const response = await axios.get("http://localhost:8000/admin/admin-info", {
+        const response = await axios.get("https://api.epublicnotices.in/admin/admin-info", {
           headers: {
             Authorization: `Bearer ${token}`,
           },

@@ -75,7 +75,7 @@ const Dashboard = () => {
 
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
               {/* Notices Added Today */}
-              <div className="flex items-center p-4 border border-[#004B804D] bg-white rounded-md">
+              <div className="flex items-center p-4 border rounded-[26.667px] border border-[rgba(0,75,128,0.30)] bg-white rounded-md">
                 <img src={icon} className="w-12 h-12" />
                 <div className="ml-4">
                   <div className="text-[#A3AED0] text-sm">Notices Added Today</div>
@@ -84,7 +84,7 @@ const Dashboard = () => {
               </div>
 
               {/* Newspaper Types */}
-              <div className="flex items-center p-4 border border-[#004B804D] bg-white rounded-md">
+              <div className="flex items-center p-4 border rounded-[26.667px] border border-[rgba(0,75,128,0.30)] bg-white rounded-md">
                 <img src={icon2} className="w-12 h-12" />
                 <div className="ml-4">
                   <div className="text-[#A3AED0] text-sm">Newspaper Count</div>
@@ -93,7 +93,7 @@ const Dashboard = () => {
               </div>
 
               {/* Active Users (Static for now) */}
-              <div className="flex items-center p-4 border border-[#004B804D] bg-white rounded-md">
+              <div className="flex items-center p-4 border rounded-[26.667px] border border-[rgba(0,75,128,0.30)] bg-white rounded-md">
                 <img src={icon3} className="w-12 h-12" />
                 <div className="ml-4">
                   <div className="text-[#A3AED0] text-sm">Active Users</div>
@@ -102,7 +102,7 @@ const Dashboard = () => {
               </div>
 
               {/* Total Notices */}
-              <div className="flex items-center justify-between p-4 bg-gradient-to-r from-[#0077CC] to-[#004B80] text-white rounded-lg shadow-md">
+              <div className="flex items-center justify-between p-4 bg-gradient-to-r from-[#0077CC] rounded-[26.667px] to-[#004B80] text-white rounded-lg shadow-md">
                 <div>
                   <div className="text-lg font-bold">Total Notices</div>
                   <div className="text-2xl font-bold">{totalNotices}</div>

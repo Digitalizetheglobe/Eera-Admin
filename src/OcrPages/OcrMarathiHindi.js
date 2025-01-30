@@ -121,7 +121,7 @@ function OcrMarathiHindi() {
       return;
     }
 
-    const apiEndpoint = "http://localhost:8000/notices";
+    const apiEndpoint = "https://api.epublicnotices.in/notices";
     const formData = new FormData();
 
     formData.append("notice_title", noticeTitle);

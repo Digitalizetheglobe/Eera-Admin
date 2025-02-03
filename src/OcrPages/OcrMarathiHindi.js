@@ -58,6 +58,7 @@ function OcrMarathiHindi() {
     "NAVODAY", "DNA", "ARUNACHAL FRONT", "MIRROR", "THE FREE SPACE JOURNAL",
     "STAR OF MYSORE", "GUJRAT SAMACHAR", "GUJARAT MITRA", "KASHMIR TIMES", "ORISSA POST"
   ];
+
   const cities = [
     "Mumbai", "Delhi", "Bangalore", "Hyderabad", "Ahmedabad", "Chennai", "Kolkata", "Surat", "Pune", "Jaipur", "Lucknow",
     "Kanpur", "Nagpur", "Indore", "Thane", "Bhopal", "Visakhapatnam", "Pimpri-Chinchwad", "Patna", "Vadodara", "Ghaziabad",
@@ -68,7 +69,7 @@ function OcrMarathiHindi() {
     "Salem", "Mira-Bhayandar", "Warangal", "Thiruvananthapuram", "Bhiwandi", "Saharanpur", "Guntur", "Amravati", "Bikaner", "Noida", "Jamshedpur",
     "Bhilai", "Cuttack", "Firozabad", "Kochi", "Nellore", "Bhavnagar", "Dehradun", "Durgapur", "Asansol", "Rourkela", "Nanded", "Kolhapur", "Ajmer",
     "Akola", "Gulbarga", "Jamnagar", "Ujjain", "Loni", "Siliguri", "Jhansi", "Ulhasnagar",
-    "Nellore",
+    "Nellore", "Sangli", "Satara", "Akola", "Jalgoan", "Nagar", "New Delhi", "Goa", "Nanded", "Dhule",
     "Jammu",
     "Sangli",
     "Belgaum",
@@ -230,7 +231,7 @@ function OcrMarathiHindi() {
     formData.append("DataentryOperator", adminName);
     formData.append("SelectedCategory", SelectedCategory);
     formData.append("selected_date", selectedDate);
-    
+
     fetch(apiEndpoint, {
       method: "POST",
       body: formData,

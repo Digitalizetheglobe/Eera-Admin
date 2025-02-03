@@ -75,13 +75,13 @@ const Sidebar = () => {
           </li>
           <li>
             <Link to="/NewsPaperMange" className="flex items-center p-2 hover:bg-gray-700 rounded">
-              <img src={group1} className="mr-4" />
+              <img src={folder} className="mr-4" />
               News Paper Management
             </Link>
           </li>
           <li>
             <Link to="/requestpost" className="flex items-center p-2 hover:bg-gray-700 rounded">
-              <img src={group2} className="mr-4" />
+              <img src={folder} className="mr-4" />
               Post Notice Management
             </Link>
           </li>
@@ -93,7 +93,7 @@ const Sidebar = () => {
           </li> */}
           <li>
             <Link to="/NewspaperCount" className="flex items-center p-2 hover:bg-gray-700 rounded">
-              <img src={group3} width={30} className="mr-4" />
+              <img src={folder} width={30} className="mr-4" />
               Daily Newspaper Count
             </Link>
           </li>

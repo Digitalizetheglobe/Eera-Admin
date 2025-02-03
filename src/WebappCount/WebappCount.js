@@ -47,14 +47,14 @@ const WebappUploads = () => {
 const NoticesUploaded = () => {
     const notices = [
         {
-            from: "Alex Manda",
-            count: "+250",
-            time: "Today, 16:36"
+            from: "Abhishak",
+            count: "+100",
+            time: "Today"
         },
         {
-            to: "Laura Santos",
+            to: "Vaishnavi",
             count: "+110",
-            time: "Today, 08:49"
+            time: "Today"
         },
        
     ];
@@ -71,12 +71,12 @@ const NoticesUploaded = () => {
                         <div>
                             {notice.from && (
                                 <p className="text-[#1B2559] text-sm">
-                                    From <span className="font-semibold">{notice.from}</span>
+                                <span className="font-semibold">{notice.from}</span>
                                 </p>
                             )}
                             {notice.to && (
                                 <p className="text-[#1B2559] text-sm">
-                                    To <span className="font-semibold">{notice.to}</span>
+                                 <span className="font-semibold">{notice.to}</span>
                                 </p>
                             )}
                             <p className="text-[#A3AED0] text-xs">{notice.time}</p>

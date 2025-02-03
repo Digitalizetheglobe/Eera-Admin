@@ -22,6 +22,7 @@ import upload from "../assests/icons/Upload icon.png";
 import { toast, Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import Autocomplete from "@mui/material/Autocomplete";
+import { values } from "pdf-lib";
 
 function OcrMarathiHindi() {
   const [files, setFiles] = useState([]);
@@ -37,7 +38,7 @@ function OcrMarathiHindi() {
   const [newcategory, setNewcategory] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
-  const [SelectedCategory, setSelectedCategory] = useState(""); // Initialize state
+  const [SelectedCategory, setSelectedCategory] = useState("");
 
   const handleFileChange = (e) => {
     setFiles([...e.target.files]);
@@ -57,7 +58,101 @@ function OcrMarathiHindi() {
     "NAVODAY", "DNA", "ARUNACHAL FRONT", "MIRROR", "THE FREE SPACE JOURNAL",
     "STAR OF MYSORE", "GUJRAT SAMACHAR", "GUJARAT MITRA", "KASHMIR TIMES", "ORISSA POST"
   ];
-
+  const cities = [
+    "Mumbai", "Delhi", "Bangalore", "Hyderabad", "Ahmedabad", "Chennai", "Kolkata", "Surat", "Pune", "Jaipur", "Lucknow",
+    "Kanpur", "Nagpur", "Indore", "Thane", "Bhopal", "Visakhapatnam", "Pimpri-Chinchwad", "Patna", "Vadodara", "Ghaziabad",
+    "Ludhiana", "Agra", "Nashik", "Faridabad", "Meerut", "Rajkot", "Kalyan-Dombivli", "Vasai-Virar", "Varanasi", "Srinagar",
+    "Aurangabad", "Dhanbad", "Amritsar", "Navi Mumbai", "Allahabad", "Howrah", "Gwalior", "Jabalpur", "Coimbatore",
+    "Vijayawada", "Jodhpur", "Madurai", "Raipur", "Kota", "Chandigarh", "Guwahati", "Solapur", "Hubballi-Dharwad", "Bareilly",
+    "Moradabad", "Mysore", "Gurgaon", "Aligarh", "Jalandhar", "Tiruchirappalli", "Bhubaneswar",
+    "Salem", "Mira-Bhayandar", "Warangal", "Thiruvananthapuram", "Bhiwandi", "Saharanpur", "Guntur", "Amravati", "Bikaner", "Noida", "Jamshedpur",
+    "Bhilai", "Cuttack", "Firozabad", "Kochi", "Nellore", "Bhavnagar", "Dehradun", "Durgapur", "Asansol", "Rourkela", "Nanded", "Kolhapur", "Ajmer",
+    "Akola", "Gulbarga", "Jamnagar", "Ujjain", "Loni", "Siliguri", "Jhansi", "Ulhasnagar",
+    "Nellore",
+    "Jammu",
+    "Sangli",
+    "Belgaum",
+    "Mangalore",
+    "Ambattur",
+    "Tirunelveli",
+    "Malegaon",
+    "Gaya",
+    "Udaipur",
+    "Davanagere",
+    "Kozhikode",
+    "Maheshtala",
+    "Rajpur Sonarpur",
+    "Kollam",
+    "Bokaro",
+    "South Dumdum",
+    "Gopalpur",
+    "Ahmednagar",
+    "Rajahmundry",
+    "Berhampur",
+    "Tirupati",
+    "Pondicherry",
+    "Agartala",
+    "Karnal",
+    "Bihar Sharif",
+    "Panipat",
+    "Darbhanga",
+    "Bally",
+    "Aizawl",
+    "Dewas",
+    "Ichalkaranji",
+    "Kakinada",
+    "Bidhannagar",
+    "Jharsuguda",
+    "Bharuch",
+    "Pali",
+    "Satna",
+    "Bilaspur",
+    "Shimla",
+    "Anantapur",
+    "Nizamabad",
+    "Hajipur",
+    "Muzaffarnagar",
+    "Bhagalpur",
+    "Korba",
+    "Rampur",
+    "Etawah",
+    "Sonipat",
+    "Khandwa",
+    "Alwar",
+    "Tumkur",
+    "Chittoor",
+    "Sikar",
+    "Rohtak",
+    "Bardhaman",
+    "Gandhinagar",
+    "Bathinda",
+    "Serampore",
+    "Mehsana",
+    "Hapur",
+    "Anand",
+    "Bulandshahr",
+    "Raichur",
+    "Sitapur",
+    "Hindupur",
+    "Farrukhabad",
+    "Ongole",
+    "Bijapur",
+    "Mirzapur",
+    "Jaunpur",
+    "Siwan",
+    "Bhuj",
+    "Bhimavaram",
+    "Krishnanagar",
+    "Kumbakonam",
+    "Rewa",
+    "Kolar",
+    "Shivpuri",
+    "Chinsurah",
+    "Chhapra",
+    "Porbandar",
+    "Dindigul", "Hoshangabad", "Kottayam", "Chandrapur", "Baranagar", "Darjeeling", "Motihari", "Nagaon", "Kharagpur", "Bettiah", "Kanchipuram", "Raigarh", "Palakkad", "Bongaigaon", "Deoghar", "Dibrugarh", "Guntur", "Faizabad", "Bishnupur", "Sambalpur", "Purnia", "Raiganj", "Karimnagar", "Nadiad", "Malda",
+    "Tinsukia", "Bidar", "Sultanpur", "Munger", "Shillong", "Imphal", "Tezpur", "Kohima", "Dimapur"
+  ]
 
   const handleLanguageChange = (e) => {
     const selectedLanguage = e.target.value;
@@ -105,7 +200,7 @@ function OcrMarathiHindi() {
     const lawyerName = extractLawyerName(text);
     const mobileNumber = extractMobileNumber(text);
     const noticeDescription = text.split("\n").slice(1).join(" ").trim();
-    const selectedImage = files[index]; // Assuming `files` array contains the uploaded images
+    const selectedImage = files[index];
 
     if (
       !noticeTitle ||
@@ -134,6 +229,8 @@ function OcrMarathiHindi() {
     formData.append("notices_images", selectedImage);
     formData.append("DataentryOperator", adminName);
     formData.append("SelectedCategory", SelectedCategory);
+    formData.append("selected_date", selectedDate);
+    
     fetch(apiEndpoint, {
       method: "POST",
       body: formData,
@@ -351,10 +448,10 @@ function OcrMarathiHindi() {
                 <div className="grid grid-cols-3 gap-4 items-center">
                   {/* Select City */}
                   <div>
-                    <TextField
+                    {/* <TextField
                       select
                       label="Select City"
-                      value={selectedCity} // Bind the state
+                      value={selectedCity}
                       onChange={(e) => setSelectedCity(e.target.value)} // Update state on change
                       variant="outlined"
                       fullWidth
@@ -371,7 +468,23 @@ function OcrMarathiHindi() {
                       <option value="chhatrapatisambhajinagar">Ch. Sambhaji Nagar</option>
                       <option value="solapur">Solapur</option>
                       <option value="kolhapur">Kolhapur</option>
-                    </TextField>
+                    </TextField> */}
+                    < Autocomplete
+                      options={cities}
+                      getOptionLabel={(option) => option}
+                      onChange={(event, value) => setSelectedCity(value)}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="Select Cities"
+                          varient="outlined"
+                          fullWidth
+                          margin="normal"
+                        />
+                      )}
+                      filterSelectedOptions
+                      clearOnEscape
+                    />
                   </div>
 
                   {/* Edition Date */}

@@ -50,7 +50,7 @@ function NewspaperCount() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('http://localhost:8000/api/newspaper/newspaper-data-entry', formData);
+            await axios.post('https://api.epublicnotices.in/api/newspaper/newspaper-data-entry', formData);
             toast.success('Data entry added successfully!');
             fetchEntries();
             setFormData({

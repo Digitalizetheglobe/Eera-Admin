@@ -20,11 +20,15 @@ import AdminProfile from './Admin/AdminProfile';
 import OcrMarathiHindi from './OcrPages/OcrMarathiHindi';
 import Scannotices1 from './Scannotices1/Scannotices1';
 import RequestPost from './RequestPostManagement/RequestPost';
-import { PrivateRoute, PublicRoute } from './RouteGuards'; 
+import { PrivateRoute, PublicRoute } from './RouteGuards';
 import Dashboard from './Dashboard/Dashboard'
 import ActiveUserM from './ActiveUserManagement/ActiveUserM';
 import NewsPaperMange from './NewsPaperManagement/NewsPaperMange';
 import NewspaperCount from './NewspaperDataentry/NewspaperCount';
+
+import FileUpload from './Python/FileUpload'
+import PdfUploader from './Python/PdfUploader';
+import ScannoticeNew from './Automation/ScannoticesNew';
 
 
 const theme = createTheme({
@@ -54,10 +58,14 @@ function App() {
           {/* Public Routes */}
           <Route path="/" element={<PublicRoute><LoginPage /></PublicRoute>} />
           <Route path="/registerpage" element={<PublicRoute><RegisterPage /></PublicRoute>} />
-
-          {/* Private Routes */}
+          <Route path='/FileUpload' element={<PublicRoute> <FileUpload /> </PublicRoute>} />
+          {/* <Route path='/PdfUploader' element={<PublicRoute> <PdfUploader /> </PublicRoute>} /> */}
+          
+          {/* Private Routes */} 
+          <Route path='/ScannoticeNew' element={<PrivateRoute><ScannoticeNew /></PrivateRoute>} />
+          <Route path='/uplodfilecheck' element={<PrivateRoute> <PdfUploader /></PrivateRoute>} />
           <Route path="/dashboardold" element={<PrivateRoute><Homepage /></PrivateRoute>} />
-          <Route path="/NewspaperCount" element={<PrivateRoute><NewspaperCount/></PrivateRoute>} />
+          <Route path="/NewspaperCount" element={<PrivateRoute><NewspaperCount /></PrivateRoute>} />
           <Route path="/scan-notices" element={<PrivateRoute><Ocrpage /></PrivateRoute>} />
           <Route path="/manualadd" element={<PrivateRoute><ManualAdd /></PrivateRoute>} />
           <Route path="/all-notice" element={<PrivateRoute><AllnoticeTable notices={notices} /></PrivateRoute>} />
@@ -72,10 +80,10 @@ function App() {
           <Route path="/scannotice" element={<PrivateRoute><Scannotices1 /></PrivateRoute>} />
           <Route path="/requestpost" element={<PrivateRoute><RequestPost /></PrivateRoute>} />
           <Route path="/dashboard" element={<PrivateRoute> <Dashboard /></PrivateRoute>} />
-          <Route path="/active-user" element={<PrivateRoute><ActiveUserM/></PrivateRoute>} />
+          <Route path="/active-user" element={<PrivateRoute><ActiveUserM /></PrivateRoute>} />
           {/* //NewsPaperMange */}
-          <Route path="/NewsPaperMange" element={<PrivateRoute><NewsPaperMange/></PrivateRoute>} />
-         </Routes>
+          <Route path="/NewsPaperMange" element={<PrivateRoute><NewsPaperMange /></PrivateRoute>} />
+        </Routes>
       </Router>
     </ThemeProvider>
   );

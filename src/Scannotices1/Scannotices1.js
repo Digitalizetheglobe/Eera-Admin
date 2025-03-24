@@ -81,7 +81,7 @@ function Scannotices1() {
     "Moradabad", "Mysore", "Gurgaon", "Aligarh", "Jalandhar", "Tiruchirappalli", "Bhubaneswar",
     "Salem", "Mira-Bhayandar", "Warangal", "Thiruvananthapuram", "Bhiwandi", "Saharanpur", "Guntur", "Amravati", "Bikaner", "Noida", "Jamshedpur",
     "Bhilai", "Cuttack", "Firozabad", "Kochi", "Nellore", "Bhavnagar", "Dehradun", "Durgapur", "Asansol", "Rourkela", "Nanded", "Kolhapur", "Ajmer",
-    "Akola", "Gulbarga", "Jamnagar", "Ujjain", "Loni", "Siliguri", "Jhansi", "Ulhasnagar","Sangli","Satara","Akola","Jalgoan","Nagar","New Delhi","Goa","Nanded","Dhule",
+    "Akola", "Gulbarga", "Jamnagar", "Ujjain", "Loni", "Siliguri", "Jhansi", "Ulhasnagar", "Sangli", "Satara", "Akola", "Jalgoan", "Nagar", "New Delhi", "Goa", "Nanded", "Dhule",
     "Nellore",
     "Jammu",
     "Belgaum",
@@ -277,7 +277,7 @@ function Scannotices1() {
     files.forEach((file) => {
       formData.append("notices_images", file);
     });
-
+    // https://api.epublicnotices.in
     fetch("https://api.epublicnotices.in/notices", {
       method: "POST",
       body: formData,
@@ -411,6 +411,7 @@ function Scannotices1() {
   useEffect(() => {
     const fetchAdminInfo = async () => {
       try {
+        // https://api.epublicnotices.in
         const token = localStorage.getItem("token"); // Assuming the token is stored in localStorage
         const response = await axios.get("https://api.epublicnotices.in/admin/admin-info", {
           headers: {

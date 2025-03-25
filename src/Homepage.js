@@ -13,6 +13,7 @@ function Homepage() {
   useEffect(() => {
     axios.get('https://api.epublicnotices.in/notices')
       // http://localhost:8000/notices
+      // http://localhost:8004/notices
       .then(response => {
         setNoticesCount(response.data.length);
       })

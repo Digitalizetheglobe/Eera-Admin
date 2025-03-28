@@ -172,6 +172,12 @@ function OcrMarathiHindi() {
         for (const file of files) {
           const { data } = await Tesseract.recognize(file, language, {
             logger: (m) => console.log(m),
+            tessedit_char_whitelist: language === 'tam' 
+              ? '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz\u0B80-\u0BFF'
+              : '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz\u0900-\u097F',
+            tessedit_pageseg_mode: '1',
+            tessjs_create_pdf: '0',
+            tessjs_create_hocr: '0',
           });
           extractedTexts.push({ text: data.text, fileName: file.name });
         }
@@ -400,6 +406,7 @@ function OcrMarathiHindi() {
                     >
                       <option value="mar">Marathi</option>
                       <option value="hin">Hindi</option>
+                      <option value="tam">Tamil</option>
                       <option value="eng">English</option>
                     </TextField>
                   </div>

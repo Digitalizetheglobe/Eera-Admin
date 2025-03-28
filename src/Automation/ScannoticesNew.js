@@ -282,12 +282,28 @@ const ScannoticeNew = () => {
   // Update language detection function
   const detectLanguage = async (imageUrl) => {
     try {
-      // First try with Marathi since we're seeing Marathi text
+      // First try with English since it's the most common
+      const { data: engData } = await Tesseract.recognize(imageUrl, 'eng', {
+        logger: (m) => console.log(m),
+      });
+
+      // Check for English text patterns
+      const englishPattern = /^[A-Za-z0-9\s.,!?()\-'"]+$/;
+      const englishLines = engData.text.split('\n').filter(line => line.trim());
+      const englishLineCount = englishLines.filter(line => englishPattern.test(line)).length;
+      
+      // If more than 70% of lines are English, return English
+      if (englishLineCount / englishLines.length > 0.7) {
+        console.log("Detected English text");
+        return 'eng';
+      }
+
+      // Try Marathi if not English
       const { data: marData } = await Tesseract.recognize(imageUrl, 'mar', {
         logger: (m) => console.log(m),
       });
 
-      // Check for Marathi characters with more specific patterns
+      // Check for Marathi characters
       const marathiPattern = /[\u0900-\u097F]/;
       const marathiSpecificPattern = /[\u0915-\u0939\u0958-\u095F\u0966-\u096F\u0972-\u097F]/;
 
@@ -315,7 +331,7 @@ const ScannoticeNew = () => {
       return 'eng';
     } catch (error) {
       console.error("Language detection error:", error);
-      return 'mar'; // Default to Marathi on error since we're seeing Marathi text
+      return 'eng'; // Default to English on error
     }
   };
 
@@ -339,7 +355,9 @@ const ScannoticeNew = () => {
 
       const { data } = await Tesseract.recognize(img, language, {
         logger: (m) => console.log(m),
-        tessedit_char_whitelist: '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz\u0900-\u097F',
+        tessedit_char_whitelist: language === 'eng' 
+          ? '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz.,!?()\-\'"'
+          : '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz\u0900-\u097F',
         tessedit_pageseg_mode: '1',
         tessjs_create_pdf: '0',
         tessjs_create_hocr: '0',

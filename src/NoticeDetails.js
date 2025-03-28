@@ -187,7 +187,7 @@ const NoticeDetails = ({ notices }) => {
                 <strong>Location: </strong> {notice.location}
               </p>
               <img
-                src={`https://api.epublicnotices.in/noticesimage/${notice.notices_images}`}
+                src={`https://public-notices-bucket.s3.ap-south-1.amazonaws.com/${notice.notices_images}`}
                 alt="Notice"
                 className="mb-4 w-full h-auto object-cover rounded-lg shadow-lg"
               />

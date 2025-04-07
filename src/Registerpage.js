@@ -20,7 +20,7 @@ const RegisterPage = () => {
         try {
             //http://localhost:8000
             //https://api.epublicnotices.in
-            await axios.post("https://api.epublicnotices.in/admin/register", {
+            await axios.post("http://localhost:8004/admin/register", {
                 full_name: username,
                 email: email,
                 password: password,

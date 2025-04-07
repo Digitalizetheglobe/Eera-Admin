@@ -97,6 +97,12 @@ const Sidebar = () => {
               Daily Newspaper Count
             </Link>
           </li>
+          <li>
+            <Link to="/land-notice-management" className="flex items-center p-2 hover:bg-gray-700 rounded">
+              <img src={folder} className="mr-4" />
+              Land Notice Management
+            </Link>
+          </li>
         </ul>
      
         <div className="flex justify-center mt-6 mb-6">

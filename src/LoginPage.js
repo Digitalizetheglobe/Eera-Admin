@@ -17,7 +17,7 @@ const LoginPage = () => {
     try {
       //http://localhost:8000
       //https://api.epublicnotices.in
-      const response = await fetch("https://api.epublicnotices.in/admin/login", {
+      const response = await fetch("http://localhost:8004/admin/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(loginData),

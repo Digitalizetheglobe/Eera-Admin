@@ -29,7 +29,7 @@ import NewspaperCount from './NewspaperDataentry/NewspaperCount';
 import FileUpload from './Python/FileUpload'
 import PdfUploader from './Python/PdfUploader';
 import ScannoticeNew from './Automation/ScannoticesNew';
-
+import LandnoticeManagement from './LandnoticeManagement/LandnoticeManagement';
 
 const theme = createTheme({
   palette: {
@@ -83,6 +83,7 @@ function App() {
           <Route path="/active-user" element={<PrivateRoute><ActiveUserM /></PrivateRoute>} />
           {/* //NewsPaperMange */}
           <Route path="/NewsPaperMange" element={<PrivateRoute><NewsPaperMange /></PrivateRoute>} />
+          <Route path="/land-notice-management" element={<PrivateRoute><LandnoticeManagement /></PrivateRoute>} />
         </Routes>
       </Router>
     </ThemeProvider>

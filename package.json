@@ -12,6 +12,7 @@
     "apexcharts": "^3.52.0",
     "axios": "^1.7.2",
     "chart.js": "^4.4.7",
+    "framer-motion": "^12.6.3",
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.1",
     "lottie-react": "^2.4.0",

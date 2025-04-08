@@ -45,7 +45,7 @@ const LandnoticeManagement = () => {
   const fetchPendingNotices = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:8004/api/land-notices/admin/pending', {
+      const response = await fetch('https://api.epublicnotices.in/api/land-notices/admin/pending', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -68,7 +68,7 @@ const LandnoticeManagement = () => {
   const fetchApprovedNotices = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:8004/api/land-notices/admin/approved', {
+      const response = await fetch('https://api.epublicnotices.in/api/land-notices/admin/approved', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -90,7 +90,7 @@ const LandnoticeManagement = () => {
     try {
       setProcessing(true);
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:8004/api/land-notices/admin/${noticeId}/review`, {
+      const response = await fetch(`https://api.epublicnotices.in/api/land-notices/admin/${noticeId}/review`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -123,7 +123,7 @@ const LandnoticeManagement = () => {
     try {
       setProcessing(true);
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:8004/api/land-notices/${selectedNotice.id}/review`, {
+      const response = await fetch(`https://api.epublicnotices.in/api/land-notices/${selectedNotice.id}/review`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
